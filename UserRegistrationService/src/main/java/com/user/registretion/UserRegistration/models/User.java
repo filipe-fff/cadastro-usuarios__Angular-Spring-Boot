@@ -22,7 +22,7 @@ public class User {
 
     @Lob
     @Column(name = "photo")
-    private byte[] photo;
+    private Byte[] photo;
 
     @Column(name = "name", nullable = false)
     private String name;

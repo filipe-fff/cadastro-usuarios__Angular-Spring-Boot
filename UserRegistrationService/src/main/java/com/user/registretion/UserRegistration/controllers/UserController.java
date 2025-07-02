@@ -1,7 +1,7 @@
 package com.user.registretion.UserRegistration.controllers;
 
-import com.user.registretion.UserRegistration.models.User;
-import com.user.registretion.UserRegistration.services.UserService;
+import com.user.registretion.UserRegistration.models.*;
+import com.user.registretion.UserRegistration.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +13,50 @@ import java.util.List;
 @RequestMapping("/")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
+
+    @Autowired
+    PhoneRepository phoneRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
+    @Autowired
+    DependentRepository dependentRepository;
+
+    @Autowired
+    MusicRepository musicRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
 
     @GetMapping
-    public List<User> olaMundo() {
-        return userService.getUser();
+    public List<User> usersList() {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/phone")
+    public List<Phone> phoneList() {
+        return phoneRepository.findAll();
+    }
+
+    @GetMapping("/address")
+    public List<Address> addressList() {
+        return addressRepository.findAll();
+    }
+
+    @GetMapping("/dependents")
+    public List<Dependent> dependentList() {
+        return dependentRepository.findAll();
+    }
+
+    @GetMapping("/musics")
+    public List<Music> musicsList() {
+        return musicRepository.findAll();
+    }
+
+    @GetMapping("/genres")
+    public List<Genre> genresList() {
+        return genreRepository.findAll();
     }
 }
