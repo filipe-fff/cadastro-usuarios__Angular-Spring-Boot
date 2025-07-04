@@ -1,5 +1,6 @@
 package com.user.registretion.UserRegistration.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,11 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "phone")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+@ToString(exclude = "user")
 public class Phone {
 
     @Id
@@ -31,6 +29,8 @@ public class Phone {
     @Column(name = "number", nullable = false)
     private String number;
 
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
-    private UUID userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 }

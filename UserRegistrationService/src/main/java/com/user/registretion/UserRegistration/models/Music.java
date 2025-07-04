@@ -1,5 +1,6 @@
 package com.user.registretion.UserRegistration.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,8 @@ public class Music {
     @Column(name = "is_favorite")
     private Boolean isFavorite;
 
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
-    private UUID userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 }
