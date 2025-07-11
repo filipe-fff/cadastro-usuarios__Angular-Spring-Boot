@@ -7,10 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "genres")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString
 public class Genre {
 

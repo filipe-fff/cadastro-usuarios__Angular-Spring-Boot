@@ -1,62 +1,58 @@
 package com.user.registretion.UserRegistration.controllers;
 
-import com.user.registretion.UserRegistration.models.*;
-import com.user.registretion.UserRegistration.repositories.*;
+import com.user.registretion.UserRegistration.DTOs.UserSaveDTO;
+import com.user.registretion.UserRegistration.DTOs.UserUpdateDTO;
+import com.user.registretion.UserRegistration.models.User;
+import com.user.registretion.UserRegistration.services.UserService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user-registration")
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
-    @Autowired
-    PhoneRepository phoneRepository;
+    // CREATE
+    @PostMapping("/save")
+    public User save(@RequestBody UserSaveDTO userSaveDTO) {
+        return this.userService.save(userSaveDTO);
+    }
 
-    @Autowired
-    AddressRepository addressRepository;
-
-    @Autowired
-    DependentRepository dependentRepository;
-
-    @Autowired
-    MusicRepository musicRepository;
-
-    @Autowired
-    GenreRepository genreRepository;
-
+    // READ
     @GetMapping
     public List<User> usersList() {
-        return userRepository.findAll();
+        return this.userService.findAll();
     }
 
-    @GetMapping("/phone")
-    public List<Phone> phoneList() {
-        return phoneRepository.findAll();
+    @GetMapping("/user/{id}")
+    public User userById(@PathVariable("id") UUID id) {
+        return this.userService.userById(id);
     }
 
-    @GetMapping("/address")
-    public List<Address> addressList() {
-        return addressRepository.findAll();
+    @PostMapping("/existsName")
+    public boolean existsUserByName(@RequestBody String name) {
+        return this.userService.existsByName(name);
     }
 
-    @GetMapping("/dependents")
-    public List<Dependent> dependentList() {
-        return dependentRepository.findAll();
+    @PostMapping("/existsEmail")
+    public boolean existsUserByEmail(@RequestBody String email) {
+        return this.userService.existsByEmail(email);
     }
 
-    @GetMapping("/musics")
-    public List<Music> musicsList() {
-        return musicRepository.findAll();
+    // UPDATE
+    @PostMapping("/update")
+    public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
+        return this.userService.update(userUpdateDTO);
     }
 
-    @GetMapping("/genres")
-    public List<Genre> genresList() {
-        return genreRepository.findAll();
+    // DELETE
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable("id") UUID id) {
+        this.userService.delete(id);
     }
 }

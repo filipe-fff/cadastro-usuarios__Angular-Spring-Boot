@@ -1,6 +1,7 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.user.registretion.UserRegistration.DTOs.PhoneDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,23 +10,38 @@ import java.util.UUID;
 @Entity
 @Table(name = "phone")
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString(exclude = "user")
 public class Phone {
 
+    public Phone(User user, PhoneDTO phoneDTO) {
+        this.preparePhone(user, phoneDTO);
+    }
+
+    public Phone(UUID id, User user, PhoneDTO phoneDTO) {
+        this.preparePhone(user, phoneDTO);
+        this.setId(id);
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @NonNull
     @Column(name = "type", nullable = false)
     private Byte type;
 
-    @Column(name = "area_code", nullable = false)
-    private String areaCode;
-
+    @NonNull
     @Column(name = "international_code", nullable = false)
     private String internationalCode;
 
+    @NonNull
+    @Column(name = "area_code", nullable = false)
+    private String areaCode;
+
+    @NonNull
     @Column(name = "number", nullable = false)
     private String number;
 
@@ -33,4 +49,12 @@ public class Phone {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    private void preparePhone(User user, PhoneDTO phoneDTO) {
+        this.setType(phoneDTO.type());
+        this.setInternationalCode(phoneDTO.internationalCode());
+        this.setAreaCode(phoneDTO.areaCode());
+        this.setNumber(phoneDTO.number());
+        this.setUser(user);
+    }
 }

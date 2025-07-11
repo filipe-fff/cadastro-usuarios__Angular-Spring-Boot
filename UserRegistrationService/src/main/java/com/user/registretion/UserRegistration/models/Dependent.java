@@ -1,6 +1,8 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.user.registretion.UserRegistration.DTOs.DependentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,24 +10,35 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "dependents")
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@RequiredArgsConstructor
+@ToString(exclude = "user")
 public class Dependent {
 
+    public Dependent(User user, DependentDTO dependentDTO) {
+        this.prepareDependent(user, dependentDTO);
+    }
+
+    public Dependent(UUID id, User user, DependentDTO dependentDTO) {
+        this.prepareDependent(user, dependentDTO);
+        this.setId(id);
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @NonNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NonNull
     @Column(name = "age", nullable = false)
     private Byte age;
 
+    @NonNull
     @Column(name = "document", nullable = false)
     private String document;
 
@@ -33,4 +46,11 @@ public class Dependent {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    public void prepareDependent(User user, DependentDTO dependentDTO) {
+        this.setName(dependentDTO.name());
+        this.setAge(dependentDTO.age());
+        this.setDocument(dependentDTO.document());
+        this.setUser(user);
+    }
 }

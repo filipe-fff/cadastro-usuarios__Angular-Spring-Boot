@@ -1,30 +1,32 @@
 package com.user.registretion.UserRegistration.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Data
-@ToString(exclude = { "phoneList" })
+@ToString(exclude = { "phoneList", "addressList", "dependents", "musics" })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;
+
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @Lob
     @Column(name = "photo")
-    private Byte[] photo;
-
-    @Column(name = "name", nullable = false)
-    private String name;
+    private String photoUrl;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -36,7 +38,7 @@ public class User {
     private String state;
 
     @Column(name = "marital_status", nullable = false)
-    private String maritalStatus;
+    private Byte maritalStatus;
 
     @Column(name = "monthly_income", nullable = false)
     private BigDecimal monthlyIncome;
@@ -46,17 +48,17 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Phone> phoneList;
+    private List<Phone> phoneList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Address> addressList;
+    private List<Address> addressList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Dependent> dependents;
+    private List<Dependent> dependents = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Music> musics;
+    private List<Music> musics = new ArrayList<>();
 }
