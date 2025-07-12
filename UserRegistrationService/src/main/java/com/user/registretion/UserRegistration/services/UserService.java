@@ -28,10 +28,10 @@ public class UserService {
         user.setMonthlyIncome(userSaveDTO.monthlyIncome());
         user.setBirthDate(userSaveDTO.birthDate());
 
-        user.setPhoneList(this.preparePhoneList(user, userSaveDTO.phoneList()));
-        user.setAddressList(this.prepareAddressList(user, userSaveDTO.addressList()));
-        user.setDependents(this.prepareDependents(user, userSaveDTO.dependents()));
-        user.setMusics(this.prepareMusics(user, userSaveDTO.musics()));
+        user.setPhoneList(this.convertPhoneDTOListToPhoneList(user, userSaveDTO.phoneList()));
+        user.setAddressList(this.convertAddressDTOListToAddressList(user, userSaveDTO.addressList()));
+        user.setDependents(this.convertDependentsDTOToDependents(user, userSaveDTO.dependents()));
+        user.setMusics(this.convertMusicsDTOToMusics(user, userSaveDTO.musics()));
 
         return userRepository.save(user);
     }
@@ -59,10 +59,10 @@ public class UserService {
 
     // UPDATE
     @Transactional
-    public User update(UserUpdateDTO userUpdateDTO) {
+    public User update(UUID id, UserUpdateDTO userUpdateDTO) {
         User user = new User();
 
-        user.setId(userUpdateDTO.id());
+        user.setId(id);
         user.setName(userUpdateDTO.name());
         user.setPhotoUrl("");
         user.setEmail(userUpdateDTO.email());
@@ -71,10 +71,10 @@ public class UserService {
         user.setMaritalStatus(userUpdateDTO.maritalStatus());
         user.setMonthlyIncome(userUpdateDTO.monthlyIncome());
         user.setBirthDate(userUpdateDTO.birthDate());
-        user.setPhoneList(this.preparePhoneList(user, userUpdateDTO.phoneList()));
-        user.setAddressList(this.prepareAddressList(user, userUpdateDTO.addressList()));
-        user.setDependents(this.prepareDependents(user, userUpdateDTO.dependents()));
-        user.setMusics(this.prepareMusics(user, userUpdateDTO.musics()));
+        user.setPhoneList(this.convertPhoneDTOListToPhoneList(user, userUpdateDTO.phoneList()));
+        user.setAddressList(this.convertAddressDTOListToAddressList(user, userUpdateDTO.addressList()));
+        user.setDependents(this.convertDependentsDTOToDependents(user, userUpdateDTO.dependents()));
+        user.setMusics(this.convertMusicsDTOToMusics(user, userUpdateDTO.musics()));
 
         return userRepository.save(user);
     }
@@ -85,19 +85,19 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    private List<Phone> preparePhoneList(User user, List<PhoneDTO> phoneListDTO) {
-        return phoneListDTO.stream().map(p -> new Phone(user, p)).toList();
+    private List<Phone> convertPhoneDTOListToPhoneList(User user, List<PhoneDTO> phoneDTOList) {
+        return phoneDTOList.stream().map(p -> new Phone(user, p)).toList();
     }
 
-    private List<Address> prepareAddressList(User user, List<AddressDTO> addressListDTO) {
-        return addressListDTO.stream().map(a -> new Address(user, a)).toList();
+    private List<Address> convertAddressDTOListToAddressList(User user, List<AddressDTO> addressDTOList) {
+        return addressDTOList.stream().map(a -> new Address(user, a)).toList();
     }
 
-    private List<Dependent> prepareDependents(User user, List<DependentDTO> dependentsDTO) {
+    private List<Dependent> convertDependentsDTOToDependents(User user, List<DependentDTO> dependentsDTO) {
         return dependentsDTO.stream().map(d -> new Dependent(user, d)).toList();
     }
 
-    private List<Music> prepareMusics(User user, List<MusicDTO> musicsDTO) {
+    private List<Music> convertMusicsDTOToMusics(User user, List<MusicDTO> musicsDTO) {
         return musicsDTO.stream().map(m -> new Music(user, m)).toList();
     }
 }

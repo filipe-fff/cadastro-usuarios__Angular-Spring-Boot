@@ -4,7 +4,6 @@ import com.user.registretion.UserRegistration.DTOs.UserSaveDTO;
 import com.user.registretion.UserRegistration.DTOs.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
 import com.user.registretion.UserRegistration.services.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,9 +44,9 @@ public class UserController {
     }
 
     // UPDATE
-    @PostMapping("/update")
-    public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
-        return this.userService.update(userUpdateDTO);
+    @PutMapping("/update/{id}")
+    public User update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO userUpdateDTO) {
+        return this.userService.update(id, userUpdateDTO);
     }
 
     // DELETE
