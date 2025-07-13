@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { IUser } from "../interfaces/user/user.interface";
+import { UsersListReponse } from "../types/users-list-response";
 
 @Injectable({
     providedIn: 'root'
@@ -9,17 +11,17 @@ export class UsersListService {
     private readonly _httpClient = inject(HttpClient);
 
     // CREATE
-    save(user: any): Observable<any> {
-        return this._httpClient.post<any>("http://localhost:8081/user-registration/save", { ...user });
+    save(user: IUser): Observable<IUser> {
+        return this._httpClient.post<IUser>("http://localhost:8081/user-registration/save", { ...user });
     }
     
     // READ
-    getUsers(): Observable<any[]> {
-        return this._httpClient.get<any[]>("http://localhost:8081/user-registration");
+    getUsers(): Observable<UsersListReponse> {
+        return this._httpClient.get<UsersListReponse>("http://localhost:8081/user-registration");
     }
 
-    getUserById(id: string): Observable<any> {
-        return this._httpClient.get("http://localhost:8081/user-registration/user/" + id);
+    getUserById(id: string): Observable<IUser> {
+        return this._httpClient.get<IUser>("http://localhost:8081/user-registration/user/" + id);
     }
 
     existsName(name: string): Observable<boolean> {
@@ -31,8 +33,8 @@ export class UsersListService {
     }
 
     // UPDATE
-    update(id: string, user: any): Observable<any> {
-        return this._httpClient.put<any>("http://localhost:8081/user-registration/update/" + id, user);
+    update(id: string, user: IUser): Observable<IUser> {
+        return this._httpClient.put<IUser>("http://localhost:8081/user-registration/update/" + id, user);
     }
 
     // DELETE

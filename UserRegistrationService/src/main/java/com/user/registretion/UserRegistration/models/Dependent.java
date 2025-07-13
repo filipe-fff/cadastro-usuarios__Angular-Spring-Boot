@@ -26,6 +26,7 @@ public class Dependent {
     }
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;
