@@ -7,7 +7,7 @@ import { UsersListReponse } from "../types/users-list-response";
 @Injectable({
     providedIn: 'root'
 })
-export class UsersListService {
+export class UsersService {
     private readonly _httpClient = inject(HttpClient);
 
     // CREATE

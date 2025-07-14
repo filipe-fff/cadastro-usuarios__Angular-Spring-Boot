@@ -1,17 +1,7 @@
-<h1>User List</h1>
+<h1>Countries List:</h1>
 
-@for (user of $usersList | async; track user) {
-    <div style="padding: 20px;">
-        <p>name: {{ user.name }}</p>
-        <p>email: {{ user.email }}</p>
-        <p>country: {{ user.country }}</p>
-        <p>state: {{ user.state }}</p>
-        <p>marital status: {{ user.maritalStatus }}</p>
-        <p>monthlyIncome: {{ user.monthlyIncome }}</p>
-        <p>phone list: {{ user.phoneList | json}}</p>
-        <p>address list: {{ user.addressList | json}}</p>
-        <p>dependents: {{ user.dependents | json}}</p>
-        <p>musics: {{ user.musics | json}}</p>
-        <hr>
+@if ($countriesList | async; as country) {
+    <div style="padding: 10px;">
+        country: {{ country | json}}
     </div>
 }

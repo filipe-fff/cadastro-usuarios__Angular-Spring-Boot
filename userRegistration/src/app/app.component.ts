@@ -1,8 +1,8 @@
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UsersListService } from './services/users-list.service';
 import { Observable, of } from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { CountriesService } from './services/countries.service';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,11 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  $usersList: Observable<any> = of([]);
+  $countriesList: Observable<any> = of({});
 
-  private readonly _usersListService = inject(UsersListService);
+  private readonly _countriesListService = inject(CountriesService);
 
   ngOnInit(): void {
-    this.$usersList = this._usersListService.getUsers();
+    this.$countriesList = this._countriesListService.getCountries();
   }
 }
