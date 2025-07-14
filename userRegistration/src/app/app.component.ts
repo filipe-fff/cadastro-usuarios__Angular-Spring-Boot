@@ -1,8 +1,7 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { StatesService } from './services/states.service';
+import { GenresService } from './services/genres.service';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +16,9 @@ import { StatesService } from './services/states.service';
 })
 export class AppComponent implements OnInit {
 
-  private readonly _statesListService = inject(StatesService);
+  private readonly _genresListService = inject(GenresService);
 
   ngOnInit() {
-    this._statesListService.getStates('Brazil').subscribe(console.log);
+    this._genresListService.getGenres().subscribe(console.log);
   }
 }
