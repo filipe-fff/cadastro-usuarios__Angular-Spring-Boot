@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { CountriesService } from './services/countries.service';
+import { CountriesList } from './types/countries-list';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,11 @@ import { CountriesService } from './services/countries.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  $countriesList: Observable<any> = of({});
+  $countriesList: Observable<CountriesList> = of([]);
 
   private readonly _countriesListService = inject(CountriesService);
 
   ngOnInit(): void {
-    this.$countriesList = this._countriesListService.getCountries();
+    this._countriesListService.getCountries().subscribe(console.log);
   }
 }
