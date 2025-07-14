@@ -2,8 +2,7 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { CountriesService } from './services/countries.service';
-import { CountriesList } from './types/countries-list';
+import { StatesService } from './services/states.service';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +16,11 @@ import { CountriesList } from './types/countries-list';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  $countriesList: Observable<CountriesList> = of([]);
+  $statesList: Observable<any> = of({});
 
-  private readonly _countriesListService = inject(CountriesService);
+  private readonly _statesListService = inject(StatesService);
 
-  ngOnInit(): void {
-    this._countriesListService.getCountries().subscribe(console.log);
+  ngOnInit() {
+    this._statesListService.getStates('Brazil').subscribe(console.log);
   }
 }
