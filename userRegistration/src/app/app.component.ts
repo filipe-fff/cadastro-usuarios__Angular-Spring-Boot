@@ -16,7 +16,6 @@ import { StatesService } from './services/states.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  $statesList: Observable<any> = of({});
 
   private readonly _statesListService = inject(StatesService);
 
