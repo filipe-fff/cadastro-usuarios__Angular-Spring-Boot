@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { GenresListResponse } from "../types/genres-list-response";
 
 @Injectable({
     providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from "rxjs";
 export class GenresService {
     private readonly _httpClient = inject(HttpClient);
 
-    getGenres(): Observable<any> {
-        return this._httpClient.get<any>("http://localhost:8081/genre");
+    getGenres(): Observable<GenresListResponse> {
+        return this._httpClient.get<GenresListResponse>("http://localhost:8081/genre");
     }
 }
