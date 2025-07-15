@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { PhoneListComponent } from './components/phone-list/phone-list.component';
 
 @Component({
   selector: 'app-contact-informations',
   standalone: true,
-  imports: [],
+  imports: [
+    PhoneListComponent
+  ],
   templateUrl: './contact-informations.component.html',
   styleUrl: './contact-informations.component.scss'
 })
-export class ContactInformationsComponent {
-
-}
+export class ContactInformationsComponent { }
