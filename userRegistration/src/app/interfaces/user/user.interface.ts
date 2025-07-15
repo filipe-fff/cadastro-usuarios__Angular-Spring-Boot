@@ -6,12 +6,13 @@ import { PhoneList } from "../../types/phone-list";
 export interface IUser {
     id: string;
     name: string;
+    password: string;
     email: string;
     country: string;
     state: string;
     maritalStatus: number;
     monthlyIncome: number;
-    birthDtate: string;
+    birthDate: string;
     phoneList: PhoneList;
     addressList: AddressList;
     dependents: DependentsList;
