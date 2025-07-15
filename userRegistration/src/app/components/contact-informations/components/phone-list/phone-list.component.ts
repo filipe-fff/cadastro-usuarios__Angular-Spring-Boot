@@ -1,13 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { PhoneList } from '../../../../types/phone-list';
+import { PhoneToDisplayList } from '../../../../types/phone-to-display-list';
+import { preparePhoneToDisplayList } from '../../../../utils/prepare-phone-to-display-list';
 import { UserInfosItemComponent } from '../../../user-infos-item/user-infos-item.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-phone-list',
   standalone: true,
   imports: [
+    CommonModule,
     UserInfosItemComponent
   ],
   templateUrl: './phone-list.component.html',
   styleUrl: './phone-list.component.scss'
 })
-export class PhoneListComponent { }
+export class PhoneListComponent implements OnChanges {
+  phoneToDisplayList: PhoneToDisplayList = [];
+
+  @Input({ required: true }) phoneList: PhoneList = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.onPreparePhoneToDisplayList();
+  }
+
+  onPreparePhoneToDisplayList() {
+    if (!this.phoneList) return;
+
+    this.phoneToDisplayList = [];
+    preparePhoneToDisplayList(true, this.phoneList, (phone) => {
+      this.phoneToDisplayList.push(phone);
+    });
+  }
+}

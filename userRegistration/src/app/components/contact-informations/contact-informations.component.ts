@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PhoneListComponent } from './components/phone-list/phone-list.component';
+import { IUser } from '../../interfaces/user/user.interface';
 
 @Component({
   selector: 'app-contact-informations',
@@ -10,4 +11,6 @@ import { PhoneListComponent } from './components/phone-list/phone-list.component
   templateUrl: './contact-informations.component.html',
   styleUrl: './contact-informations.component.scss'
 })
-export class ContactInformationsComponent { }
+export class ContactInformationsComponent {
+  @Input({ required: true }) userSelected: IUser = {} as IUser;
+}
