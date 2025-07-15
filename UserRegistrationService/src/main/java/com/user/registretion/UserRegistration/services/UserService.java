@@ -49,18 +49,18 @@ public class UserService {
     }
 
     @Transactional
-    public boolean existsByName(String name) {
-        return userRepository.existsUserByName(name);
+    public boolean existsByIdNotAndName(UUID id, String name) {
+        return userRepository.existsByIdNotAndName(id, name);
     }
 
     @Transactional
-    public boolean existsByEmail(String email) {
-        return userRepository.existsUserByEmail(email);
+    public boolean existsByIdNotAndEmail(UUID id, String email) {
+        return userRepository.existsByIdNotAndEmail(id, email);
     }
 
     @Transactional
-    public boolean existsByPassword(String password) {
-        return userRepository.existsUserByPassword(password);
+    public boolean existsByIdNotAndPassword(UUID id, String password) {
+        return userRepository.existsByIdNotAndPassword(id, password);
     }
 
     // UPDATE

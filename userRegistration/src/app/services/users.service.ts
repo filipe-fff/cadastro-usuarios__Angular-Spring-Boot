@@ -24,16 +24,16 @@ export class UsersService {
         return this._httpClient.get<IUser>("http://localhost:8081/user-registration/user/" + id);
     }
 
-    existsName(name: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-name", name);
+    existsByIdNotAndName(id: string, name: string): Observable<boolean> {
+        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-name/" + id, name);
     }
 
-    existsEmail(email: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-email", email);
+    existsByIdNotAndEmail(id: string, email: string): Observable<boolean> {
+        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-email/" + id, email);
     }
 
-    existsPassword(password: string): Observable<boolean> {
-        return this._httpClient.post<boolean>('http://localhost:8081/user-registration/exists-password', password);
+    existsByIdNotAndPassword(id: string, password: string): Observable<boolean> {
+        return this._httpClient.post<boolean>('http://localhost:8081/user-registration/exists-password/' + id, password);
     }
 
     // UPDATE

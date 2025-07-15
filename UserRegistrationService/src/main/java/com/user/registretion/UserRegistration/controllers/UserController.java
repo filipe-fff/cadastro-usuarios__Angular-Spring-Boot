@@ -33,19 +33,19 @@ public class UserController {
         return this.userService.userById(id);
     }
 
-    @PostMapping("/exists-name")
-    public boolean existsUserByName(@RequestBody String name) {
-        return this.userService.existsByName(name);
+    @PutMapping("/exists-name/{id}")
+    public boolean existsByIdNotAndName(@PathVariable("id") UUID id, @RequestBody String name) {
+        return this.userService.existsByIdNotAndName(id, name);
     }
 
-    @PostMapping("/exists-email")
-    public boolean existsUserByEmail(@RequestBody String email) {
-        return this.userService.existsByEmail(email);
+    @PutMapping("/exists-email/{id}")
+    public boolean existsByIdNotAndEmail(@PathVariable("id") UUID id, @RequestBody String email) {
+        return this.userService.existsByIdNotAndEmail(id, email);
     }
 
-    @PostMapping("/exists-password")
-    public boolean existsUserByPassword(@RequestBody String password) {
-        return userService.existsByPassword(password);
+    @PutMapping("/exists-password/{id}")
+    public boolean existsByIdNotAndPassword(@PathVariable("id") UUID id, @RequestBody String password) {
+        return userService.existsByIdNotAndPassword(id, password);
     }
 
     // UPDATE
