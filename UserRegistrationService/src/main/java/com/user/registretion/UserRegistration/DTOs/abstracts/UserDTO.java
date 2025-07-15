@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface UserDTO {
     String name();
+    String password();
     String email();
     String country();
     String state();

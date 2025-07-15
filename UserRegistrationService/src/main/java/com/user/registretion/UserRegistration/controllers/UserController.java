@@ -33,14 +33,19 @@ public class UserController {
         return this.userService.userById(id);
     }
 
-    @PostMapping("/existsName")
+    @PostMapping("/exists-name")
     public boolean existsUserByName(@RequestBody String name) {
         return this.userService.existsByName(name);
     }
 
-    @PostMapping("/existsEmail")
+    @PostMapping("/exists-email")
     public boolean existsUserByEmail(@RequestBody String email) {
         return this.userService.existsByEmail(email);
+    }
+
+    @PostMapping("/exists-password")
+    public boolean existsUserByPassword(@RequestBody String password) {
+        return userService.existsByPassword(password);
     }
 
     // UPDATE

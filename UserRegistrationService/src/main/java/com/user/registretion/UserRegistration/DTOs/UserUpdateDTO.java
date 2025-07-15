@@ -8,6 +8,7 @@ import java.util.List;
 
 public record UserUpdateDTO(
         String name,
+        String password,
         String email,
         String country,
         String state,

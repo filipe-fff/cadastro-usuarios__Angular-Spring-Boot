@@ -21,6 +21,7 @@ public class UserService {
         User user = new User();
 
         user.setName(userSaveDTO.name());
+        user.setPassword(userSaveDTO.password());
         user.setEmail(userSaveDTO.email());
         user.setCountry(userSaveDTO.country());
         user.setState(userSaveDTO.state());
@@ -57,6 +58,11 @@ public class UserService {
         return userRepository.existsUserByEmail(email);
     }
 
+    @Transactional
+    public boolean existsByPassword(String password) {
+        return userRepository.existsUserByPassword(password);
+    }
+
     // UPDATE
     @Transactional
     public User update(UUID id, UserUpdateDTO userUpdateDTO) {
@@ -64,6 +70,7 @@ public class UserService {
 
         user.setId(id);
         user.setName(userUpdateDTO.name());
+        user.setPassword(userUpdateDTO.password());
         user.setPhotoUrl("");
         user.setEmail(userUpdateDTO.email());
         user.setCountry(userUpdateDTO.country());

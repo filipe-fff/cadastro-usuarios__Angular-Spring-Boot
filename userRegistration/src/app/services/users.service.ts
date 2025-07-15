@@ -25,11 +25,15 @@ export class UsersService {
     }
 
     existsName(name: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/existsName", name);
+        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-name", name);
     }
 
     existsEmail(email: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/existsEmail", email);
+        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-email", email);
+    }
+
+    existsPassword(password: string): Observable<boolean> {
+        return this._httpClient.post<boolean>('http://localhost:8081/user-registration/exists-password', password);
     }
 
     // UPDATE
