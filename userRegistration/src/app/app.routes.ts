@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+import { UserSelectedComponent } from './components/user-selected/user-selected.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
-import { UserContainerComponent } from './components/user-container/user-container.component';
 
 export const routes: Routes = [
     {
@@ -14,6 +14,6 @@ export const routes: Routes = [
     },
     {
         path: "user/:id",
-        component: UserContainerComponent
+        component: UserSelectedComponent
     }
 ];

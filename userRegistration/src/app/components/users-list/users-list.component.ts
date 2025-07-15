@@ -5,6 +5,7 @@ import { UsersListReponse } from '../../types/users-list-response';
 import { UsersService } from '../../services/users.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { IUser } from '../../interfaces/user/user.interface';
 
 @Component({
   selector: 'app-users-list',
