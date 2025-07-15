@@ -1,5 +1,7 @@
 <mat-tab-group>
-    <mat-tab label="Geral">GERAL</mat-tab>
+    <mat-tab label="Geral">
+        <app-general-informations [userSelected]="userSelected"></app-general-informations>
+    </mat-tab>
     <mat-tab label="Contato">CONTATO</mat-tab>
     <mat-tab label="Dependente">DEPENDENTE</mat-tab>
     <mat-tab label="Música">MÚSICA</mat-tab>
