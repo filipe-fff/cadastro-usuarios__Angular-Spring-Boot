@@ -2,14 +2,13 @@
     <div>
         <div class="text-2xl font-semibold mb-4">
             Telefones:
-            <app-phone-list [phoneList]="userSelected.phoneList"></app-phone-list>
         </div>
-        ...
+        <app-phone-list [phoneList]="userSelected.phoneList"></app-phone-list>
     </div>
     <div>
         <div class="text-2xl font-semibold mb-4">
             Endereços:
         </div>
-        ...
+        <app-address-list [addressList]="userSelected.addressList"></app-address-list>
     </div>
 </section>
