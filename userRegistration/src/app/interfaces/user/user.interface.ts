@@ -4,6 +4,7 @@ import { MusicsList } from "../../types/musics-list";
 import { PhoneList } from "../../types/phone-list";
 
 export interface IUser {
+    id: string;
     name: string;
     email: string;
     country: string;

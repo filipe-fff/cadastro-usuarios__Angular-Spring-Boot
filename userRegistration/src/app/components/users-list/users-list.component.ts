@@ -3,12 +3,14 @@ import { AngularMaterialModule } from '../../angular-material/angular-material.m
 import { Observable, of } from 'rxjs';
 import { UsersListReponse } from '../../types/users-list-response';
 import { UsersService } from '../../services/users.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
   imports: [
+    CommonModule,
     AsyncPipe,
     AngularMaterialModule
   ],
@@ -20,8 +22,13 @@ export class UsersListComponent implements OnInit {
 
   private readonly _usersService = inject(UsersService);
 
+  private readonly _router = inject(Router);
+
   ngOnInit() {
-    console.log("ngOnInit");
     this.$usersList = this._usersService.getUsers();
+  }
+
+  onUserSelected(userId: string) {
+    this._router.navigate(["user", userId]);
   }
 }
