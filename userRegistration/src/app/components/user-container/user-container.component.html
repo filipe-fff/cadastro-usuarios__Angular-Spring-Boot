@@ -16,7 +16,7 @@
                 <app-contact-informations [userSelected]="userSelected"></app-contact-informations>
             </mat-tab>
             <mat-tab label="Dependente">
-                <app-dependent-informations></app-dependent-informations>
+                <app-dependent-informations [dependentsList]="userSelected.dependents"></app-dependent-informations>
             </mat-tab>
             <mat-tab label="Música">MÚSICA</mat-tab>
         </mat-tab-group>
