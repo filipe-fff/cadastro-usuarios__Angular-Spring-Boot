@@ -3,6 +3,7 @@ import { AngularMaterialModule } from '../../angular-material/angular-material.m
 import { GeneralInformationsComponent } from '../general-informations/general-informations.component';
 import { IUser } from '../../interfaces/user/user.interface';
 import { ContactInformationsComponent } from '../contact-informations/contact-informations.component';
+import { DependentInformationsComponent } from '../dependent-informations/dependent-informations.component';
 
 @Component({
   selector: 'app-user-container',
@@ -10,13 +11,14 @@ import { ContactInformationsComponent } from '../contact-informations/contact-in
   imports: [
     AngularMaterialModule,
     GeneralInformationsComponent,
-    ContactInformationsComponent
+    ContactInformationsComponent,
+    DependentInformationsComponent
   ],
   templateUrl: './user-container.component.html',
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent {
-  currentTabIndex = 1;
+  currentTabIndex = 2;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
 }
