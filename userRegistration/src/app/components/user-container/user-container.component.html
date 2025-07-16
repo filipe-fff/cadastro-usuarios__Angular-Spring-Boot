@@ -18,7 +18,9 @@
             <mat-tab label="Dependente">
                 <app-dependent-informations [dependentsList]="userSelected.dependents"></app-dependent-informations>
             </mat-tab>
-            <mat-tab label="Música">MÚSICA</mat-tab>
+            <mat-tab label="Música">
+                <app-music-informations [musicsList]="userSelected.musics"></app-music-informations>
+            </mat-tab>
         </mat-tab-group>
     </mat-card-content>
 </mat-card>

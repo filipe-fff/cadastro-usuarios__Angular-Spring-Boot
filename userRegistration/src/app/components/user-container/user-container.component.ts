@@ -4,6 +4,7 @@ import { GeneralInformationsComponent } from '../general-informations/general-in
 import { IUser } from '../../interfaces/user/user.interface';
 import { ContactInformationsComponent } from '../contact-informations/contact-informations.component';
 import { DependentInformationsComponent } from '../dependent-informations/dependent-informations.component';
+import { MusicInformationsComponent } from '../music-informations/music-informations.component';
 
 @Component({
   selector: 'app-user-container',
@@ -12,13 +13,14 @@ import { DependentInformationsComponent } from '../dependent-informations/depend
     AngularMaterialModule,
     GeneralInformationsComponent,
     ContactInformationsComponent,
-    DependentInformationsComponent
+    DependentInformationsComponent,
+    MusicInformationsComponent
   ],
   templateUrl: './user-container.component.html',
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent {
-  currentTabIndex = 2;
+  currentTabIndex = 3;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
 }
