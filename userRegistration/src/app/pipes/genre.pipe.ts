@@ -14,8 +14,6 @@ export class GenrePipe implements PipeTransform {
 
         const genreDescription = genresList.find(genre => genre.id === genreId)?.description;
 
-        console.log(genreDescription);
-
         return genreDescription ? genreDescription : "";
     }
 }
