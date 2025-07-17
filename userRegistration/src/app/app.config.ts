@@ -12,6 +12,7 @@ registerLocaleData(localePt, "pt-BR");
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(), provideAnimationsAsync()
+    provideHttpClient(),
+    provideAnimationsAsync()
   ]
 };

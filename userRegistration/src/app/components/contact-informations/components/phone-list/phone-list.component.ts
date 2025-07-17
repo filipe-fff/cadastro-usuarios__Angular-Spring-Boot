@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PhoneList } from '../../../../types/phone-list';
 import { PhoneToDisplayList } from '../../../../types/phone-to-display-list';
-import { preparePhoneToDisplayList } from '../../../../utils/prepare-phone-to-display-list';
+import { preparePhoneListToDisplay } from '../../../../utils/prepare-phone-list-to-display';
 import { UserInfosItemComponent } from '../../../user-infos-item/user-infos-item.component';
 import { CommonModule } from '@angular/common';
 
@@ -25,10 +25,8 @@ export class PhoneListComponent implements OnChanges {
   }
 
   onPreparePhoneToDisplayList() {
-    if (!this.phoneList) return;
-
     this.phoneToDisplayList = [];
-    preparePhoneToDisplayList(true, this.phoneList, (phone) => {
+    preparePhoneListToDisplay(true, this.phoneList, (phone) => {
       this.phoneToDisplayList.push(phone);
     });
   }

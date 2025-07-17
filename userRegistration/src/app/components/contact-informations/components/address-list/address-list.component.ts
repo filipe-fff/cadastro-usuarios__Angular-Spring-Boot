@@ -25,8 +25,6 @@ export class AddressListComponent implements OnChanges {
   }
 
   onPrepareAddressListToDisplay() {
-    if (!this.addressList) return;
-
     this.addressListToDisplay = [];
     prepareAddressListToDisplay(true, this.addressList, (address) => {
       this.addressListToDisplay.push(address);

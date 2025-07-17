@@ -4,16 +4,17 @@ import { IPhone } from "../interfaces/user/phone.interface";
 import { PhoneList } from "../types/phone-list";
 import { phoneTypeDescriptionMap } from "./phone-type-description-map";
 
-export const preparePhoneToDisplayList = (toDisplay: boolean, phoneList: PhoneList, callback: (phone: IPhoneToDisplay) => void) => {
+export const preparePhoneListToDisplay = (toDisplay: boolean, phoneList: PhoneList, callback: (phone: IPhoneToDisplay) => void) => {
     Object.keys(phoneTypeDescriptionMap).map(Number).forEach((phoneType: number) => {
+
+        if (!phoneList) return;
 
         const phoneFound = phoneList.find(p => p.type === phoneType);
 
         let number: string;
 
-        if (toDisplay) { }
-
-        number = phoneFound ? numberFormat(phoneFound) : "-";
+        if (toDisplay) number = phoneFound ? numberFormat(phoneFound) : "-";
+        else number = phoneFound ? numberFormatEdit(phoneFound) : "";
 
         callback({
             type: phoneType,
@@ -26,3 +27,7 @@ export const preparePhoneToDisplayList = (toDisplay: boolean, phoneList: PhoneLi
 export const numberFormat = (phone: IPhone): string => {
     return `${phone.internationalCode} ${phone.areaCode} ${phone.number}`;
 };
+
+export const numberFormatEdit = (phone: IPhone): string => {
+    return `${phone.internationalCode}${phone.areaCode}${phone.number}`.replace(/[+-]/g, "");
+}

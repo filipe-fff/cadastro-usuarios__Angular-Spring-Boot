@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IUser } from '../../interfaces/user/user.interface';
 import { UsersService } from '../../services/users.service';
 import { UserContainerComponent } from '../user-container/user-container.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-selected',
@@ -15,6 +16,7 @@ import { UserContainerComponent } from '../user-container/user-container.compone
 })
 export class UserSelectedComponent implements OnInit {
   userSelected: IUser = {} as IUser;
+  userSelectedIndex!: string;
 
   private readonly _activatedRoute = inject(ActivatedRoute);
 
@@ -25,7 +27,7 @@ export class UserSelectedComponent implements OnInit {
   }
 
   getUser() {
-    const userId = this._activatedRoute.snapshot.params["id"];
-    this._usersService.getUserById(userId).subscribe(userResponse => {this.userSelected = userResponse; console.log(this.userSelected);});
+    this._activatedRoute.params.subscribe(params => this.userSelectedIndex = params["id"]);
+    this._usersService.getUserById(this.userSelectedIndex as string).subscribe(userResponse => this.userSelected = userResponse);
   }
 }
