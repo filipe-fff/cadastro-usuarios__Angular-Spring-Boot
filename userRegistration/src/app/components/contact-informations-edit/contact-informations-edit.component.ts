@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { PhoneListEditComponent } from './components/phone-list-edit/phone-list-edit.component';
 
 @Component({
   selector: 'app-contact-informations-edit',
   standalone: true,
-  imports: [],
+  imports: [
+    PhoneListEditComponent
+  ],
   templateUrl: './contact-informations-edit.component.html',
   styleUrl: './contact-informations-edit.component.scss'
 })
