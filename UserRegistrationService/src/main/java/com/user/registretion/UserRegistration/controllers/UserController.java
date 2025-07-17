@@ -5,7 +5,10 @@ import com.user.registretion.UserRegistration.DTOs.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
 import com.user.registretion.UserRegistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,9 +20,9 @@ public class UserController {
     UserService userService;
 
     // CREATE
-    @PostMapping("/save")
-    public User save(@RequestBody UserSaveDTO userSaveDTO) {
-        return this.userService.save(userSaveDTO);
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User save(@RequestPart("user") UserSaveDTO userSaveDTO, @Validated @RequestPart("photo") MultipartFile photo) {
+        return this.userService.save(userSaveDTO, photo);
     }
 
     // READ

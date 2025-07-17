@@ -49,7 +49,7 @@ export class UserController {
                 photo: [""],
                 email: ["", [ Validators.required, Validators.pattern ]],
                 password: ["", [ Validators.required ]],
-                passwordConfirm: ["", {  }],
+                passwordConfirm: ["", [Validators.required]],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
                 maritalStatus: [null, Validators.required],

@@ -1,26 +1,34 @@
 package com.user.registretion.UserRegistration.services;
 
 import com.user.registretion.UserRegistration.DTOs.*;
+import com.user.registretion.UserRegistration.components.StorageComponent;
 import com.user.registretion.UserRegistration.models.*;
 import com.user.registretion.UserRegistration.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
+    private final String storageUrl = "/home/filipe/Documentos/GitHub/cadastro-usuarios__Angular-Spring-Boot/UserRegistrationService/src/main/java/com/user/registretion/UserRegistration/storage/";
+
     @Autowired
     public UserRepository userRepository;
 
+    @Autowired
+    public StorageComponent storageComponent;
+
     // CREATE
     @Transactional
-    public User save(UserSaveDTO userSaveDTO) {
+    public User save(UserSaveDTO userSaveDTO, MultipartFile photo) {
         User user = new User();
 
         user.setName(userSaveDTO.name());
+        user.setPhotoUrl(storageComponent.savePhoto(photo));
         user.setPassword(userSaveDTO.password());
         user.setEmail(userSaveDTO.email());
         user.setCountry(userSaveDTO.country());
