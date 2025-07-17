@@ -1,18 +1,18 @@
 <section class="p-4 grid gap-4">
-    <div class="grid sm:grid-cols-3 gap-4">
+    <div class="grid lg:grid-cols-3 gap-4">
         <app-user-infos-item title="Nome" [description]="userSelected.name"></app-user-infos-item>
         <app-user-infos-item title="Email" [description]="userSelected.email"></app-user-infos-item>
     </div>
-    <div class="grid sm:grid-cols-3 gap-4">
+    <div class="grid lg:grid-cols-3 gap-4">
         <app-user-infos-item title="Senha" [description]="userSelected.password"></app-user-infos-item>
     </div>
-    <div class="grid sm:grid-cols-3 gap-4">
+    <div class="grid lg:grid-cols-3 gap-4">
         <app-user-infos-item title="País" [description]="userSelected.country"></app-user-infos-item>
         <app-user-infos-item title="Estado" [description]="userSelected.state"></app-user-infos-item>
     </div>
-    <div class="grid sm:grid-cols-3 gap-4">
+    <div class="grid lg:grid-cols-3 gap-4">
         <app-user-infos-item title="Estado Cívil" [description]="userSelected.maritalStatus | maritalStatus"></app-user-infos-item>
-        <app-user-infos-item title="Renda Mensal" [description]="userSelected.monthlyIncome | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'"></app-user-infos-item>
+        <app-user-infos-item title="Renda Mensal" [description]="userSelected.monthlyIncome | currency : 'BRL' : 'symbol' : '1.2-2'"></app-user-infos-item>
         <app-user-infos-item title="Data de Nascimento" [description]="userSelected.birthDate | dateFormat"></app-user-infos-item>
     </div>
 </section>

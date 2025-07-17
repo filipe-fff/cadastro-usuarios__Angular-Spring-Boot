@@ -1,0 +1,63 @@
+<section>
+    <form class="p-4 grid gap-4">
+        <div class="grid lg:grid-cols-3 gap-4">
+            <mat-form-field>
+                <mat-label>Nome:</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email:</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-4">
+            <div class="grid">
+                <mat-form-field>
+                    <mat-label>Senha:</mat-label>
+                    <input matInput>
+                </mat-form-field>
+                <mat-progress-bar [value]="50"></mat-progress-bar>
+            </div>
+            <mat-form-field>
+                <mat-label>Confirmação de Senha:</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-4">
+            <mat-form-field>
+                <mat-label>País:</mat-label>
+                <input [matAutocomplete]="country" matInput>
+            </mat-form-field>
+            <mat-autocomplete #country="matAutocomplete">
+                <mat-option *ngFor="let op of [1, 2, 3]" [value]="op">{{ op }}</mat-option>
+            </mat-autocomplete>
+            <mat-form-field>
+                <mat-label>Estado:</mat-label>
+                <input [matAutocomplete]="state" matInput>
+            </mat-form-field>
+            <mat-autocomplete #state="matAutocomplete">
+                <mat-option *ngFor="let op of [1, 2, 3]" [value]="op">{{ op }}</mat-option>
+            </mat-autocomplete>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-4">
+            <mat-radio-group class="flex flex-col justify-between lg:flex-row">
+                <mat-radio-button *ngFor="let op of ['s', 'd', 'v']" [value]="op">{{ op }}</mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field>
+                <mat-label>Renda Mensal:</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Data de Nascimento:</mat-label>
+                <input [matDatepicker]="birthDate" matInput readonly>
+                <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+                <mat-datepicker #birthDate>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Cancelar</button>
+                        <button mat-raised-button color="primary" matDatepickerApply>Confirmar</button>
+                    </mat-datepicker-actions>
+                </mat-datepicker>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
