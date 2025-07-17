@@ -7,6 +7,7 @@ import { GeneralInformationsEditComponent } from '../general-informations-edit/g
 import { GeneralInformationsComponent } from '../general-informations/general-informations.component';
 import { MusicInformationsComponent } from '../music-informations/music-informations.component';
 import { UserController } from './user-controller';
+import { ContactInformationsEditComponent } from '../contact-informations-edit/contact-informations-edit.component';
 
 @Component({
   selector: 'app-user-container',
@@ -17,7 +18,8 @@ import { UserController } from './user-controller';
     ContactInformationsComponent,
     DependentInformationsComponent,
     MusicInformationsComponent,
-    GeneralInformationsEditComponent
+    GeneralInformationsEditComponent,
+    ContactInformationsEditComponent
   ],
   templateUrl: './user-container.component.html',
   styleUrl: './user-container.component.scss'
