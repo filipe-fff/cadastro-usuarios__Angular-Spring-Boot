@@ -23,7 +23,7 @@ import { UserController } from './user-controller';
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent extends UserController implements OnChanges {
-  currentTabIndex = 0;
+  currentTabIndex = 1;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input({ required: true }) userSelectedIndex!: string;
