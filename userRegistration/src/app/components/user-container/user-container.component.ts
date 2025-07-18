@@ -8,6 +8,7 @@ import { GeneralInformationsComponent } from '../general-informations/general-in
 import { MusicInformationsComponent } from '../music-informations/music-informations.component';
 import { UserController } from './user-controller';
 import { ContactInformationsEditComponent } from '../contact-informations-edit/contact-informations-edit.component';
+import { DependentInformationsEditComponent } from '../dependent-informations-edit/dependent-informations-edit.component';
 
 @Component({
   selector: 'app-user-container',
@@ -19,13 +20,14 @@ import { ContactInformationsEditComponent } from '../contact-informations-edit/c
     DependentInformationsComponent,
     MusicInformationsComponent,
     GeneralInformationsEditComponent,
-    ContactInformationsEditComponent
+    ContactInformationsEditComponent,
+    DependentInformationsEditComponent
   ],
   templateUrl: './user-container.component.html',
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent extends UserController implements OnChanges {
-  currentTabIndex = 1;
+  currentTabIndex = 2;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input({ required: true }) userSelectedIndex!: string;

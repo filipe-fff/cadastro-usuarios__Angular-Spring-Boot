@@ -1,0 +1,28 @@
+<section class="p-4 grid gap-4">
+    <div class="text-xl font-semibold">
+        Dependentes:
+    </div>
+    <div>
+        <button [ngClass]="'green' | buttonStyle">Adicionar</button>
+    </div>
+    <div>
+        <div class="p-4 grid sm:grid-cols-4 gap-4">
+            <mat-form-field>
+                <mat-label>Nome:</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Idade:</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Documento:</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <div>
+                <button [ngClass]="'red' | buttonStyle">Deletar</button>
+            </div>
+        </div>
+        <hr class="sm:hidden">
+    </div>
+</section>

@@ -6,6 +6,7 @@ import { UsersService } from '../../services/users.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IUser } from '../../interfaces/user/user.interface';
+import { buttonStylePipe } from '../../pipes/button-style.pipe';
 
 @Component({
   selector: 'app-users-list',
@@ -13,7 +14,8 @@ import { IUser } from '../../interfaces/user/user.interface';
   imports: [
     CommonModule,
     AsyncPipe,
-    AngularMaterialModule
+    AngularMaterialModule,
+    buttonStylePipe
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
