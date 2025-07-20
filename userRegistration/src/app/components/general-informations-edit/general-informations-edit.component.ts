@@ -20,4 +20,8 @@ export class GeneralInformationsEditComponent {
   get nameControl(): FormControl {
     return this.userForm.get("generalInformations.name") as FormControl;
   }
+
+  get emailControl(): FormControl {
+    return this.userForm.get("generalInformations.email") as FormControl;
+  }
 }

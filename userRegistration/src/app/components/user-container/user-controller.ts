@@ -7,11 +7,14 @@ import { DependentsList } from "../../types/dependents-list";
 import { MusicsList } from "../../types/musics-list";
 import { preparePhoneListToDisplay } from "../../utils/prepare-phone-list-to-display";
 import { prepareAddressListToDisplay } from "../../utils/prepare-address-to-display-list";
-import { existsByUuidNotAndNameValidator } from "../../utils/validators/exists-by-uuid-not-and-name-validator";
+import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
 import { UsersService } from "../../services/users.service";
+import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
 
 export class UserController {
     userForm!: FormGroup;
+
+    private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
 
     private readonly _fb = inject(FormBuilder);
     private readonly _usersService = inject(UsersService);
@@ -54,7 +57,7 @@ export class UserController {
                 id: [""],
                 name: ["", Validators.required],
                 photo: [""],
-                email: ["", [ Validators.required, Validators.pattern ]],
+                email: ["", [ Validators.required, Validators.pattern(this.emailPattern) ]],
                 password: ["", [ Validators.required ]],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
@@ -63,7 +66,10 @@ export class UserController {
                 birthDate: [new Date(), Validators.required]
             }, {
                 updateOn: "blur",
-                asyncValidators: [ existsByUuidNotAndNameValidator(this._usersService)],
+                asyncValidators: [
+                    existsByIdNotAndNameValidator(this._usersService),
+                    existsByIdNotAndEmailValidator(this._usersService)
+                ],
             }),
             contactInformations: this._fb.group({
                 phoneList: this._fb.array([]),

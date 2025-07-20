@@ -15,6 +15,15 @@
                 <mat-form-field>
                     <mat-label>Email:</mat-label>
                     <input matInput placeholder="fulano@email.com" formControlName="email">
+                    <mat-error *ngIf="emailControl.hasError('required')">
+                        O <strong>Email</strong> é obrigatório.
+                    </mat-error>
+                    <mat-error *ngIf="emailControl.hasError('pattern')">
+                        O <strong>Email</strong> é inválido.
+                    </mat-error>
+                    <mat-error *ngIf="emailControl.hasError('existsEmailError')">
+                        O <strong>Email</strong> já existe.
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="grid lg:grid-cols-3 gap-4">

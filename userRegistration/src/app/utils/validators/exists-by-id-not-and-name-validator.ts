@@ -2,7 +2,7 @@ import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors } from
 import { map, Observable, of } from "rxjs";
 import { UsersService } from "../../services/users.service";
 
-export const existsByUuidNotAndNameValidator = (usersService: UsersService): AsyncValidatorFn => {
+export const existsByIdNotAndNameValidator = (usersService: UsersService): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
 
         const idControl = control.get("id") as FormControl;
