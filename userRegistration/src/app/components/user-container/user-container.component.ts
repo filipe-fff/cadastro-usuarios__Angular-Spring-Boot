@@ -9,6 +9,7 @@ import { MusicInformationsComponent } from '../music-informations/music-informat
 import { UserController } from './user-controller';
 import { ContactInformationsEditComponent } from '../contact-informations-edit/contact-informations-edit.component';
 import { DependentInformationsEditComponent } from '../dependent-informations-edit/dependent-informations-edit.component';
+import { MusicInformationsEditComponent } from '../music-informations-edit/music-informations-edit.component';
 
 @Component({
   selector: 'app-user-container',
@@ -21,7 +22,8 @@ import { DependentInformationsEditComponent } from '../dependent-informations-ed
     MusicInformationsComponent,
     GeneralInformationsEditComponent,
     ContactInformationsEditComponent,
-    DependentInformationsEditComponent
+    DependentInformationsEditComponent,
+    MusicInformationsEditComponent
   ],
   templateUrl: './user-container.component.html',
   styleUrl: './user-container.component.scss'
