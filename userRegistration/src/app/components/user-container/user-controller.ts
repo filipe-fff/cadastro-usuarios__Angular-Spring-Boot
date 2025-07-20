@@ -17,6 +17,10 @@ export class UserController {
         this.createUserForm();
     }
 
+    get generalInformations(): FormGroup {
+        return this.userForm.get("generalInformations") as FormGroup;
+    }
+
     get phoneList(): FormArray {
         return this.userForm.get("contactInformations.phoneList") as FormArray;
     }
@@ -49,7 +53,6 @@ export class UserController {
                 photo: [""],
                 email: ["", [ Validators.required, Validators.pattern ]],
                 password: ["", [ Validators.required ]],
-                passwordConfirm: ["", [Validators.required]],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
                 maritalStatus: [null, Validators.required],
@@ -66,7 +69,7 @@ export class UserController {
     }
 
     private fulfillGeneralInformations(user: IUser) {
-        this.userForm.patchValue(user);
+        this.generalInformations.patchValue(user);
     }
 
     private fulfillPhoneList(phoneResponse: PhoneList) {

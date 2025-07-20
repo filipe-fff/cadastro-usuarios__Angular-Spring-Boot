@@ -29,7 +29,7 @@ import { MusicInformationsEditComponent } from '../music-informations-edit/music
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent extends UserController implements OnChanges {
-  currentTabIndex = 2;
+  currentTabIndex = 0;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input({ required: true }) userSelectedIndex!: string;
