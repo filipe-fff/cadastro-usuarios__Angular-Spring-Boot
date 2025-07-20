@@ -3,37 +3,37 @@
         <div class="grid lg:grid-cols-3 gap-4">
             <mat-form-field>
                 <mat-label>Nome:</mat-label>
-                <input matInput>
+                <input matInput placeholder="Fulano">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Email:</mat-label>
-                <input matInput>
+                <input matInput placeholder="fulano@email.com">
             </mat-form-field>
         </div>
         <div class="grid lg:grid-cols-3 gap-4">
             <div class="grid">
                 <mat-form-field>
                     <mat-label>Senha:</mat-label>
-                    <input matInput>
+                    <input matInput placeholder="abc123">
                 </mat-form-field>
                 <mat-progress-bar [value]="50"></mat-progress-bar>
             </div>
             <mat-form-field>
                 <mat-label>Confirmação de Senha:</mat-label>
-                <input matInput>
+                <input matInput placeholder="abc123">
             </mat-form-field>
         </div>
         <div class="grid lg:grid-cols-3 gap-4">
             <mat-form-field>
                 <mat-label>País:</mat-label>
-                <input [matAutocomplete]="country" matInput>
+                <input [matAutocomplete]="country" matInput placeholder="Brazil">
             </mat-form-field>
             <mat-autocomplete #country="matAutocomplete">
                 <mat-option *ngFor="let op of [1, 2, 3]" [value]="op">{{ op }}</mat-option>
             </mat-autocomplete>
             <mat-form-field>
                 <mat-label>Estado:</mat-label>
-                <input [matAutocomplete]="state" matInput>
+                <input [matAutocomplete]="state" matInput placeholder="São Paulo">
             </mat-form-field>
             <mat-autocomplete #state="matAutocomplete">
                 <mat-option *ngFor="let op of [1, 2, 3]" [value]="op">{{ op }}</mat-option>
@@ -45,11 +45,11 @@
             </mat-radio-group>
             <mat-form-field>
                 <mat-label>Renda Mensal:</mat-label>
-                <input matInput>
+                <input matInput placeholder="1000">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Data de Nascimento:</mat-label>
-                <input [matDatepicker]="birthDate" matInput readonly>
+                <input [matDatepicker]="birthDate" matInput placeholder="DD/MM/AAAA" readonly>
                 <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
                 <mat-datepicker #birthDate>
                     <mat-datepicker-actions>
@@ -57,6 +57,7 @@
                         <button mat-raised-button color="primary" matDatepickerApply>Confirmar</button>
                     </mat-datepicker-actions>
                 </mat-datepicker>
+                <mat-hint>DD/MM/AAAA</mat-hint>
             </mat-form-field>
         </div>
     </form>

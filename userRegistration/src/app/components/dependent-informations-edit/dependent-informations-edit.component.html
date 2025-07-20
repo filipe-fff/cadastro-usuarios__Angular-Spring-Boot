@@ -9,18 +9,20 @@
         <div class="p-4 grid sm:grid-cols-4 gap-4">
             <mat-form-field>
                 <mat-label>Nome:</mat-label>
-                <input matInput>
+                <input matInput placeholder="Fulaninho">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Idade:</mat-label>
-                <input matInput>
+                <input matInput placeholder="5">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Documento:</mat-label>
-                <input matInput>
+                <input matInput placeholder="111.111.111-11">
             </mat-form-field>
-            <div>
-                <button [ngClass]="'red' | buttonStyle">Deletar</button>
+            <div class="pt-3 flex justify-center">
+                <div>
+                    <button [ngClass]="'red' | buttonStyle">Deletar</button>
+                </div>
             </div>
         </div>
         <hr class="sm:hidden">
