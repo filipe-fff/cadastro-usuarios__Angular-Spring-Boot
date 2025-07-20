@@ -7,11 +7,14 @@ import { DependentsList } from "../../types/dependents-list";
 import { MusicsList } from "../../types/musics-list";
 import { preparePhoneListToDisplay } from "../../utils/prepare-phone-list-to-display";
 import { prepareAddressListToDisplay } from "../../utils/prepare-address-to-display-list";
+import { existsByUuidNotAndNameValidator } from "../../utils/validators/exists-by-uuid-not-and-name-validator";
+import { UsersService } from "../../services/users.service";
 
 export class UserController {
     userForm!: FormGroup;
 
     private readonly _fb = inject(FormBuilder);
+    private readonly _usersService = inject(UsersService);
 
     constructor() {
         this.createUserForm();
@@ -48,7 +51,7 @@ export class UserController {
     private createUserForm() {
         this.userForm = this._fb.group({
             generalInformations: this._fb.group({
-                uuid: [""],
+                id: [""],
                 name: ["", Validators.required],
                 photo: [""],
                 email: ["", [ Validators.required, Validators.pattern ]],
@@ -57,7 +60,10 @@ export class UserController {
                 state: ["", Validators.required],
                 maritalStatus: [null, Validators.required],
                 monthlyIncome: [null, Validators.required],
-                birthDate: [Date, Validators.required]
+                birthDate: [new Date(), Validators.required]
+            }, {
+                updateOn: "blur",
+                asyncValidators: [ existsByUuidNotAndNameValidator(this._usersService)],
             }),
             contactInformations: this._fb.group({
                 phoneList: this._fb.array([]),

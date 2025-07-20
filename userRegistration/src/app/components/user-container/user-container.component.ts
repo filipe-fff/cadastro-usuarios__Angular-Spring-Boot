@@ -39,8 +39,6 @@ export class UserContainerComponent extends UserController implements OnChanges 
 
     if (HAS_USER_SELECTED) {
       this.fulfillUserForm(this.userSelected);
-
-      console.log("userForm =>", this.userForm.value);
     }
   }
 }

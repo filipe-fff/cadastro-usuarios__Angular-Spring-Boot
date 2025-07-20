@@ -25,15 +25,15 @@ export class UsersService {
     }
 
     existsByIdNotAndName(id: string, name: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-name/" + id, name);
+        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name/" + id, name);
     }
 
     existsByIdNotAndEmail(id: string, email: string): Observable<boolean> {
-        return this._httpClient.post<boolean>("http://localhost:8081/user-registration/exists-email/" + id, email);
+        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email/" + id, email);
     }
 
     existsByIdNotAndPassword(id: string, password: string): Observable<boolean> {
-        return this._httpClient.post<boolean>('http://localhost:8081/user-registration/exists-password/' + id, password);
+        return this._httpClient.put<boolean>('http://localhost:8081/user-registration/exists-password/' + id, password);
     }
 
     // UPDATE

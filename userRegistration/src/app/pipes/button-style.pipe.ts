@@ -10,7 +10,6 @@ export class buttonStylePipe implements PipeTransform {
 
     transform(colorType: string): string {
         const color = buttonColorTypeDescriptionMap[colorType];
-        console.log(color);
         const style = "rounded-md px-3 py-2 text-lg font-medium leading-5 text-white " + color;
 
         return style;
