@@ -10,13 +10,13 @@ export const existsByIdNotAndNameValidator = (usersService: UsersService): Async
 
         if(!idControl || !nameControl) return of(null);
 
-        const uuid = idControl.value;
+        const id = idControl.value;
         const name = nameControl.value;
 
-        if (!uuid || !name) return of(null);
+        if (!id || !name) return of(null);
 
         return usersService.
-            existsByIdNotAndName(idControl.value, nameControl.value)
+            existsByIdNotAndName(id, name)
             .pipe(
                 map((existsResponse) => {
                     if (existsResponse) {

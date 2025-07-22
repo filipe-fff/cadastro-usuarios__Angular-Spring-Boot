@@ -30,9 +30,30 @@
                 <div class="grid">
                     <mat-form-field>
                         <mat-label>Senha:</mat-label>
-                        <input matInput placeholder="abc123" formControlName="password">
+                        <input
+                            matInput
+                            placeholder="abc123"
+                            formControlName="password"
+                            #passwordRef
+                            (input)="onPasswordInputAndChangesEvent($event)">
+                        <mat-progress-bar
+                            *ngIf="passwordControl.dirty"
+                            [ngClass]="{
+                                'strong-password': passwordStrength === 100,
+                                'medium-password': passwordStrength === 50,
+                                'weak-password': passwordStrength === 20 || passwordStrength === 0
+                            }"
+                            [value]="passwordStrength"></mat-progress-bar>
+                        <mat-error *ngIf="passwordControl.hasError('required')">
+                            A <strong>Senha</strong> é obrigatória.
+                        </mat-error>
+                        <mat-error *ngIf="passwordControl.hasError('passwordStrengthError')">
+                            Escolha uma <strong>Senha</strong> mais forte.
+                        </mat-error>
+                        <mat-error *ngIf="passwordControl.hasError('existsPasswordError')">
+                            A <strong>Senha</strong> já existe.
+                        </mat-error>
                     </mat-form-field>
-                    <mat-progress-bar [value]="50"></mat-progress-bar>
                 </div>
                 <mat-form-field>
                     <mat-label>Confirmação de Senha:</mat-label>

@@ -4,6 +4,7 @@ import { map, Observable, of } from "rxjs";
 
 export const existsByIdNotAndEmailValidator = (usersService: UsersService): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
+
         const idControl = control.get("id") as FormControl;
         const emailControl = control.get("email") as FormControl;
 
@@ -16,19 +17,20 @@ export const existsByIdNotAndEmailValidator = (usersService: UsersService): Asyn
 
         return usersService
             .existsByIdNotAndEmail(id, email)
-            .pipe(map(existsResponse => {
-                if (existsResponse) {
-                    const otherErrors = emailControl.errors || null;
-                    emailControl.setErrors({ ...otherErrors, existsEmailError: true });
-                } else {
-                    if (emailControl.hasError("existsEmailError")) {
-                        const { existsEmailError, ...otherErrors } = emailControl.errors || {};
-                        const hasOtherErrors = Object.keys(otherErrors).length > 0;
-                        emailControl.setErrors(hasOtherErrors ? otherErrors : null);
+            .pipe(
+                map(existsResponse => {
+                    if (existsResponse) {
+                        const otherErrors = emailControl.errors || null;
+                        emailControl.setErrors({ ...otherErrors, existsEmailError: true });
+                    } else {
+                        if (emailControl.hasError("existsEmailError")) {
+                            const { existsEmailError, ...otherErrors } = emailControl.errors || {};
+                            const hasOtherErrors = Object.keys(otherErrors).length > 0;
+                            emailControl.setErrors(hasOtherErrors ? otherErrors : null);
+                        }
                     }
-                }
 
-                return null;
+                    return null;
             }));
     };
 };

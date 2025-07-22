@@ -10,6 +10,8 @@ import { prepareAddressListToDisplay } from "../../utils/prepare-address-to-disp
 import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
 import { UsersService } from "../../services/users.service";
 import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
+import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
+import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -49,26 +51,37 @@ export class UserController {
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
+
+        this.userForm.markAllAsTouched();
     }
 
     private createUserForm() {
         this.userForm = this._fb.group({
             generalInformations: this._fb.group({
                 id: [""],
-                name: ["", Validators.required],
+                name: ["", { validators: [ Validators.required ], updateOn: "blur" }],
                 photo: [""],
-                email: ["", [ Validators.required, Validators.pattern(this.emailPattern) ]],
-                password: ["", [ Validators.required ]],
+                email: ["", {
+                    updateOn: "blur",
+                    validators: [
+                        Validators.required,
+                        Validators.pattern(this.emailPattern)
+                    ]
+                }],
+                password: ["", {
+                    updateOn: "blur",
+                    validators: [ Validators.required, passwordStrengthValidator ]
+                }],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
                 maritalStatus: [null, Validators.required],
                 monthlyIncome: [null, Validators.required],
                 birthDate: [new Date(), Validators.required]
             }, {
-                updateOn: "blur",
                 asyncValidators: [
                     existsByIdNotAndNameValidator(this._usersService),
-                    existsByIdNotAndEmailValidator(this._usersService)
+                    existsByIdNotAndEmailValidator(this._usersService),
+                    existsByIdNotAndPasswordValidator(this._usersService)
                 ],
             }),
             contactInformations: this._fb.group({
