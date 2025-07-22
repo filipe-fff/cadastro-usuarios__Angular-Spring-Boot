@@ -12,6 +12,7 @@ import { UsersService } from "../../services/users.service";
 import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
 import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
+import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -72,12 +73,14 @@ export class UserController {
                     updateOn: "blur",
                     validators: [ Validators.required, passwordStrengthValidator ]
                 }],
+                passwordConfirm: ["", [ Validators.required ]],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
                 maritalStatus: [null, Validators.required],
                 monthlyIncome: [null, Validators.required],
                 birthDate: [new Date(), Validators.required]
             }, {
+                validators: [ passwordConfirmEqualValidator ],
                 asyncValidators: [
                     existsByIdNotAndNameValidator(this._usersService),
                     existsByIdNotAndEmailValidator(this._usersService),

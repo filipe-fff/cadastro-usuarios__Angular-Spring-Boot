@@ -34,6 +34,10 @@ export class GeneralInformationsEditComponent implements OnInit {
     return this.userForm.get("generalInformations.password") as FormControl;
   }
 
+  get passwordConfirmControl (): FormControl {
+    return this.userForm.get("generalInformations.passwordConfirm") as FormControl;
+  }
+
   onPasswordInputAndChangesEvent(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.passwordStrength = passwordStrengthProgressBar(value);

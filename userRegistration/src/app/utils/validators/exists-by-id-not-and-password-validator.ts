@@ -13,15 +13,13 @@ export const existsByIdNotAndPasswordValidator = (usersService: UsersService): A
         const id = idControl.value;
         const password = passwordControl.value;
 
-        console.log(password);
-
         if (!id || !password) return of(null);
 
         return usersService
             .existsByIdNotAndPassword(id, password)
             .pipe(
                 map(existsResponse => {
-                    console.log("ok", existsResponse);
+                    
                     if (existsResponse) {
                         const otherErrors = passwordControl.errors || null;
                         passwordControl.setErrors({ ...otherErrors, existsPasswordError: true });

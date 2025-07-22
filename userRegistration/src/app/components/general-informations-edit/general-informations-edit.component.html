@@ -8,7 +8,7 @@
                     <mat-error *ngIf="nameControl.hasError('required')">
                         O <strong>Nome</strong> é obrigatório.
                     </mat-error>
-                    <mat-error *ngIf="nameControl.hasError('existsNameError')">
+                    <mat-error *ngIf="nameControl.hasError('existsNameError') && !nameControl.hasError('required')">
                         O <strong>Nome</strong> já existe.
                     </mat-error>
                 </mat-form-field>
@@ -18,10 +18,10 @@
                     <mat-error *ngIf="emailControl.hasError('required')">
                         O <strong>Email</strong> é obrigatório.
                     </mat-error>
-                    <mat-error *ngIf="emailControl.hasError('pattern')">
+                    <mat-error *ngIf="emailControl.hasError('pattern') && !emailControl.hasError('required')">
                         O <strong>Email</strong> é inválido.
                     </mat-error>
-                    <mat-error *ngIf="emailControl.hasError('existsEmailError')">
+                    <mat-error *ngIf="emailControl.hasError('existsEmailError') && !emailControl.hasError('required')">
                         O <strong>Email</strong> já existe.
                     </mat-error>
                 </mat-form-field>
@@ -47,17 +47,23 @@
                         <mat-error *ngIf="passwordControl.hasError('required')">
                             A <strong>Senha</strong> é obrigatória.
                         </mat-error>
-                        <mat-error *ngIf="passwordControl.hasError('passwordStrengthError')">
+                        <mat-error *ngIf="passwordControl.hasError('passwordStrengthError') && !passwordControl.hasError('required')">
                             Escolha uma <strong>Senha</strong> mais forte.
                         </mat-error>
-                        <mat-error *ngIf="passwordControl.hasError('existsPasswordError')">
+                        <mat-error *ngIf="passwordControl.hasError('existsPasswordError') && !passwordControl.hasError('required')">
                             A <strong>Senha</strong> já existe.
                         </mat-error>
                     </mat-form-field>
                 </div>
                 <mat-form-field>
                     <mat-label>Confirmação de Senha:</mat-label>
-                    <input matInput placeholder="abc123">
+                    <input matInput placeholder="abc123" formControlName="passwordConfirm">
+                    <mat-error *ngIf="passwordConfirmControl.hasError('required')">
+                        A <strong>Confirmação de Senha</strong> é obrigatória.
+                    </mat-error>
+                    <mat-error *ngIf="passwordConfirmControl.hasError('passwordConfirmEqualNotError') && !passwordConfirmControl.hasError('required')">
+                        As <strong>Senhas</strong> são diferentes.
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="grid lg:grid-cols-3 gap-4">
