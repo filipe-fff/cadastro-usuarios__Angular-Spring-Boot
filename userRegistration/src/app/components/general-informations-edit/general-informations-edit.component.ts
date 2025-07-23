@@ -6,6 +6,8 @@ import { passwordStrengthProgressBar } from '../../utils/password-strength-progr
 import { CountriesList } from '../../types/countries-list';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StatesList } from '../../types/states-list';
+import { MaritalStatusObjList } from '../../types/marital-status-obj-list';
+import { maritalStatusObjArray } from '../../utils/marital-status-description-map';
 
 @Component({
   selector: 'app-general-informations-edit',
@@ -58,6 +60,10 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
 
   get stateControl(): FormControl {
     return this.userForm.get("generalInformations.state") as FormControl;
+  }
+
+  get maritalStatusObjList(): MaritalStatusObjList {
+    return maritalStatusObjArray;
   }
 
   onPasswordInputAndChangesEvent(event: Event) {

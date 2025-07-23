@@ -100,7 +100,7 @@
             </div>
             <div class="grid lg:grid-cols-3 gap-4">
                 <mat-radio-group class="flex flex-col justify-between lg:flex-row" formControlName="maritalStatus">
-                    <mat-radio-button *ngFor="let op of ['s', 'd', 'v']" [value]="op">{{ op }}</mat-radio-button>
+                    <mat-radio-button *ngFor="let status of maritalStatusObjList" [value]="status.type">{{ status.description }}</mat-radio-button>
                 </mat-radio-group>
                 <mat-form-field>
                     <mat-label>Renda Mensal:</mat-label>
