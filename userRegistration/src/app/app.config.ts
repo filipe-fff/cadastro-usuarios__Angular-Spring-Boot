@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideNgxMask } from 'ngx-mask';
 
 registerLocaleData(localePt, "pt-BR");
 
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideNativeDateAdapter(),
+    provideNgxMask(),
     {
       provide: LOCALE_ID,
       useValue: "pt-BR"

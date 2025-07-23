@@ -8,12 +8,14 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StatesList } from '../../types/states-list';
 import { MaritalStatusObjList } from '../../types/marital-status-obj-list';
 import { maritalStatusObjArray } from '../../utils/marital-status-description-map';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-general-informations-edit',
   standalone: true,
   imports: [
     CommonModule,
+    NgxMaskDirective,
     AngularMaterialModule,
     ReactiveFormsModule
   ],
@@ -64,6 +66,10 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
 
   get maritalStatusObjList(): MaritalStatusObjList {
     return maritalStatusObjArray;
+  }
+
+  get monthlyIncome(): FormControl {
+    return this.userForm.get("generalInformations.monthlyIncome") as FormControl;
   }
 
   onPasswordInputAndChangesEvent(event: Event) {

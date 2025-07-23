@@ -104,7 +104,19 @@
                 </mat-radio-group>
                 <mat-form-field>
                     <mat-label>Renda Mensal:</mat-label>
-                    <input matInput placeholder="1000" formControlName="monthlyIncome">
+                    <div class="flex">
+                        <span *ngIf="monthlyIncome.value" matTextPrefix>R$</span>
+                        <input
+                            matInput
+                            placeholder="R$1.000,00"
+                            mask="separator.2"
+                            thousandSeparator="."
+                            decimalMarker=","
+                            formControlName="monthlyIncome">
+                        </div>
+                        <mat-error>
+                            A <strong>Renda Mensal</strong> é obrigatória.
+                        </mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Data de Nascimento:</mat-label>
