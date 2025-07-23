@@ -12,6 +12,8 @@ import { DependentInformationsEditComponent } from '../dependent-informations-ed
 import { MusicInformationsEditComponent } from '../music-informations-edit/music-informations-edit.component';
 import { CountriesService } from '../../services/countries.service';
 import { CountriesList } from '../../types/countries-list';
+import { StatesService } from '../../services/states.service';
+import { StatesList } from '../../types/states-list';
 
 @Component({
   selector: 'app-user-container',
@@ -33,11 +35,13 @@ import { CountriesList } from '../../types/countries-list';
 export class UserContainerComponent extends UserController implements OnInit, OnChanges {
   currentTabIndex = 0;
   countriesList: CountriesList = [];
+  statesList: StatesList = [];
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
-  @Input({ required: true }) userSelectedIndex!: string;
+  @Input({ required: true }) userSelectedIndex: string | undefined;
 
   private readonly _countriesService = inject(CountriesService);
+  private readonly _statesService = inject(StatesService);
 
   ngOnInit() {
     this.getCountries();
@@ -45,15 +49,26 @@ export class UserContainerComponent extends UserController implements OnInit, On
 
   ngOnChanges(changes: SimpleChanges): void {
     const HAS_USER_SELECTED = changes["userSelected"] && Object.keys(changes["userSelected"].currentValue).length > 0;
-
+    
     if (HAS_USER_SELECTED) {
       this.fulfillUserForm(this.userSelected);
+      this.getStates(this.userSelected.country);
     }
   }
 
-  getCountries() {
+  onCountrySelected(countryName: string) {
+    this.getStates(countryName);
+  }
+
+  private getCountries() {
     this._countriesService
       .getCountries()
       .subscribe(countriesResponse => this.countriesList = countriesResponse);
+  }
+
+  private getStates(stateName: string) {
+    this._statesService
+      .getStates(stateName)
+      .subscribe(statesResponse => this.statesList = statesResponse);
   }
 }

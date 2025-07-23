@@ -74,7 +74,6 @@
                         placeholder="Brazil"
                         formControlName="country"
                         [matAutocomplete]="country"
-                        (input)="onCountryInputEvent($event)"
                         (focus)="onCountryFocusEvent()">
                     <mat-error>
                         O <strong>País</strong> é obrigatório.
@@ -86,13 +85,17 @@
                 <mat-form-field>
                     <mat-label>Estado:</mat-label>
                     <input
-                        [matAutocomplete]="state"
                         matInput
                         placeholder="São Paulo"
-                        formControlName="state">
+                        formControlName="state"
+                        [matAutocomplete]="state"
+                        (focus)="onStateFocusEvent()">
+                        <mat-error>
+                            O <strong>Estado</strong> é obrigatório.
+                        </mat-error>
                 </mat-form-field>
                 <mat-autocomplete #state="matAutocomplete">
-                    <mat-option *ngFor="let op of [1, 2, 3]" [value]="op">{{ op }}</mat-option>
+                    <mat-option *ngFor="let state of statesListFiltered" [value]="state.name">{{ state.name }}</mat-option>
                 </mat-autocomplete>
             </div>
             <div class="grid lg:grid-cols-3 gap-4">

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { passwordStrengthProgressBar } from '../../utils/password-strength-progress-bar';
 import { CountriesList } from '../../types/countries-list';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { StatesList } from '../../types/states-list';
 
 @Component({
   selector: 'app-general-informations-edit',
@@ -20,11 +21,18 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   passwordStrength: number = 0;
   countriesListFiltered: CountriesList = [];
+  statesListFiltered: StatesList = [];
 
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
   @Input({ required: true }) countriesList: CountriesList = [];
+  @Input({ required: true }) statesList: StatesList = [];
 
-  ngOnInit() { }
+  @Output("onCountrySelected") onCountrySelectedEmitter = new EventEmitter<string>();
+
+  ngOnInit() {
+    this.watchCountryValueChange();
+    this.watchStateValueChange();
+  }
 
   ngOnChanges(changes: SimpleChanges): void { }
 
@@ -44,17 +52,21 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
     return this.userForm.get("generalInformations.passwordConfirm") as FormControl;
   }
 
+  get countryControl(): FormControl {
+    return this.userForm.get("generalInformations.country") as FormControl;
+  }
+
+  get stateControl(): FormControl {
+    return this.userForm.get("generalInformations.state") as FormControl;
+  }
+
   onPasswordInputAndChangesEvent(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.passwordStrength = passwordStrengthProgressBar(value);
   }
 
-  onCountryInputEvent(searchTerm: Event) {
-    const countryName = (searchTerm.target as HTMLInputElement).value;
-
-    if (!countryName) return;
-
-    this.onFilterCountriesList(countryName);
+  watchCountryValueChange() {
+    this.countryControl.valueChanges.subscribe(this.onFilterCountriesList.bind(this));
   }
 
   onCountryFocusEvent() {
@@ -65,11 +77,27 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
     const searchTerm = event.option.value;
 
     if (!searchTerm) return;
+
+    this.onCountrySelectedEmitter.emit(searchTerm);
+  }
+
+  onStateFocusEvent() {
+    this.statesListFiltered = this.statesList;
+  }
+
+  watchStateValueChange() {
+    this.stateControl.valueChanges.subscribe(this.onFilterStatesList.bind(this));
   }
 
   private onFilterCountriesList(searchTerm: string) {
     const countryName = searchTerm.toLocaleLowerCase().trim();
     
     this.countriesListFiltered = this.countriesList.filter(countryResponse => countryResponse.name.toLocaleLowerCase().includes(countryName));
+  }
+
+  private onFilterStatesList(searchTerm: string) {
+    const stateName = searchTerm.toLocaleLowerCase().trim();
+
+    this.statesListFiltered = this.statesList.filter(stateResponse => stateResponse.name.toLocaleLowerCase().includes(stateName));
   }
 }
