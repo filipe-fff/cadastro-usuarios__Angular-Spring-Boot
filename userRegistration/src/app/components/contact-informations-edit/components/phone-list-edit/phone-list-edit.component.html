@@ -1,6 +1,8 @@
 <form [formGroup]="userForm" class="p-4 grid lg:grid-cols-3 gap-4">
     <ng-container formGroupName="contactInformations">
-        <ng-container formArrayName="phoneList" *ngFor="let phone of phoneList.controls; let i = index;">
+        <ng-container
+            *ngFor="let phone of phoneList.controls; let i = index;"
+            formArrayName="phoneList">
             <ng-container [formGroupName]="i">
                 <mat-form-field>
                     <mat-label>Residencial:</mat-label>

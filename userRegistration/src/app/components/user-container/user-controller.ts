@@ -14,6 +14,7 @@ import { passwordStrengthValidator } from "../../utils/validators/password-stren
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
 import { convertPtDateToDateObj } from "../../utils/convert-pt-date-to-date-obj";
+import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -120,13 +121,13 @@ export class UserController {
         prepareAddressListToDisplay(false, addressResponse, (address) => {
             this.addressList.push(this._fb.group({
                 type: [address.type],
-                typeDescription: [address.typeDescription],
+                typeDescription: [{value: address.typeDescription, disabled: true }],
                 street: [address.street],
                 complement: [address.complement],
                 country: [address.complement],
                 state: [address.state],
                 city: [address.city]
-            }));
+            }, { validators: [ addressRequiredValidator ] }));
         });
     }
 

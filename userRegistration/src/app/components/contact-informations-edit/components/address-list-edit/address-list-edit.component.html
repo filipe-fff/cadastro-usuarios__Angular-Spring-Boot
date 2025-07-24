@@ -1,31 +1,54 @@
-<section class="p-4 grid gap-4">
-    <div>
-        <div class="grid sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            <mat-form-field>
-                <mat-label>Tipo:</mat-label>
-                <input matInput>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Rua:</mat-label>
-                <input matInput placeholder="Rua de Tal">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Complemento:</mat-label>
-                <input matInput placeholder="Próximo ao parque">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>País:</mat-label>
-                <input matInput placeholder="Brasil">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Estado:</mat-label>
-                <input matInput placeholder="São Paulo">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Cidade:</mat-label>
-                <input matInput placeholder="São Paulo">
-            </mat-form-field>
-        </div>
-        <hr class="sm:hidden">
-    </div>
-</section>
+<form [formGroup]="userForm" class="p-4 grid gap-4">
+    <ng-container formGroupName="contactInformations">
+        <ng-container
+            *ngFor="let address of addressList.controls;let i = index;"
+            formArrayName="addressList">
+            <ng-container [formGroupName]="i">
+                <div>
+                    <div class="grid sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <mat-form-field>
+                            <mat-label>Tipo:</mat-label>
+                            <input matInput formControlName="typeDescription">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Rua:</mat-label>
+                            <input matInput placeholder="Rua de Tal" formControlName="street">
+                            <mat-error>
+                                A <strong>Rua</strong> é obrigatória.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Complemento:</mat-label>
+                            <input matInput placeholder="Próximo ao parque" formControlName="complement">
+                            <mat-error>
+                                O <strong>Complemento</strong> é obrigatório.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>País:</mat-label>
+                            <input matInput placeholder="Brasil" formControlName="country">
+                            <mat-error>
+                                O <strong>País</strong> é obrigatório.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Estado:</mat-label>
+                            <input matInput placeholder="São Paulo" formControlName="state">
+                            <mat-error>
+                                O <strong>Estado</strong> é obrigatório.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Cidade:</mat-label>
+                            <input matInput placeholder="São Paulo" formControlName="city">
+                            <mat-error>
+                                A <strong>Cidade</strong> é obrigatória.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <hr class="sm:hidden">
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</form>

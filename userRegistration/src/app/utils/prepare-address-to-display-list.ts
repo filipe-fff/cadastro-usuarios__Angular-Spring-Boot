@@ -13,9 +13,8 @@ export const prepareAddressListToDisplay = (toDisplay: boolean, addressList: Add
 
         let address: IAddressToDisplay;
 
-        if (toDisplay) {}
-
-        address = addressFormat(addressFound, addressType);
+        if (toDisplay) address = addressFormat(addressFound, addressType);
+        else address = addressFormatEdit(addressFound, addressType);
 
         callback({
             ...address
