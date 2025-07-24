@@ -23,7 +23,10 @@
             </mat-tab>
             <mat-tab label="Dependente">
                 <app-dependent-informations [dependentsList]="userSelected.dependents"></app-dependent-informations>
-                <app-dependent-informations-edit></app-dependent-informations-edit>
+                <app-dependent-informations-edit
+                    [userForm]="userForm"
+                    (onAddDependent)="addDependent()"
+                    (onRemoveDependent)="removeDependent($event)"></app-dependent-informations-edit>
             </mat-tab>
             <mat-tab label="Música">
                 <app-music-informations [musicsList]="userSelected.musics"></app-music-informations>

@@ -33,7 +33,7 @@ import { StatesList } from '../../types/states-list';
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent extends UserController implements OnInit, OnChanges {
-  currentTabIndex = 1;
+  currentTabIndex = 2;
   countriesList: CountriesList = [];
   statesList: StatesList = [];
 

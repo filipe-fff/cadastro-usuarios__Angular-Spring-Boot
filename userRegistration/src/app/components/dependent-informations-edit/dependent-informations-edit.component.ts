@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { buttonStylePipe } from '../../pipes/button-style.pipe';
 import { CommonModule } from '@angular/common';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-dependent-informations-edit',
@@ -9,9 +11,28 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     AngularMaterialModule,
+    ReactiveFormsModule,
+    NgxMaskDirective,
     buttonStylePipe
   ],
   templateUrl: './dependent-informations-edit.component.html',
   styleUrl: './dependent-informations-edit.component.scss'
 })
-export class DependentInformationsEditComponent { }
+export class DependentInformationsEditComponent {
+  @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
+
+  @Output("onAddDependent") onAddDependentEmitter = new EventEmitter<void>();
+  @Output("onRemoveDependent") onRemoveDependentEmitter = new EventEmitter<number>();
+
+  get dependentInformations(): FormArray {
+    return this.userForm.get("dependentInformations") as FormArray;
+  }
+
+  onAddDependent() {
+    this.onAddDependentEmitter.emit();
+  }
+
+  onRemoveDependent(id: number) {
+    this.onRemoveDependentEmitter.emit(id);
+  }
+}

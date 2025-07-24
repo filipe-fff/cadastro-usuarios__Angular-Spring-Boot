@@ -3,28 +3,52 @@
         Dependentes:
     </div>
     <div>
-        <button [ngClass]="'green' | buttonStyle">Adicionar</button>
+        <button
+            [ngClass]="'green' | buttonStyle"
+            (click)="onAddDependent()">Adicionar</button>
     </div>
-    <div>
-        <div class="p-4 grid sm:grid-cols-4 gap-4">
-            <mat-form-field>
-                <mat-label>Nome:</mat-label>
-                <input matInput placeholder="Fulaninho">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Idade:</mat-label>
-                <input matInput placeholder="5">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Documento:</mat-label>
-                <input matInput placeholder="111.111.111-11">
-            </mat-form-field>
-            <div class="pt-3 flex justify-center">
+    <form [formGroup]="userForm">
+        <ng-container
+            *ngFor="let dependent of dependentInformations.controls; let i = index;"
+            formArrayName="dependentInformations">
+            <ng-container [formGroupName]="i">
                 <div>
-                    <button [ngClass]="'red' | buttonStyle">Deletar</button>
+                    <div class="p-4 grid sm:grid-cols-4 gap-4">
+                        <mat-form-field>
+                            <mat-label>Nome:</mat-label>
+                            <input matInput placeholder="Fulaninho" formControlName="name">
+                            <mat-error>
+                                O <strong>Nome</strong> é obrigatório.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Idade:</mat-label>
+                            <input matInput placeholder="5" mask="0*" formControlName="age">
+                            <mat-error>
+                                A <strong>Idade</strong> é obrigatória.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Documento:</mat-label>
+                            <input matInput placeholder="123.123.123-11" mask="000.000.000-00" formControlName="document">
+                            <mat-error *ngIf="dependentInformations.controls[i].get('document')?.hasError('required')">
+                                O <strong>Documento</strong> é obrigatório.
+                            </mat-error>
+                            <mat-error *ngIf="dependentInformations.controls[i].get('document')?.hasError('mask')">
+                                O <strong>Documento</strong> é inválido.
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="pt-3 flex justify-center">
+                            <div>
+                                <button
+                                    [ngClass]="'red' | buttonStyle"
+                                    (click)="onRemoveDependent(i)">Deletar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="sm:hidden">
                 </div>
-            </div>
-        </div>
-        <hr class="sm:hidden">
-    </div>
+            </ng-container>
+        </ng-container>
+    </form>
 </section>

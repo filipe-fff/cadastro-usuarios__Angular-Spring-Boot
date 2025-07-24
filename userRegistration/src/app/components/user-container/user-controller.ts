@@ -15,6 +15,7 @@ import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists
 import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
 import { convertPtDateToDateObj } from "../../utils/convert-pt-date-to-date-obj";
 import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
+import { IDependent } from "../../interfaces/user/dependent.interface";
 
 export class UserController {
     userForm!: FormGroup;
@@ -56,6 +57,16 @@ export class UserController {
         this.fulfillMusics(user.musics);
 
         this.userForm.markAllAsTouched();
+    }
+
+    addDependent() {
+        this.createDependentGroup();
+        this.dependentInformations.markAllAsTouched();
+        this.dependentInformations.markAsDirty();
+    }
+
+    removeDependent(id: number) {
+        this.dependentInformations.removeAt(id);
     }
 
     private createUserForm() {
@@ -132,13 +143,23 @@ export class UserController {
     }
 
     private fulfillDependents(dependentsResponse: DependentsList) {
-        dependentsResponse.forEach(dependent => {
+        dependentsResponse.forEach(this.createDependentGroup.bind(this));
+    }
+
+    private createDependentGroup(dependent: IDependent | null = null) {
+        if (dependent) {
             this.dependentInformations.push(this._fb.group({
                 name: [dependent.name, Validators.required],
                 age: [dependent.age, Validators.required],
                 document: [dependent.document, Validators.required]
             }));
-        });
+        } else {
+            this.dependentInformations.push(this._fb.group({
+                name: ["", Validators.required],
+                age: ["", Validators.required],
+                document: ["", Validators.required]
+            }));
+        }
     }
 
     private fulfillMusics(musicsResponse: MusicsList) {
