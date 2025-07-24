@@ -24,8 +24,12 @@ import { NgxMaskDirective } from 'ngx-mask';
 })
 export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   passwordStrength: number = 0;
+
   countriesListFiltered: CountriesList = [];
   statesListFiltered: StatesList = [];
+
+  maxDate!: Date;
+  minDate!: Date;
 
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
   @Input({ required: true }) countriesList: CountriesList = [];
@@ -36,6 +40,9 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.watchCountryValueChange();
     this.watchStateValueChange();
+
+    this.getMinDate();
+    this.getMaxDate();
   }
 
   ngOnChanges(changes: SimpleChanges): void { }
@@ -111,5 +118,15 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
     const stateName = searchTerm.toLocaleLowerCase().trim();
 
     this.statesListFiltered = this.statesList.filter(stateResponse => stateResponse.name.toLocaleLowerCase().includes(stateName));
+  }
+
+  private getMinDate() {
+    const date = new Date();
+
+    this.minDate = new Date(date.getFullYear() - 100, 0, 1);
+  }
+
+  private getMaxDate() {
+    this.maxDate = new Date();
   }
 }

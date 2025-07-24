@@ -13,6 +13,7 @@ import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by
 import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
+import { convertPtDateToDateObj } from "../../utils/convert-pt-date-to-date-obj";
 
 export class UserController {
     userForm!: FormGroup;
@@ -97,7 +98,11 @@ export class UserController {
     }
 
     private fulfillGeneralInformations(user: IUser) {
-        this.generalInformations.patchValue(user);
+        this.generalInformations.patchValue({
+            ...user,
+            birthDate: convertPtDateToDateObj(user.birthDate)
+            // birthDate: null
+        });
     }
 
     private fulfillPhoneList(phoneResponse: PhoneList) {

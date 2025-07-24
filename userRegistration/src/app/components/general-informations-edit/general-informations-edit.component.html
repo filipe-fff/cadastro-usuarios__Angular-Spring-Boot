@@ -121,12 +121,16 @@
                 <mat-form-field>
                     <mat-label>Data de Nascimento:</mat-label>
                     <input
-                        [matDatepicker]="birthDate"
                         matInput
                         placeholder="DD/MM/AAAA"
                         readonly
                         formControlName="birthDate"
-                        >
+                        [min]="minDate"
+                        [max]="maxDate"
+                        [matDatepicker]="birthDate">
+                    <mat-error>
+                        A <strong>Data de Nascimento</strong> é obrigatória.
+                    </mat-error>
                     <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
                     <mat-datepicker #birthDate>
                         <mat-datepicker-actions>
