@@ -1,14 +1,24 @@
-<section class="p-4 grid lg:grid-cols-3 gap-4">
-    <mat-form-field>
-        <mat-label>Residencial:</mat-label>
-        <input matInput placeholder="+55 11 1111-2222">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Celular:</mat-label>
-        <input matInput placeholder="+55 11 91111-2222">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Emergêncial:</mat-label>
-        <input matInput placeholder="+55 11 1111-2222 ou +55 11 91111-2222">
-    </mat-form-field>
-</section>
+<form [formGroup]="userForm" class="p-4 grid lg:grid-cols-3 gap-4">
+    <ng-container formGroupName="contactInformations">
+        <ng-container formArrayName="phoneList" *ngFor="let phone of phoneList.controls; let i = index;">
+            <ng-container [formGroupName]="i">
+                <mat-form-field>
+                    <mat-label>Residencial:</mat-label>
+                    <input
+                        matInput
+                        placeholder="+55 11 1111-2222"
+                        [mask]="phone.value.type | phoneMask"
+                        [placeholder]="phone.value.type | phonePlaceholder"
+                        [validation]="true"
+                        formControlName="number">
+                    <mat-error *ngIf="phoneList.controls[i].get('number')?.hasError('required')">
+                        O <strong>Telefone</strong> é obrigatório.
+                    </mat-error>
+                    <mat-error *ngIf="phoneList.controls[i].get('number')?.hasError('mask')">
+                        O <strong>Telefone</strong> é inválido.
+                    </mat-error>
+                </mat-form-field>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</form>

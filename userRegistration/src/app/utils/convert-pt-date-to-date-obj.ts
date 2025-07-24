@@ -1,5 +1,4 @@
 export const convertPtDateToDateObj = (date: string): Date => {
-    console.log("date =>", date);
 
     const [year, month, day] = date.split("-").map(Number);
 

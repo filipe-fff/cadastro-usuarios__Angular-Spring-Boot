@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PhoneListEditComponent } from './components/phone-list-edit/phone-list-edit.component';
 import { AddressListEditComponent } from './components/address-list-edit/address-list-edit.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-contact-informations-edit',
@@ -12,4 +13,6 @@ import { AddressListEditComponent } from './components/address-list-edit/address
   templateUrl: './contact-informations-edit.component.html',
   styleUrl: './contact-informations-edit.component.scss'
 })
-export class ContactInformationsEditComponent { }
+export class ContactInformationsEditComponent {
+  @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
+}

@@ -4,7 +4,7 @@ import { MusicsList } from '../../types/musics-list';
 import { GenrePipe } from '../../pipes/genre.pipe';
 import { GenresService } from '../../services/genres.service';
 import { GenresListResponse } from '../../types/genres-list-response';
-import { YesNoPipe } from '../../pipes/yes-no-pipe';
+import { YesNoPipe } from '../../pipes/yes-no.pipe';
 
 @Component({
   selector: 'app-music-informations',

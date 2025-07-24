@@ -19,7 +19,7 @@
             </mat-tab>
             <mat-tab label="Contato">
                 <app-contact-informations [userSelected]="userSelected"></app-contact-informations>
-                <app-contact-informations-edit></app-contact-informations-edit>
+                <app-contact-informations-edit [userForm]="userForm"></app-contact-informations-edit>
             </mat-tab>
             <mat-tab label="Dependente">
                 <app-dependent-informations [dependentsList]="userSelected.dependents"></app-dependent-informations>

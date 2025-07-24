@@ -107,10 +107,11 @@ export class UserController {
 
     private fulfillPhoneList(phoneResponse: PhoneList) {
         preparePhoneListToDisplay(false, phoneResponse, (phone) => {
+            const phoneValidation = phone.type === 3 ? [] : [ Validators.required ];
             this.phoneList.push(this._fb.group({
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
-                number: [phone.number, [Validators.required]]
+                number: [phone.number, phoneValidation]
             }));
         });
     }
