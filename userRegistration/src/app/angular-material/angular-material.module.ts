@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -22,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressBarModule,
     MatAutocompleteModule,
     MatRadioModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule
   ],
@@ -35,6 +37,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressBarModule,
     MatAutocompleteModule,
     MatRadioModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule
   ]

@@ -57,6 +57,8 @@ export class UserController {
         this.fulfillMusics(user.musics);
 
         this.userForm.markAllAsTouched();
+
+        console.log("musicInformations.controls =>", this.musicInformations.controls);
     }
 
     addDependent() {
@@ -67,6 +69,8 @@ export class UserController {
 
     removeDependent(id: number) {
         this.dependentInformations.removeAt(id);
+        this.dependentInformations.markAllAsTouched();
+        this.dependentInformations.markAsDirty();
     }
 
     private createUserForm() {
