@@ -35,7 +35,7 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   @Input({ required: true }) countriesList: CountriesList = [];
   @Input({ required: true }) statesList: StatesList = [];
 
-  @Output("onCountrySelected") onCountrySelectedEmitter = new EventEmitter<string>();
+  @Output("onCountrySelected") onCountrySelectedEmitt = new EventEmitter<string>();
 
   ngOnInit() {
     this.watchCountryValueChange();
@@ -84,10 +84,6 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
     this.passwordStrength = passwordStrengthProgressBar(value);
   }
 
-  watchCountryValueChange() {
-    this.countryControl.valueChanges.subscribe(this.onFilterCountriesList.bind(this));
-  }
-
   onCountryFocusEvent() {
     this.countriesListFiltered = this.countriesList;
   }
@@ -97,14 +93,18 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
 
     if (!searchTerm) return;
 
-    this.onCountrySelectedEmitter.emit(searchTerm);
+    this.onCountrySelectedEmitt.emit(searchTerm);
   }
 
   onStateFocusEvent() {
     this.statesListFiltered = this.statesList;
   }
 
-  watchStateValueChange() {
+  private watchCountryValueChange() {
+    this.countryControl.valueChanges.subscribe(this.onFilterCountriesList.bind(this));
+  }
+
+  private watchStateValueChange() {
     this.stateControl.valueChanges.subscribe(this.onFilterStatesList.bind(this));
   }
 

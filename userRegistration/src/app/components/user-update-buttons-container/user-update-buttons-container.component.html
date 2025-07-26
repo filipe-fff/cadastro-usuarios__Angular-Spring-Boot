@@ -1,18 +1,40 @@
 <nav class="w-full flex flex-col sm:flex-row justify-between gap-4">
     <div>
-        <button [ngClass]="'slate' | buttonStyle">
+        <button [ngClass]="'slate' | buttonStyle" (click)="onUsersListButton()">
             <mat-icon>reply</mat-icon>
         </button>
     </div>
     <div class="flex gap-4">
         <div>
-            <button [ngClass]="'indigo' | buttonStyle">Editar</button>
+            <button
+                *ngIf="!isInEditMode"
+                (click)="onEditButton()"
+                [ngClass]="'indigo' | buttonStyle"
+                >
+                Editar
+            </button>
         </div>
         <div>
-            <button [ngClass]="'red' | buttonStyle">Cancelar</button>
+            <button
+                *ngIf="isInEditMode"
+                (click)="onCancelButton()"
+                [ngClass]="'red' | buttonStyle"
+                >
+                Cancelar
+            </button>
         </div>
         <div>
-            <button [ngClass]="'green' | buttonStyle">salvar</button>
+            <button
+                *ngIf="isInEditMode"
+                (click)="onSaveButton()"
+                class="rounded-md px-3 py-2 text-lg font-medium leading-5 text-white "
+                [ngClass]="{
+                    'bg-green-600 hover:bg-green-500': enableSaveButton,
+                    'bg-green-200': !enableSaveButton
+                }"
+                >
+                Salvar
+            </button>
         </div>
     </div>
 </nav>

@@ -1,8 +1,15 @@
 <main>
-    <app-user-container
+    <app-user-informations-container
         [userSelected]="userSelected"
         [userSelectedIndex]="userSelectedIndex"
-        [isInEditMode]="isInEditMode">
-        <app-user-update-buttons-container></app-user-update-buttons-container>
-    </app-user-container>
+        [isInEditMode]="isInEditMode"
+        (onEnableSaveButton)="onEnableSaveButton($event)">
+        <app-user-update-buttons-container
+            [enableSaveButton]="enableSaveButton"
+            [isInEditMode]="isInEditMode"
+            (onEditButton)="onEditButton()"
+            (onCancelButton)="onCancelButton()"
+            (onSaveButton)="onSaveButton()"
+            ></app-user-update-buttons-container>
+    </app-user-informations-container>
 </main>

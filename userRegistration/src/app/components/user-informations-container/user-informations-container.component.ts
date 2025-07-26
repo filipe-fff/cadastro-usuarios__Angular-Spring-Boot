@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
 import { ContactInformationsComponent } from '../contact-informations/contact-informations.component';
@@ -17,7 +17,7 @@ import { StatesList } from '../../types/states-list';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-user-container',
+  selector: 'app-user-informations-container',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,10 +31,10 @@ import { CommonModule } from '@angular/common';
     DependentInformationsEditComponent,
     MusicInformationsEditComponent
   ],
-  templateUrl: './user-container.component.html',
-  styleUrl: './user-container.component.scss'
+  templateUrl: './user-informations-container.component.html',
+  styleUrl: './user-informations-container.component.scss'
 })
-export class UserContainerComponent extends UserController implements OnInit, OnChanges {
+export class UserInformationsContainerComponent extends UserController implements OnInit, OnChanges {
   currentTabIndex = 0;
   countriesList: CountriesList = [];
   statesList: StatesList = [];
@@ -44,11 +44,14 @@ export class UserContainerComponent extends UserController implements OnInit, On
 
   @Input({ required: true }) isInEditMode: boolean = false;
 
+  @Output("onEnableSaveButton") onEnableSaveButtonEmitt = new EventEmitter<boolean>();
+
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
 
   ngOnInit() {
     this.getCountries();
+    this.watchUserFormStatusChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,5 +78,13 @@ export class UserContainerComponent extends UserController implements OnInit, On
     this._statesService
       .getStates(stateName)
       .subscribe(statesResponse => this.statesList = statesResponse);
+  }
+
+  private watchUserFormStatusChanges() {
+    this.userForm.statusChanges.subscribe(() => this.onEnableSaveButton());
+  }
+
+  private onEnableSaveButton() {
+    this.onEnableSaveButtonEmitt.emit(this.userForm.valid);
   }
 }

@@ -21,18 +21,18 @@ import { NgxMaskDirective } from 'ngx-mask';
 export class DependentInformationsEditComponent {
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
 
-  @Output("onAddDependent") onAddDependentEmitter = new EventEmitter<void>();
-  @Output("onRemoveDependent") onRemoveDependentEmitter = new EventEmitter<number>();
+  @Output("onAddDependent") onAddDependentEmitt = new EventEmitter<void>();
+  @Output("onRemoveDependent") onRemoveDependentEmitt = new EventEmitter<number>();
 
   get dependentInformations(): FormArray {
     return this.userForm.get("dependentInformations") as FormArray;
   }
 
   onAddDependent() {
-    this.onAddDependentEmitter.emit();
+    this.onAddDependentEmitt.emit();
   }
 
   onRemoveDependent(id: number) {
-    this.onRemoveDependentEmitter.emit(id);
+    this.onRemoveDependentEmitt.emit(id);
   }
 }
