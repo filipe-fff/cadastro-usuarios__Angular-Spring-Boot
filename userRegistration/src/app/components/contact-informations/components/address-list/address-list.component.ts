@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AddressList } from '../../../../types/address-list';
 import { UserInfosItemComponent } from '../../../user-infos-item/user-infos-item.component';
 import { AddressListToDisplay } from '../../../../types/address-list-to-display';
-import { prepareAddressListToDisplay } from '../../../../utils/prepare-address-to-display-list';
+import { prepareAddressListToDisplay } from '../../../../utils/prepare-address-list-to-display';
 import { CommonModule } from '@angular/common';
 
 @Component({

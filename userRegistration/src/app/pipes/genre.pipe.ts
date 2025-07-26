@@ -10,10 +10,10 @@ export class GenrePipe implements PipeTransform {
 
     private readonly _genresService = inject(GenresService);
 
-    transform(genreId: number, genresList: GenresListResponse): string {
+    transform(genreId: string | number, genresList: GenresListResponse): string {
 
         const genreDescription = genresList.find(genre => genre.id === genreId)?.description;
 
-        return genreDescription ? genreDescription : "";
+        return typeof genreId === "string" ? genreId : genreDescription ? genreDescription : "-";
     }
 }

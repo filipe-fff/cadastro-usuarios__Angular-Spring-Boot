@@ -6,7 +6,7 @@ import { PhoneList } from "../../types/phone-list";
 import { DependentsList } from "../../types/dependents-list";
 import { MusicsList } from "../../types/musics-list";
 import { preparePhoneListToDisplay } from "../../utils/prepare-phone-list-to-display";
-import { prepareAddressListToDisplay } from "../../utils/prepare-address-to-display-list";
+import { prepareAddressListToDisplay } from "../../utils/prepare-address-list-to-display";
 import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
 import { UsersService } from "../../services/users.service";
 import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
@@ -16,6 +16,8 @@ import { passwordConfirmEqualValidator } from "../../utils/validators/password-c
 import { convertPtDateToDateObj } from "../../utils/convert-pt-date-to-date-obj";
 import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
 import { IDependent } from "../../interfaces/user/dependent.interface";
+import { prepareMusicsListToDisplay } from "../../utils/prepare-musics-list-to-display";
+import { musicRequiredValidator } from "../../utils/validators/music-required-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -167,13 +169,13 @@ export class UserController {
     }
 
     private fulfillMusics(musicsResponse: MusicsList) {
-        musicsResponse.forEach(music => {
+        prepareMusicsListToDisplay(false, musicsResponse, (music) => {
             this.musicInformations.push(this._fb.group({
-                title: [music.title, Validators.required],
-                band: [music.band, Validators.required],
-                genre: [music.genre, Validators.required],
-                isFavorite: [music.isFavorite, Validators.required]
-            }));
+                title: [music.title],
+                band: [music.band],
+                genre: [music.genre],
+                isFavorite: [music.isFavorite]
+            }, { validators: [ musicRequiredValidator ] }));
         });
     }
 }

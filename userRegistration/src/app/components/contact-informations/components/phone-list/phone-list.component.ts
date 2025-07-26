@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PhoneList } from '../../../../types/phone-list';
-import { PhoneToDisplayList } from '../../../../types/phone-to-display-list';
+import { PhoneListToDisplay } from '../../../../types/phone-list-to-display';
 import { preparePhoneListToDisplay } from '../../../../utils/prepare-phone-list-to-display';
 import { UserInfosItemComponent } from '../../../user-infos-item/user-infos-item.component';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './phone-list.component.scss'
 })
 export class PhoneListComponent implements OnChanges {
-  phoneToDisplayList: PhoneToDisplayList = [];
+  phoneToDisplayList: PhoneListToDisplay = [];
 
   @Input({ required: true }) phoneList: PhoneList = [];
 

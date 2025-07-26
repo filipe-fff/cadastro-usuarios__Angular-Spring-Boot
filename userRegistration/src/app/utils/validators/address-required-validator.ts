@@ -11,22 +11,23 @@ export const addressRequiredValidator: ValidatorFn = (control: AbstractControl):
         
         if (hasControlChildDirty) {
 
-            if (!controlChild.value) {
-                const otherErrors = controlChild?.errors || null;
-                controlChild?.setErrors({ ...otherErrors, addressRequiredError: true });
-            } else {
-                resetControlChild(controlChild);
+            if (controlChild.value) resetControlChild(controlChild);
+
+            else {
+                const otherErrors = controlChild.errors || null;
+                controlChild.setErrors({ ...otherErrors, addressRequiredError: true });
             }
-        } else {
-            resetControlChild(controlChild);
-        }
+
+        } else resetControlChild(controlChild);
     }
 
     return null
 };
 
-const resetControlChild = (controlChild: AbstractControl) => {
+const resetControlChild = (controlChild: FormControl) => {
     const { addressRequiredError, ...otherErrors } = controlChild.errors || {};
+    
     const hasOtherErrors = Object.keys(otherErrors).length > 0;
+    
     controlChild.setErrors(hasOtherErrors ? { ...otherErrors } : null);
 };
