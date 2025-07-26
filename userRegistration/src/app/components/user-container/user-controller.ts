@@ -35,12 +35,8 @@ export class UserController {
         return this.userForm.get("generalInformations") as FormGroup;
     }
 
-    get phoneList(): FormArray {
-        return this.userForm.get("contactInformations.phoneList") as FormArray;
-    }
-
-    get addressList(): FormArray {
-        return this.userForm.get("contactInformations.addressList") as FormArray;
+    get contactInformations(): FormGroup {
+        return this.userForm.get("contactInformations") as FormGroup;
     }
 
     get dependentInformations(): FormArray {
@@ -49,6 +45,30 @@ export class UserController {
 
     get musicInformations(): FormArray {
         return this.userForm.get("musicInformations") as FormArray;
+    }
+
+    get phoneList(): FormArray {
+        return this.userForm.get("contactInformations.phoneList") as FormArray;
+    }
+
+    get addressList(): FormArray {
+        return this.userForm.get("contactInformations.addressList") as FormArray;
+    }
+
+    get generalInformationsValid(): boolean {
+        return this.generalInformations.valid;
+    }
+
+    get contactInformationsValid(): boolean {
+        return this.contactInformations.valid;
+    }
+
+    get dependentInformationsValid(): boolean {
+        return this.dependentInformations.valid;
+    }
+
+    get musicInformationsValid(): boolean {
+        return this.musicInformations.valid;
     }
 
     fulfillUserForm(user: IUser) {

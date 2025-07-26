@@ -14,11 +14,13 @@ import { CountriesService } from '../../services/countries.service';
 import { CountriesList } from '../../types/countries-list';
 import { StatesService } from '../../services/states.service';
 import { StatesList } from '../../types/states-list';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-container',
   standalone: true,
   imports: [
+    CommonModule,
     AngularMaterialModule,
     GeneralInformationsComponent,
     ContactInformationsComponent,
@@ -33,12 +35,14 @@ import { StatesList } from '../../types/states-list';
   styleUrl: './user-container.component.scss'
 })
 export class UserContainerComponent extends UserController implements OnInit, OnChanges {
-  currentTabIndex = 3;
+  currentTabIndex = 0;
   countriesList: CountriesList = [];
   statesList: StatesList = [];
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input({ required: true }) userSelectedIndex: string | undefined;
+
+  @Input({ required: true }) isInEditMode: boolean = false;
 
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);

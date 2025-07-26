@@ -18,6 +18,8 @@ export class UserSelectedComponent implements OnInit {
   userSelected: IUser = {} as IUser;
   userSelectedIndex!: string;
 
+  isInEditMode: boolean = true;
+
   private readonly _activatedRoute = inject(ActivatedRoute);
 
   private readonly _usersService = inject(UsersService);

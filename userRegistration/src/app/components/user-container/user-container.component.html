@@ -9,28 +9,47 @@
     </mat-card-header>
     <mat-card-content>
         <mat-tab-group [(selectedIndex)]="currentTabIndex">
-            <mat-tab label="Geral">
-                <app-general-informations [userSelected]="userSelected"></app-general-informations>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Geral
+                    <mat-icon *ngIf="isInEditMode && !generalInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                </ng-template>
+                
+                <app-general-informations *ngIf="!isInEditMode" [userSelected]="userSelected"></app-general-informations>
                 <app-general-informations-edit
+                    *ngIf="isInEditMode"
                     [userForm]="userForm"
                     [countriesList]="countriesList"
                     [statesList]="statesList"
                     (onCountrySelected)="onCountrySelected($event)"></app-general-informations-edit>
             </mat-tab>
-            <mat-tab label="Contato">
-                <app-contact-informations [userSelected]="userSelected"></app-contact-informations>
-                <app-contact-informations-edit [userForm]="userForm"></app-contact-informations-edit>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Contato
+                    <mat-icon *ngIf="isInEditMode && !contactInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                </ng-template>
+                <app-contact-informations *ngIf="!isInEditMode" [userSelected]="userSelected"></app-contact-informations>
+                <app-contact-informations-edit *ngIf="isInEditMode" [userForm]="userForm"></app-contact-informations-edit>
             </mat-tab>
-            <mat-tab label="Dependente">
-                <app-dependent-informations [dependentsList]="userSelected.dependents"></app-dependent-informations>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Dependente
+                    <mat-icon *ngIf="isInEditMode && !dependentInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                </ng-template>
+                <app-dependent-informations *ngIf="!isInEditMode" [dependentsList]="userSelected.dependents"></app-dependent-informations>
                 <app-dependent-informations-edit
+                    *ngIf="isInEditMode"
                     [userForm]="userForm"
                     (onAddDependent)="addDependent()"
                     (onRemoveDependent)="removeDependent($event)"></app-dependent-informations-edit>
             </mat-tab>
-            <mat-tab label="Música">
-                <app-music-informations [musicsList]="userSelected.musics"></app-music-informations>
-                <app-music-informations-edit [userForm]="userForm"></app-music-informations-edit>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Música
+                    <mat-icon *ngIf="isInEditMode && !musicInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                </ng-template>
+                <app-music-informations *ngIf="!isInEditMode" [musicsList]="userSelected.musics"></app-music-informations>
+                <app-music-informations-edit *ngIf="isInEditMode" [userForm]="userForm"></app-music-informations-edit>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>
