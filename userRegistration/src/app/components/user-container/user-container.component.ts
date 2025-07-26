@@ -71,6 +71,7 @@ export class UserContainerComponent extends UserController implements OnInit, On
   }
 
   private getStates(stateName: string) {
+    this.statesList = [];
     this._statesService
       .getStates(stateName)
       .subscribe(statesResponse => this.statesList = statesResponse);

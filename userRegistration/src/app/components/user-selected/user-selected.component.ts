@@ -4,11 +4,13 @@ import { IUser } from '../../interfaces/user/user.interface';
 import { UsersService } from '../../services/users.service';
 import { UserContainerComponent } from '../user-container/user-container.component';
 import { JsonPipe } from '@angular/common';
+import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
 
 @Component({
   selector: 'app-user-selected',
   standalone: true,
   imports: [
+    UserUpdateButtonsContainerComponent,
     UserContainerComponent
   ],
   templateUrl: './user-selected.component.html',

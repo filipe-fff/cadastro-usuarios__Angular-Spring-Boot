@@ -1,0 +1,18 @@
+<nav class="w-full flex flex-col sm:flex-row justify-between gap-4">
+    <div>
+        <button [ngClass]="'slate' | buttonStyle">
+            <mat-icon>reply</mat-icon>
+        </button>
+    </div>
+    <div class="flex gap-4">
+        <div>
+            <button [ngClass]="'indigo' | buttonStyle">Editar</button>
+        </div>
+        <div>
+            <button [ngClass]="'red' | buttonStyle">Cancelar</button>
+        </div>
+        <div>
+            <button [ngClass]="'green' | buttonStyle">salvar</button>
+        </div>
+    </div>
+</nav>
