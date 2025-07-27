@@ -5,7 +5,7 @@ import { IGeneralInformationsUserForm } from "./general-informations-user-form.i
 
 export interface IUserForm {
     generalInformations: IGeneralInformationsUserForm;
-    contacInformations: IContactInformationsUserForm;
+    contactInformations: IContactInformationsUserForm;
     dependentInformations: DependentsListUserForm;
     musicInformations: MusicsListUserForm;
 };

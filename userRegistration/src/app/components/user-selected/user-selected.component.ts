@@ -7,6 +7,7 @@ import { JsonPipe } from '@angular/common';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
 import { FormGroup } from '@angular/forms';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
+import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw-value-to-user';
 
 @Component({
   selector: 'app-user-selected',
@@ -43,7 +44,8 @@ export class UserSelectedComponent implements OnInit {
 
   onSaveButton() {
     console.log("SALVOU !!!");
-    console.log("userFormRawValue =>", this._userFormRawValueService.userFormRawValue);
+    const newUser = convertUserFormRawValueToUser(this._userFormRawValueService.userFormRawValue);
+    console.log("newUser =>", newUser);
   }
 
   onEnableSaveButton(enable: boolean) {

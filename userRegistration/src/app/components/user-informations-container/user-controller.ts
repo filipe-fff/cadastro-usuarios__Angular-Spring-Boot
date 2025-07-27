@@ -13,7 +13,7 @@ import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by
 import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
-import { convertPtDateToDateObj } from "../../utils/convert-pt-date-to-date-obj";
+import { convertEnDateToDateObj } from "../../utils/convert-en-date-to-date-obj";
 import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
 import { IDependent } from "../../interfaces/user/dependent.interface";
 import { prepareMusicsListToDisplay } from "../../utils/prepare-musics-list-to-display";
@@ -136,7 +136,8 @@ export class UserController {
     private fulfillGeneralInformations(user: IUser) {
         this.generalInformations.patchValue({
             ...user,
-            birthDate: convertPtDateToDateObj(user.birthDate)
+            passwordConfirm: user.password,
+            birthDate: convertEnDateToDateObj(user.birthDate)
             // birthDate: null
         });
     }

@@ -35,6 +35,7 @@
                         <mat-form-field>
                             <mat-label>Gênero:</mat-label>
                             <mat-select formControlName="genre">
+                                <mat-option [value]="null">-</mat-option>
                                 <mat-option *ngFor="let genre of genresList" [value]="genre.id">
                                     {{ genre.description }}
                                 </mat-option>
