@@ -15,6 +15,9 @@ import { CountriesList } from '../../types/countries-list';
 import { StatesService } from '../../services/states.service';
 import { StatesList } from '../../types/states-list';
 import { CommonModule } from '@angular/common';
+import { FormGroup } from '@angular/forms';
+import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-user-informations-container',
@@ -48,10 +51,12 @@ export class UserInformationsContainerComponent extends UserController implement
 
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
+  private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
   ngOnInit() {
     this.getCountries();
     this.watchUserFormStatusChanges();
+    this.watchUserFormValueChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -80,11 +85,17 @@ export class UserInformationsContainerComponent extends UserController implement
       .subscribe(statesResponse => this.statesList = statesResponse);
   }
 
-  private watchUserFormStatusChanges() {
-    this.userForm.statusChanges.subscribe(() => this.onEnableSaveButton());
-  }
-
   private onEnableSaveButton() {
     this.onEnableSaveButtonEmitt.emit(this.userForm.valid);
+  }
+
+  private watchUserFormValueChanges() {
+    this.userForm.valueChanges.subscribe(() =>
+      this._userFormRawValueService.userFormRawValue = this.userForm.getRawValue()
+    );
+  }
+
+  private watchUserFormStatusChanges() {
+    this.userForm.statusChanges.pipe(distinctUntilChanged()).subscribe(() => this.onEnableSaveButton());
   }
 }

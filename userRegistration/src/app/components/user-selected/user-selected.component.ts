@@ -5,6 +5,8 @@ import { UsersService } from '../../services/users.service';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { JsonPipe } from '@angular/common';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
+import { FormGroup } from '@angular/forms';
+import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
 
 @Component({
   selector: 'app-user-selected',
@@ -25,6 +27,7 @@ export class UserSelectedComponent implements OnInit {
 
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _usersService = inject(UsersService);
+  private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
   ngOnInit() {
     this.getUser();
@@ -40,6 +43,7 @@ export class UserSelectedComponent implements OnInit {
 
   onSaveButton() {
     console.log("SALVOU !!!");
+    console.log("userFormRawValue =>", this._userFormRawValueService.userFormRawValue);
   }
 
   onEnableSaveButton(enable: boolean) {

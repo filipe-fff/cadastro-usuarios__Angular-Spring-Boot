@@ -79,8 +79,6 @@ export class UserController {
         this.fulfillMusics(user.musics);
 
         this.userForm.markAllAsTouched();
-
-        console.log("musicInformations.controls =>", this.musicInformations.controls);
     }
 
     addDependent() {
