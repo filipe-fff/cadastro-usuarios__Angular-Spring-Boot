@@ -11,7 +11,7 @@ import { PhoneList } from "../types/phone-list";
 import { PhoneListUserForm } from "../types/phone-list-user-form";
 import { convertDateObjToEnDate } from "./convert-date-obj-to-en-date";
 
-export const convertUserFormRawValueToUser = (userForm: IUserForm): IUser => {
+export const convertUserUpdateFormRawValueToUser = (userForm: IUserForm): IUser => {
     let user: Partial<IUser> = {} as Partial<IUser>;
 
     user = { ...convertToGeneralInformation(userForm.generalInformations) };
