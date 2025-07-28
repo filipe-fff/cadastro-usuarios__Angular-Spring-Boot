@@ -1,23 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { distinctUntilChanged } from 'rxjs';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
+import { CountriesService } from '../../services/countries.service';
+import { StatesService } from '../../services/states.service';
+import { CountriesList } from '../../types/countries-list';
+import { StatesList } from '../../types/states-list';
+import { ContactInformationsEditComponent } from '../contact-informations-edit/contact-informations-edit.component';
 import { ContactInformationsComponent } from '../contact-informations/contact-informations.component';
+import { DependentInformationsEditComponent } from '../dependent-informations-edit/dependent-informations-edit.component';
 import { DependentInformationsComponent } from '../dependent-informations/dependent-informations.component';
 import { GeneralInformationsEditComponent } from '../general-informations-edit/general-informations-edit.component';
 import { GeneralInformationsComponent } from '../general-informations/general-informations.component';
+import { MusicInformationsEditComponent } from '../music-informations-edit/music-informations-edit.component';
 import { MusicInformationsComponent } from '../music-informations/music-informations.component';
 import { UserController } from './user-controller';
-import { ContactInformationsEditComponent } from '../contact-informations-edit/contact-informations-edit.component';
-import { DependentInformationsEditComponent } from '../dependent-informations-edit/dependent-informations-edit.component';
-import { MusicInformationsEditComponent } from '../music-informations-edit/music-informations-edit.component';
-import { CountriesService } from '../../services/countries.service';
-import { CountriesList } from '../../types/countries-list';
-import { StatesService } from '../../services/states.service';
-import { StatesList } from '../../types/states-list';
-import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
-import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
-import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-user-informations-container',
@@ -51,17 +49,17 @@ export class UserInformationsContainerComponent extends UserController implement
 
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
-  private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
   ngOnInit() {
     this.getCountries();
+    
     this.watchUserFormStatusChanges();
-    this.watchUserFormValueChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const HAS_USER_SELECTED = changes["userSelected"] && Object.keys(changes["userSelected"].currentValue).length > 0;
-    
+    console.log()
+
     if (HAS_USER_SELECTED) {
       this.fulfillUserForm(this.userSelected);
       this.getStates(this.userSelected.country);
@@ -85,17 +83,10 @@ export class UserInformationsContainerComponent extends UserController implement
       .subscribe(statesResponse => this.statesList = statesResponse);
   }
 
-  private onEnableSaveButton() {
-    this.onEnableSaveButtonEmitt.emit(this.userForm.valid);
-  }
-
-  private watchUserFormValueChanges() {
-    this.userForm.valueChanges.subscribe(() =>
-      this._userFormRawValueService.userFormRawValue = this.userForm.getRawValue()
-    );
-  }
-
   private watchUserFormStatusChanges() {
-    this.userForm.statusChanges.pipe(distinctUntilChanged()).subscribe(() => this.onEnableSaveButton());
+    this.userForm
+      .statusChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(() => this.onEnableSaveButtonEmitt.emit(this.userForm.valid || this.userForm.pending));
   }
 }

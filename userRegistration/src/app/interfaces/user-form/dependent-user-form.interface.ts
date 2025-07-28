@@ -1,5 +1,5 @@
 export interface IDependentUserForm {
     name: string;
-    age: number;
+    age: string;
     document: string;
 };

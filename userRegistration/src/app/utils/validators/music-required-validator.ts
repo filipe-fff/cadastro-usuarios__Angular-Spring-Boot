@@ -2,6 +2,8 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from "@an
 
 export const musicRequiredValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 
+    if (!control) return null;
+
     const controlsNameList = Object.keys(control.value);
 
     const hasControlChildDirty = controlsNameList.some(controlName => control.get(controlName)?.value);

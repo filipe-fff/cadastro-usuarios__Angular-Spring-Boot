@@ -109,12 +109,16 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   }
 
   private onFilterCountriesList(searchTerm: string) {
+    if (!searchTerm) return;
+
     const countryName = searchTerm.toLocaleLowerCase().trim();
     
     this.countriesListFiltered = this.countriesList.filter(countryResponse => countryResponse.name.toLocaleLowerCase().includes(countryName));
   }
 
   private onFilterStatesList(searchTerm: string) {
+    if (!searchTerm) return;
+
     const stateName = searchTerm.toLocaleLowerCase().trim();
 
     this.statesListFiltered = this.statesList.filter(stateResponse => stateResponse.name.toLocaleLowerCase().includes(stateName));

@@ -2,9 +2,11 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn 
 
 export const addressRequiredValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 
+    if (!control) return null;
+
     const controlsNameList = Object.keys(control.value).filter(controlName => controlName !== "type" && controlName !== "typeDescription");
 
-    const hasControlChildDirty = controlsNameList.some(controlName => control.get(controlName)?.value.length > 0);
+    const hasControlChildDirty = controlsNameList.some(controlName => control.get(controlName)?.value?.length > 0)
 
     for (const controlName of controlsNameList) {
         const controlChild = control.get(controlName) as FormControl;

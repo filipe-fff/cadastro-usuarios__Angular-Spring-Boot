@@ -52,9 +52,9 @@ public class UserController {
     }
 
     // UPDATE
-    @PutMapping("/update/{id}")
-    public User update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO userUpdateDTO) {
-        return this.userService.update(id, userUpdateDTO);
+    @PostMapping("/update")
+    public void update(@RequestBody UserUpdateDTO userUpdateDTO) {
+        this.userService.update(userUpdateDTO);
     }
 
     // DELETE

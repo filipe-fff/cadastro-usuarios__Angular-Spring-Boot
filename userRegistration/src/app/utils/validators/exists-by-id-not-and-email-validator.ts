@@ -5,6 +5,8 @@ import { map, Observable, of } from "rxjs";
 export const existsByIdNotAndEmailValidator = (usersService: UsersService): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
 
+        if (!control) return of(null);
+
         const idControl = control.get("id") as FormControl;
         const emailControl = control.get("email") as FormControl;
 

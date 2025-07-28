@@ -41,7 +41,7 @@ public class Dependent {
 
     @NonNull
     @Column(name = "document", nullable = false)
-    private String document;
+    private Long document;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

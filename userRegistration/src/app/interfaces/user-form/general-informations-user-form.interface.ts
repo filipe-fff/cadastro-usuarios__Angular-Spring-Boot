@@ -1,5 +1,5 @@
 export interface IGeneralInformationsUserForm {
-    id?: string;
+    id: string;
     name: string;
     photo: string;
     email: string;

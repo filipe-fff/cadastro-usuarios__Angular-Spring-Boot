@@ -8,7 +8,7 @@ export const prepareMusicsListToDisplay = (toDisplay: boolean, musicsList: Music
 
     const musicLength = musicsList.length;
 
-    for (let m=0; m < 4; m++) {
+    for (let m=0; m < 3; m++) {
         let music;
 
         if (toDisplay) music = musicFormat(musicsList[m]);

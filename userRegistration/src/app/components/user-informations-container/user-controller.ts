@@ -18,6 +18,7 @@ import { addressRequiredValidator } from "../../utils/validators/address-require
 import { IDependent } from "../../interfaces/user/dependent.interface";
 import { prepareMusicsListToDisplay } from "../../utils/prepare-musics-list-to-display";
 import { musicRequiredValidator } from "../../utils/validators/music-required-validator";
+import { UserFormRawValueService } from "../../services/user-form-raw-value.service";
 
 export class UserController {
     userForm!: FormGroup;
@@ -26,9 +27,12 @@ export class UserController {
 
     private readonly _fb = inject(FormBuilder);
     private readonly _usersService = inject(UsersService);
+    private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
     constructor() {
         this.createUserForm();
+
+        this.watchUserFormValueChanges();
     }
 
     get generalInformations(): FormGroup {
@@ -39,11 +43,11 @@ export class UserController {
         return this.userForm.get("contactInformations") as FormGroup;
     }
 
-    get dependentInformations(): FormArray {
+    get dependentsList(): FormArray {
         return this.userForm.get("dependentInformations") as FormArray;
     }
 
-    get musicInformations(): FormArray {
+    get musicsList(): FormArray {
         return this.userForm.get("musicInformations") as FormArray;
     }
 
@@ -64,14 +68,18 @@ export class UserController {
     }
 
     get dependentInformationsValid(): boolean {
-        return this.dependentInformations.valid;
+        return this.dependentsList.valid;
     }
 
     get musicInformationsValid(): boolean {
-        return this.musicInformations.valid;
+        return this.musicsList.valid;
     }
 
     fulfillUserForm(user: IUser) {
+        console.log("fulfillUserForm");
+
+        this.resetUserForm();
+
         this.fulfillGeneralInformations(user);
         this.fulfillPhoneList(user.phoneList);
         this.fulfillAddressList(user.addressList);
@@ -79,18 +87,21 @@ export class UserController {
         this.fulfillMusics(user.musics);
 
         this.userForm.markAllAsTouched();
+        this.userForm.updateValueAndValidity();
+
+        console.log("userForm valid", this.userForm.valid);
     }
 
     addDependent() {
         this.createDependentGroup();
-        this.dependentInformations.markAllAsTouched();
-        this.dependentInformations.markAsDirty();
+        
+        this.dependentsList.markAsDirty();
     }
 
     removeDependent(id: number) {
-        this.dependentInformations.removeAt(id);
-        this.dependentInformations.markAllAsTouched();
-        this.dependentInformations.markAsDirty();
+        this.dependentsList.removeAt(id);
+
+        this.dependentsList.markAsDirty();
     }
 
     private createUserForm() {
@@ -133,6 +144,24 @@ export class UserController {
         });
     }
 
+    private resetUserForm() {
+        this.userForm.reset();
+
+        this.generalInformations.reset();
+
+        this.phoneList.reset();
+        this.phoneList.clear();
+        
+        this.addressList.reset();
+        this.addressList.clear();
+
+        this.dependentsList.reset();
+        this.dependentsList.clear()
+
+        this.musicsList.reset();
+        this.musicsList.clear();
+    }
+
     private fulfillGeneralInformations(user: IUser) {
         this.generalInformations.patchValue({
             ...user,
@@ -160,7 +189,7 @@ export class UserController {
                 typeDescription: [{value: address.typeDescription, disabled: true }],
                 street: [address.street],
                 complement: [address.complement],
-                country: [address.complement],
+                country: [address.country],
                 state: [address.state],
                 city: [address.city]
             }, { validators: [ addressRequiredValidator ] }));
@@ -173,28 +202,34 @@ export class UserController {
 
     private createDependentGroup(dependent: IDependent | null = null) {
         if (dependent) {
-            this.dependentInformations.push(this._fb.group({
+            this.dependentsList.push(this._fb.group({
                 name: [dependent.name, Validators.required],
                 age: [dependent.age, Validators.required],
                 document: [dependent.document, Validators.required]
             }));
         } else {
-            this.dependentInformations.push(this._fb.group({
+            this.dependentsList.push(this._fb.group({
                 name: ["", Validators.required],
-                age: ["", Validators.required],
-                document: ["", Validators.required]
+                age: [null, Validators.required],
+                document: [null, Validators.required]
             }));
         }
     }
 
     private fulfillMusics(musicsResponse: MusicsList) {
         prepareMusicsListToDisplay(false, musicsResponse, (music) => {
-            this.musicInformations.push(this._fb.group({
+            this.musicsList.push(this._fb.group({
                 title: [music.title],
                 band: [music.band],
                 genre: [music.genre],
                 isFavorite: [music.isFavorite]
             }, { validators: [ musicRequiredValidator ] }));
         });
+    }
+
+    private watchUserFormValueChanges() {
+        this.userForm.valueChanges.subscribe(() =>
+            this._userFormRawValueService.userFormRawValue = this.userForm.getRawValue()
+        );
     }
 }

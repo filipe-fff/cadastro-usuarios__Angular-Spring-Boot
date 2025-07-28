@@ -3,6 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { IUser } from "../interfaces/user/user.interface";
 import { UsersListReponse } from "../types/users-list-response";
+import { IUserUpdate } from "../interfaces/user-update/user-update.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -37,8 +38,8 @@ export class UsersService {
     }
 
     // UPDATE
-    update(id: string, user: IUser): Observable<IUser> {
-        return this._httpClient.put<IUser>("http://localhost:8081/user-registration/update/" + id, user);
+    update(user: IUserUpdate): void {
+        this._httpClient.post<IUserUpdate>("http://localhost:8081/user-registration/update", user);
     }
 
     // DELETE

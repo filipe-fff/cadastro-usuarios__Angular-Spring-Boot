@@ -36,15 +36,15 @@ public class Phone {
     private Byte type;
 
     @NonNull
-    @Column(name = "international_code", length = 3)
+    @Column(name = "international_code", nullable = false, length = 3)
     private String internationalCode;
 
     @NonNull
-    @Column(name = "area_code", length = 2)
+    @Column(name = "area_code", nullable = false, length = 2)
     private String areaCode;
 
     @NonNull
-    @Column(name = "number", length = 10)
+    @Column(name = "number", nullable = false, length = 10)
     private String number;
 
     @ManyToOne(fetch = FetchType.LAZY)

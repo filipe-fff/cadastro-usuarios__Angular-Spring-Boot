@@ -2,6 +2,8 @@ import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from "@an
 
 export const passwordConfirmEqualValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 
+    if (!control) return null;
+    
     const password = control.get("password") as FormControl;
     const passwordConfirm = control.get("passwordConfirm") as FormControl;
 

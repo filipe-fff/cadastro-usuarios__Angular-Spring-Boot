@@ -5,6 +5,8 @@ import { map, Observable, of, tap } from "rxjs";
 export const existsByIdNotAndPasswordValidator = (usersService: UsersService): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
 
+        if (!control) return of(null);
+
         const idControl = control.get("id") as FormControl;
         const passwordControl = control.get("password") as FormControl;
 
