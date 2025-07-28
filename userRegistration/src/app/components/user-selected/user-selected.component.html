@@ -3,7 +3,8 @@
         [userSelected]="userSelected"
         [userSelectedIndex]="userSelectedIndex"
         [isInEditMode]="isInEditMode"
-        (onEnableSaveButton)="onEnableSaveButton($event)">
+        (onEnableSaveButton)="onEnableSaveButton($event)"
+        (onUserFormFirstChange)="onUserFormFirstChange()">
         <app-user-update-buttons-container
             [enableSaveButton]="enableSaveButton"
             [isInEditMode]="isInEditMode"

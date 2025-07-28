@@ -73,7 +73,7 @@ public class UserService {
 
     // UPDATE
     @Transactional
-    public void update(UserUpdateDTO userUpdateDTO) {
+    public User update(UserUpdateDTO userUpdateDTO) {
         User user = new User();
 
         user.setId(userUpdateDTO.id());
@@ -91,7 +91,7 @@ public class UserService {
         user.setDependents(this.convertDependentsDTOToDependents(user, userUpdateDTO.dependents()));
         user.setMusics(this.convertMusicsDTOToMusics(user, userUpdateDTO.musics()));
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     // DELETE

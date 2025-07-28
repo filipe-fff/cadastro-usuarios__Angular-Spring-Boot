@@ -1,13 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '../../interfaces/user/user.interface';
-import { UsersService } from '../../services/users.service';
-import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
-import { JsonPipe } from '@angular/common';
-import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
-import { FormGroup } from '@angular/forms';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
+import { UsersService } from '../../services/users.service';
 import { convertUserUpdateFormRawValueToUserUpdate } from '../../utils/convert-user-update-form-raw-value-to-user-update';
+import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
+import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
 
 @Component({
   selector: 'app-user-selected',
@@ -25,7 +23,8 @@ export class UserSelectedComponent implements OnInit {
 
   isInEditMode: boolean = true;
   enableSaveButton: boolean = false;
-
+  userFormFirstValueChange: boolean = false;
+  
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _usersService = inject(UsersService);
   private readonly _userFormRawValueService = inject(UserFormRawValueService);
@@ -40,18 +39,26 @@ export class UserSelectedComponent implements OnInit {
 
   onCancelButton() {
     this.isInEditMode = false;
+
+    this.userSelected = structuredClone(this.userSelected);
   }
 
   onSaveButton() {
     const newUser = convertUserUpdateFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
-    // this._usersService.update(newUser);
+    this._usersService.update(newUser).subscribe({
+      next: () => console.log("Atualizado com sucesso!"),
+      error: (err) => console.log(err)
+    });
   }
 
   onEnableSaveButton(enable: boolean) {
-    setTimeout(() => {
-      this.enableSaveButton = enable
-      console.log("enable =>", enable);
-    }, 0);
+    setTimeout(() => this.enableSaveButton = enable, 0);
+  }
+
+  onUserFormFirstChange() {
+    console.log("onUserFormFirstValueChange");
+
+    this.userFormFirstValueChange = true;
   }
 
   private getUser() {

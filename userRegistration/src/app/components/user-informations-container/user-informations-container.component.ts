@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subscription, take } from 'rxjs';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
 import { CountriesService } from '../../services/countries.service';
@@ -40,12 +40,15 @@ export class UserInformationsContainerComponent extends UserController implement
   countriesList: CountriesList = [];
   statesList: StatesList = [];
 
+  userFormValueChangesSubs = new Subscription();
+
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input({ required: true }) userSelectedIndex: string | undefined;
 
   @Input({ required: true }) isInEditMode: boolean = false;
 
   @Output("onEnableSaveButton") onEnableSaveButtonEmitt = new EventEmitter<boolean>();
+  @Output("onUserFormFirstChange") onUserFormFirstChangeEmitt = new EventEmitter<void>();
 
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
@@ -58,11 +61,14 @@ export class UserInformationsContainerComponent extends UserController implement
 
   ngOnChanges(changes: SimpleChanges): void {
     const HAS_USER_SELECTED = changes["userSelected"] && Object.keys(changes["userSelected"].currentValue).length > 0;
-    console.log()
+    this.currentTabIndex = 0;
 
     if (HAS_USER_SELECTED) {
+      if (this.userFormValueChangesSubs) this.userFormValueChangesSubs.unsubscribe();
+
       this.fulfillUserForm(this.userSelected);
       this.getStates(this.userSelected.country);
+      this.watchUserFormFirstValueChange();
     }
   }
 
@@ -88,5 +94,12 @@ export class UserInformationsContainerComponent extends UserController implement
       .statusChanges
       .pipe(distinctUntilChanged())
       .subscribe(() => this.onEnableSaveButtonEmitt.emit(this.userForm.valid || this.userForm.pending));
+  }
+
+  private watchUserFormFirstValueChange() {
+    this.userFormValueChangesSubs = this.userForm.
+    valueChanges
+    .pipe(take(1))
+    .subscribe(() => this.onUserFormFirstChangeEmitt.emit());
   }
 }

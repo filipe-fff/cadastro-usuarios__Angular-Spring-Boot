@@ -1,7 +1,7 @@
 export const convertDateObjToEnDate = (date: Date): string => {
     
     const day = toDecimal(date.getDate());
-    const month = toDecimal(date.getMonth());
+    const month = toDecimal(date.getMonth() + 1);
     const year = date.getFullYear();
 
     return `${year}-${month}-${day}`;

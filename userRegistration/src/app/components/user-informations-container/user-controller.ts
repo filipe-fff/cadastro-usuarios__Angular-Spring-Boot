@@ -76,8 +76,6 @@ export class UserController {
     }
 
     fulfillUserForm(user: IUser) {
-        console.log("fulfillUserForm");
-
         this.resetUserForm();
 
         this.fulfillGeneralInformations(user);
@@ -88,8 +86,6 @@ export class UserController {
 
         this.userForm.markAllAsTouched();
         this.userForm.updateValueAndValidity();
-
-        console.log("userForm valid", this.userForm.valid);
     }
 
     addDependent() {

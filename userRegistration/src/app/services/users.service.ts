@@ -38,8 +38,8 @@ export class UsersService {
     }
 
     // UPDATE
-    update(user: IUserUpdate): void {
-        this._httpClient.post<IUserUpdate>("http://localhost:8081/user-registration/update", user);
+    update(user: IUserUpdate): Observable<IUserUpdate> {
+        return this._httpClient.post<IUserUpdate>("http://localhost:8081/user-registration/update", user);
     }
 
     // DELETE

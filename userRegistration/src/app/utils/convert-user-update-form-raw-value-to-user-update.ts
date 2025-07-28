@@ -28,7 +28,7 @@ const convertToGeneralInformation = (general: IGeneralInformationsUserForm): Par
     return({
         id: general.id,
         name: general.name,
-        photo: general.photo,
+        photoUrl: general.photoUrl,
         email: general.email,
         password: general.password,
         country: general.country,

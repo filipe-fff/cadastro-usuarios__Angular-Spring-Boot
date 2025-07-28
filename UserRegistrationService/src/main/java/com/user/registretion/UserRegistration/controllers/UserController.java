@@ -53,8 +53,8 @@ public class UserController {
 
     // UPDATE
     @PostMapping("/update")
-    public void update(@RequestBody UserUpdateDTO userUpdateDTO) {
-        this.userService.update(userUpdateDTO);
+    public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
+        return this.userService.update(userUpdateDTO);
     }
 
     // DELETE

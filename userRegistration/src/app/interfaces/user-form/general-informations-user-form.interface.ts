@@ -1,7 +1,7 @@
 export interface IGeneralInformationsUserForm {
     id: string;
     name: string;
-    photo: string;
+    photoUrl: string;
     email: string;
     password: string;
     passwordConfirm: string;
