@@ -171,6 +171,7 @@ export class UserController {
         preparePhoneListToDisplay(false, phoneResponse, (phone) => {
             const phoneValidation = phone.type === 3 ? [] : [ Validators.required ];
             this.phoneList.push(this._fb.group({
+                id: [phone.id],
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
                 number: [phone.number, phoneValidation]
@@ -181,6 +182,7 @@ export class UserController {
     private fulfillAddressList(addressResponse: AddressList) {
         prepareAddressListToDisplay(false, addressResponse, (address) => {
             this.addressList.push(this._fb.group({
+                id: [address.id],
                 type: [address.type],
                 typeDescription: [{value: address.typeDescription, disabled: true }],
                 street: [address.street],
@@ -199,6 +201,7 @@ export class UserController {
     private createDependentGroup(dependent: IDependent | null = null) {
         if (dependent) {
             this.dependentsList.push(this._fb.group({
+                id: [dependent.id],
                 name: [dependent.name, Validators.required],
                 age: [dependent.age, Validators.required],
                 document: [dependent.document, Validators.required]

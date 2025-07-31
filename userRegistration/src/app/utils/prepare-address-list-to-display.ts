@@ -26,6 +26,7 @@ export const addressFormat = (address: IAddress | undefined, addressType: number
     
     if (!address) {
         return ({
+            id: "-",
             street: "-",
             complement: "-",
             country: "-",
@@ -47,6 +48,7 @@ export const addressFormatEdit = (address: IAddress | undefined, addressTye: num
     
     if (!address) {
         return ({
+            id: "",
             type: addressTye,
             typeDescription: addressTypeDescriptionMap[addressTye as AddressTypeEnum],
             street: "",
@@ -58,6 +60,7 @@ export const addressFormatEdit = (address: IAddress | undefined, addressTye: num
     }
 
     return ({
+        id: address.id,
         type: addressTye,
         typeDescription: addressTypeDescriptionMap[addressTye as AddressTypeEnum],
         street: address.street,

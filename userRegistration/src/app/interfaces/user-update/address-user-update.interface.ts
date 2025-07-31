@@ -1,4 +1,5 @@
 export interface IAddressUserUpdate {
+    id?: string;
     type: number;
     street: string;
     complement: string;

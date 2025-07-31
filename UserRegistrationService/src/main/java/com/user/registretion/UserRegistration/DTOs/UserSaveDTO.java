@@ -8,8 +8,9 @@ import java.util.List;
 
 public record UserSaveDTO(
         String name,
-        String password,
+        String photoUrl,
         String email,
+        String password,
         String country,
         String state,
         byte maritalStatus,

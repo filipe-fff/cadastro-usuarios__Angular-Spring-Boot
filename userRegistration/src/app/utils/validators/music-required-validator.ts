@@ -4,7 +4,7 @@ export const musicRequiredValidator: ValidatorFn = (control: AbstractControl): V
 
     if (!control) return null;
 
-    const controlsNameList = Object.keys(control.value);
+    const controlsNameList = Object.keys(control.value).filter(controlName => controlName !== "id");
 
     const hasControlChildDirty = controlsNameList.some(controlName => control.get(controlName)?.value);
 

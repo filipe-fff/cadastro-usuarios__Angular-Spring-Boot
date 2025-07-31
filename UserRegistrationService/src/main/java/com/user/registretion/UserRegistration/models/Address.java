@@ -1,7 +1,6 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.user.registretion.UserRegistration.DTOs.AddressDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,7 +25,6 @@ public class Address {
     }
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;

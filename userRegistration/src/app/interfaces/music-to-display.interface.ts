@@ -1,4 +1,5 @@
 export interface IMusicToDisplay {
+    id?: string;
     title: string;
     band: string;
     genre: string | number;

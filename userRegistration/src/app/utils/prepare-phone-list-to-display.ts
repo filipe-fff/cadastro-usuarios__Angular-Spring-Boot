@@ -16,11 +16,20 @@ export const preparePhoneListToDisplay = (toDisplay: boolean, phoneList: PhoneLi
         if (toDisplay) number = phoneFound ? numberFormat(phoneFound) : "-";
         else number = phoneFound ? numberFormatEdit(phoneFound) : "";
 
-        callback({
-            type: phoneType,
-            typeDescription: phoneTypeDescriptionMap[phoneType as PhoneTypeEnum],
-            number
-        });
+        if (phoneFound?.id)
+            callback({
+                id: phoneFound.id,
+                type: phoneType,
+                typeDescription: phoneTypeDescriptionMap[phoneType as PhoneTypeEnum],
+                number
+            });
+
+        else
+            callback({
+                type: phoneType,
+                typeDescription: phoneTypeDescriptionMap[phoneType as PhoneTypeEnum],
+                number
+            });
     });
 };
 

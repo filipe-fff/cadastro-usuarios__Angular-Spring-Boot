@@ -24,6 +24,7 @@ const musicFormat = (music: IMusic | undefined): IMusicToDisplay => {
 
     if (!music) {
         return ({
+            id: "-",
             title: "-",
             band: "-",
             genre: "-",
@@ -40,6 +41,7 @@ const musicFormEdit = (music: IMusic | undefined): IMusicToDisplay => {
 
     if (!music) {
         return ({
+            id: "",
             title: "",
             band: "",
             genre: 0,

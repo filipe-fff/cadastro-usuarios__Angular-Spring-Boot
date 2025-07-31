@@ -1,4 +1,5 @@
 export interface IAddress {
+    id?: string;
     type: number;
     street: string;
     complement: string;

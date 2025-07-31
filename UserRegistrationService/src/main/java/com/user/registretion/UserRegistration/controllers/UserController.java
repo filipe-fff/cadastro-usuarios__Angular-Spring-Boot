@@ -20,9 +20,9 @@ public class UserController {
     UserService userService;
 
     // CREATE
-    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User save(@RequestPart("user") UserSaveDTO userSaveDTO, @Validated @RequestPart("photo") MultipartFile photo) {
-        return this.userService.save(userSaveDTO, photo);
+    @PostMapping(value = "/save")
+    public User save(@RequestBody UserSaveDTO userSaveDTO) {
+        return this.userService.save(userSaveDTO);
     }
 
     // READ
@@ -54,6 +54,7 @@ public class UserController {
     // UPDATE
     @PostMapping("/update")
     public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
+        System.out.println("ok");
         return this.userService.update(userUpdateDTO);
     }
 

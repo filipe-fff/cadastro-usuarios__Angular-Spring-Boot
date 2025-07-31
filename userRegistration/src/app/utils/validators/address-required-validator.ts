@@ -4,7 +4,7 @@ export const addressRequiredValidator: ValidatorFn = (control: AbstractControl):
 
     if (!control) return null;
 
-    const controlsNameList = Object.keys(control.value).filter(controlName => controlName !== "type" && controlName !== "typeDescription");
+    const controlsNameList = Object.keys(control.value).filter(controlName => controlName !== "type" && controlName !== "typeDescription" && controlName !== "id");
 
     const hasControlChildDirty = controlsNameList.some(controlName => control.get(controlName)?.value?.length > 0)
 

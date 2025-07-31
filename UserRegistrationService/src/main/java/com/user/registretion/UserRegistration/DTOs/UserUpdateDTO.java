@@ -10,8 +10,9 @@ import java.util.UUID;
 public record UserUpdateDTO(
         UUID id,
         String name,
-        String password,
+        String photoUrl,
         String email,
+        String password,
         String country,
         String state,
         byte maritalStatus,
