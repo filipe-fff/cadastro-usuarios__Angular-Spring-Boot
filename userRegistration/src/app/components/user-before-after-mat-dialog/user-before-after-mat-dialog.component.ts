@@ -16,6 +16,8 @@ import { GenrePipe } from '../../pipes/genre.pipe';
 import { YesNoPipe } from '../../pipes/yes-no.pipe';
 import { GenresListResponse } from '../../types/genres-list-response';
 import { GenresService } from '../../services/genres.service';
+import { CpfPipe } from '../../pipes/cpf.pipe';
+import { zipArraysPipe } from '../../pipes/zip-arrays.pipe';
 
 @Component({
   selector: 'app-user-before-after-mat-dialog',
@@ -25,8 +27,10 @@ import { GenresService } from '../../services/genres.service';
     AngularMaterialModule,
     MaritalStatusPipe,
     DateFormatPipe,
+    CpfPipe,
     GenrePipe,
-    YesNoPipe
+    YesNoPipe,
+    zipArraysPipe
   ],
   templateUrl: './user-before-after-mat-dialog.component.html',
   styleUrl: './user-before-after-mat-dialog.component.scss'

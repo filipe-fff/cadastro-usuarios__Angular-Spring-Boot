@@ -56,20 +56,18 @@ export class UserSelectedComponent implements OnInit {
       before: this.userBefore,
       after: this.userSelected
     }, (confirm) => {
-      if (confirm) {
+      console.log("confirm =>", confirm);
+
+      if (!confirm) return;
+
         this.userBefore = structuredClone(this.userSelected);
 
         const newUser = convertUserUpdateFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
-        console.log("newuser =>", newUser);
 
         this._usersService.update(newUser).subscribe();
 
         this.userFormFirstValueChange = false;
         this.isInEditMode = false;
-
-      } else {
-        this.userSelected = structuredClone(this.userBefore);
-      }
     });
   }
 
@@ -108,6 +106,6 @@ export class UserSelectedComponent implements OnInit {
       width: "70%"
     });
 
-    confirmDialog.afterClosed().subscribe(confirm);
+    confirmDialog.afterClosed().subscribe(callback);
   }
 }

@@ -6,8 +6,13 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class CpfPipe implements PipeTransform {
 
-    transform(cpf: string): string {
+    transform(cpf: number, hidden: boolean = false): string {
 
-        return `XXX.${cpf.substring(3, 6)}.XXX-${cpf.substring(9, 11)}`;
+        const cpfFormat = cpf.toString();
+
+        if (hidden)
+            return `XXX.${cpfFormat.substring(3, 6)}.XXX-${cpfFormat.substring(9)}`;
+
+        return `${cpfFormat.substring(0, 3)}.${cpfFormat.substring(3, 6)}.${cpfFormat.substring(6, 9)}-${cpfFormat.substring(9)}`;
     }
 }

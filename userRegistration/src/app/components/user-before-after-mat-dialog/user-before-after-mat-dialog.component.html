@@ -2,242 +2,379 @@
     Antes e Depois
 </h1>
 <mat-dialog-content>
-    <div class="grid grid-cols-2 rounded-lg overflow-hidden">
-        <div class="bg-gray-400 text-white">
-            <div class="p-4 font-semibold text-lg bg-black">Antes</div>
-            <div class="p-4 text-lg bg-gray-600">Geral:</div>
-            <div>
-                <div class="p-4 flex gap-4">
-                    <div>Nome:</div>
-                    <div>{{ data.before.name }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Foto:</div>
-                    <div>...</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Email:</div>
-                    <div>{{ data.before.email }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>País:</div>
-                    <div>{{ data.before.country }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Estado:</div>
-                    <div>{{ data.before.state }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Estado Civíl:</div>
-                    <div>{{ data.before.maritalStatus | maritalStatus}}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Renda Mensal:</div>
-                    <div>{{ data.before.monthlyIncome | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Data de Nascimento:</div>
-                    <div>{{ data.before.birthDate | dateFormat }}</div>
-                </div>
-            </div>
-            <div class="p-4 text-lg bg-gray-600">Telefones:</div>
-            <div>
-                <ng-container *ngFor="let phone of beforePhoneListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>{{ phone.typeDescription }}:</div>
-                        <div>{{ phone.number }}</div>
+    <table class="w-full bg-gray-400 text-white rounded-lg overflow-hidden">
+        <thead class="p-4 font-semibold text-lg bg-black">
+            <tr>
+                <th class="px-4 py-2">Antes</th>
+                <th class="px-4 py-2">Depois</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-lg bg-gray-600">
+                <th class="px-4 py-2" colspan="2">
+                    <div class="flex">
+                        Geral
                     </div>
-                </ng-container>
-            </div>
-            <div class="p-4 text-lg bg-gray-600">Endereços:</div>
-            <div>
-                <ng-container *ngFor="let address of beforeAddressListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>Tipo:</div>
-                        <div>{{ address.typeDescription }}</div>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Nome:</div>
+                        <div>{{ data.before.name }}</div>
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Rua:</div>
-                        <div>{{ address.street }}</div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Nome:</div>
+                        <div>{{ data.after.name }}</div>
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Complemento:</div>
-                        <div>{{ address.complement }}</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Email:</div>
+                        <div>{{ data.before.email }}</div>
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>País:</div>
-                        <div>{{ address.country }}</div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Email:</div>
+                        <div>{{ data.after.email }}</div>
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Estado:</div>
-                        <div>{{ address.state }}</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">País:</div>
+                        <div>{{ data.before.country }}</div>
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Cidade:</div>
-                        <div>{{ address.city }}</div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">País:</div>
+                        <div>{{ data.after.country }}</div>
                     </div>
-                    <hr class="bg-white">
-                </ng-container>
-            </div>
-            <div class="p-4 text-lg bg-gray-600">Dependentes:</div>
-                <div>
-                    <ng-container *ngFor="let dependent of data.before.dependents">
-                        <div class="p-4 flex gap-4">
-                            <div>Nome:</div>
-                            <div>{{ dependent.name }}</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Estado:</div>
+                        <div>{{ data.before.state }}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Estado:</div>
+                        <div>{{ data.after.state }}</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Estado Civíl:</div>
+                        <div>{{ data.before.maritalStatus | maritalStatus}}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Estado Civíl:</div>
+                        <div>{{ data.after.maritalStatus | maritalStatus}}</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Renda Mensal:</div>
+                        <div>{{ data.before.monthlyIncome | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Renda Mensal:</div>
+                        <div>{{ data.after.monthlyIncome | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Data de Nascimento:</div>
+                        <div>{{ data.before.birthDate | dateFormat}}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Data de Nascimento:</div>
+                        <div>{{ data.after.birthDate | dateFormat}}</div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="text-lg bg-gray-600">
+                <th class="px-4 py-2" colspan="2">
+                    <div class="flex">
+                        Telefones
+                    </div>
+                </th>
+            </tr>
+            <ng-container *ngFor="let phone of beforePhoneListToDisplay; let i = index;">
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Tipo:</div>
+                            <div>{{ phone.typeDescription }}</div>
                         </div>
-                        <div class="p-4 flex gap-4">
-                            <div>Idate:</div>
-                            <div>{{ dependent.age }}</div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 border-l-white flex gap-4">
+                            <div class="text-gray-600 font-semibold">Tipo:</div>
+                            <div>{{ afterPhoneListToDisplay[i].typeDescription || "" }}</div>
                         </div>
-                        <div class="p-4 flex gap-4">
-                            <div>Documento:</div>
-                            <div>{{ dependent.document }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Número:</div>
+                            <div>{{ phone.number }}</div>
                         </div>
-                        <hr class="bg-white">
-                    </ng-container>
-                </div>
-            <div class="p-4 text-lg bg-gray-600">Músicas:</div>
-            <div>
-                <ng-container *ngFor="let music of beforeMusicsListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>Título:</div>
-                        <div>{{ music.title }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Banda:</div>
-                        <div>{{ music.band }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Gênero:</div>
-                        <div>{{ music.genre | genre : genresList  }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Favorita:</div>
-                        <div>{{ music.isFavorite | yesNo }}</div>
-                    </div>
-                    <hr class="bg-white">
-                </ng-container>
-            </div>
-        </div>
-        <div class="bg-gray-400 text-white">
-            <div class="p-4 font-semibold text-lg bg-black">Depois</div>
-            <div class="p-4 text-lg bg-gray-600"></div>
-            <div>
-                <div class="p-4 flex gap-4">
-                    <div>Nome:</div>
-                    <div>{{ data.after.name }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Foto:</div>
-                    <div>...</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Email:</div>
-                    <div>{{ data.after.email }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>País:</div>
-                    <div>{{ data.after.country }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Estado:</div>
-                    <div>{{ data.after.state }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Estado Civíl:</div>
-                    <div>{{ data.after.maritalStatus | maritalStatus}}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Renda Mensal:</div>
-                    <div>{{ data.after.monthlyIncome | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}</div>
-                </div>
-                <div class="p-4 flex gap-4">
-                    <div>Data de Nascimento:</div>
-                    <div>{{ data.after.birthDate | dateFormat }}</div>
-                </div>
-            </div>
-            <div class="p-4 text-lg bg-gray-600"></div>
-            <div>
-                <ng-container *ngFor="let phone of afterPhoneListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>{{ phone.typeDescription }}:</div>
-                        <div>{{ phone.number }}</div>
-                    </div>
-                </ng-container>
-            </div>
-            <div class="p-4 text-lg bg-gray-600"></div>
-            <div>
-                <ng-container *ngFor="let address of afterAddressListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>Tipo:</div>
-                        <div>{{ address.typeDescription }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Rua:</div>
-                        <div>{{ address.street }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Complemento:</div>
-                        <div>{{ address.complement }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>País:</div>
-                        <div>{{ address.country }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Estado:</div>
-                        <div>{{ address.state }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Cidade:</div>
-                        <div>{{ address.city }}</div>
-                    </div>
-                    <hr class="bg-white">
-                </ng-container>
-            </div>
-            <div class="p-4 text-lg bg-gray-600"></div>
-                <div>
-                    <ng-container *ngFor="let dependent of data.after.dependents">
-                        <div class="p-4 flex gap-4">
-                            <div>Nome:</div>
-                            <div>{{ dependent.name }}</div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Número:</div>
+                            <div>{{ afterPhoneListToDisplay[i].number || "" }}</div>
                         </div>
-                        <div class="p-4 flex gap-4">
-                            <div>Idate:</div>
-                            <div>{{ dependent.age }}</div>
+                    </td>
+                </tr>
+            </ng-container>
+            <tr class="text-lg bg-gray-600">
+                <th class="px-4 py-2" colspan="2">
+                    <div class="flex">
+                        Endenreços
+                    </div>
+                </th>
+            </tr>
+            <ng-container *ngFor="let address of beforeAddressListToDisplay; let i = index;">
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Tipo:</div>
+                            <div>{{ address.typeDescription }}</div>
                         </div>
-                        <div class="p-4 flex gap-4">
-                            <div>Documento:</div>
-                            <div>{{ dependent.document }}</div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Tipo:</div>
+                            <div>{{ afterAddressListToDisplay[i].typeDescription }}</div>
                         </div>
-                        <hr class="bg-white">
-                    </ng-container>
-                </div>
-            <div class="p-4 text-lg bg-gray-600"></div>
-            <div>
-                <ng-container *ngFor="let music of afterMusicsListToDisplay">
-                    <div class="p-4 flex gap-4">
-                        <div>Título:</div>
-                        <div>{{ music.title }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Rua:</div>
+                            <div>{{ address.street }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Rua:</div>
+                            <div>{{ afterAddressListToDisplay[i].street }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Complemento:</div>
+                            <div>{{ address.complement }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Complemento:</div>
+                            <div>{{ afterAddressListToDisplay[i].complement }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">País:</div>
+                            <div>{{ address.country }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">País:</div>
+                            <div>{{ afterAddressListToDisplay[i].country }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Estado:</div>
+                            <div>{{ address.state }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Estado:</div>
+                            <div>{{ afterAddressListToDisplay[i].state }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Cidade:</div>
+                            <div>{{ address.city }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Cidade:</div>
+                            <div>{{ afterAddressListToDisplay[i].city }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+            <tr class="text-lg bg-gray-600">
+                <th class="px-4 py-2" colspan="2">
+                    <div class="flex">
+                        Dependents
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Banda:</div>
-                        <div>{{ music.band }}</div>
+                </th>
+            </tr>
+            <ng-container *ngFor="let dependent of data.before.dependents | zipArrays : data.after.dependents; let i = index;">
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.before.name !== undefined">
+                                <div class="text-gray-600 font-semibold">Nome:</div>
+                                <div>{{ dependent.before.name }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.after.name !== undefined">
+                                <div class="text-gray-600 font-semibold">Nome:</div>
+                                <div>{{ dependent.after.name }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.before.age !== undefined">
+                                <div class="text-gray-600 font-semibold">Idade:</div>
+                                <div>{{ dependent.before.age }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.after.age !== undefined">
+                                <div class="text-gray-600 font-semibold">Idade:</div>
+                                <div>{{ dependent.after.age }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.before.document !== undefined">
+                                <div class="text-gray-600 font-semibold">Documento:</div>
+                                <div>{{ dependent.before.document }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div *ngIf="dependent.after.document !== undefined">
+                                <div class="text-gray-600 font-semibold">Documento:</div>
+                                <div>{{ dependent.after.document }}</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+            <tr class="text-lg bg-gray-600">
+                <th class="px-4 py-2" colspan="2">
+                    <div class="flex">
+                        Músicas
                     </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Gênero:</div>
-                        <div>{{ music.genre | genre : genresList  }}</div>
-                    </div>
-                    <div class="p-4 flex gap-4">
-                        <div>Favorita:</div>
-                        <div>{{ music.isFavorite | yesNo }}</div>
-                    </div>
-                    <hr class="bg-white">
-                </ng-container>
-            </div>
-        </div>
-    </div>
+                </th>
+            </tr>
+            <ng-container *ngFor="let music of beforeMusicsListToDisplay; let i = index;">
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Título:</div>
+                            <div>{{ music.title }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Título:</div>
+                            <div>{{ afterMusicsListToDisplay[i].title }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Banda:</div>
+                            <div>{{ music.band }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Banda:</div>
+                            <div>{{ afterMusicsListToDisplay[i].band }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Gênero:</div>
+                            <div>{{ music.genre | genre : genresList}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Gênero::</div>
+                            <div>{{ afterMusicsListToDisplay[i].genre | genre : genresList }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Favorita:</div>
+                            <div>{{ music.isFavorite | yesNo }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="px-4 py-2 flex gap-4">
+                            <div class="text-gray-600 font-semibold">Favorita:</div>
+                            <div>{{ afterMusicsListToDisplay[i].isFavorite | yesNo }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button [mat-dialog-close]="true">Sim</button>
