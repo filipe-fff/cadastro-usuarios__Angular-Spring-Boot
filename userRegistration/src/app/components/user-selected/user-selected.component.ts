@@ -10,6 +10,7 @@ import { UserBeforeAfterMatDialogComponent } from '../user-before-after-mat-dial
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
 import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-afrter-mat-dialog.interface';
+import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
 
 @Component({
   selector: 'app-user-selected',
@@ -34,6 +35,7 @@ export class UserSelectedComponent implements OnInit {
   private readonly _usersService = inject(UsersService);
   private readonly _userFormRawValueService = inject(UserFormRawValueService);
   private readonly _matDialog = inject(MatDialog);
+  private readonly _confirmMatDialogService = inject(ConfirmMatDialogService);
 
   ngOnInit() {
     this.getUser();
@@ -44,9 +46,24 @@ export class UserSelectedComponent implements OnInit {
   }
 
   onCancelButton() {
-    this.isInEditMode = false;
 
-    this.userSelected = structuredClone(this.userSelected);
+    if (this.userFormFirstValueChange) {
+
+      this._confirmMatDialogService.open({
+        title: "Cancelar as Alterações.",
+        description: "O Formulário foi alterado, você quer realmente cancelar as alterações?"
+      }, (value: boolean) => {
+        if (!value) return;
+
+        this.userSelected = structuredClone(this.userSelected);
+
+        this.isInEditMode = false;
+        this.userFormFirstValueChange = false;
+      });
+
+    } else {
+      this.isInEditMode = false;
+    }
   }
 
   onSaveButton() {
@@ -55,16 +72,13 @@ export class UserSelectedComponent implements OnInit {
     this.onUserBeforeAfterDialog({
       before: this.userBefore,
       after: this.userSelected
-    }, (confirm) => {
-      console.log("confirm =>", confirm);
+    }, (value) => {
 
-      if (!confirm) return;
+      if (!value) return;
 
         this.userBefore = structuredClone(this.userSelected);
 
-        const newUser = convertUserUpdateFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
-
-        this._usersService.update(newUser).subscribe();
+        this.onUserUpdate();
 
         this.userFormFirstValueChange = false;
         this.isInEditMode = false;
@@ -100,7 +114,7 @@ export class UserSelectedComponent implements OnInit {
     });
   }
 
-  private onUserBeforeAfterDialog(data: IUserBeforeAfterMatDialog, callback: (confirm: boolean) => void) {
+  private onUserBeforeAfterDialog(data: IUserBeforeAfterMatDialog, callback: (value: boolean) => void) {
     const confirmDialog = this._matDialog.open(UserBeforeAfterMatDialogComponent, {
       data,
       width: "70%"
