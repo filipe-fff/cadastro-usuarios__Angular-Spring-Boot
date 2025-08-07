@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-afrter-mat-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
 import { UsersService } from '../../services/users.service';
@@ -9,8 +10,8 @@ import { convertUserUpdateFormRawValueToUserUpdate } from '../../utils/convert-u
 import { UserBeforeAfterMatDialogComponent } from '../user-before-after-mat-dialog/user-before-after-mat-dialog.component';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
-import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-afrter-mat-dialog.interface';
 import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
+import { UserBeforeAfterMatDialogService } from '../../services/user-before-after-mat-dialog.service';
 
 @Component({
   selector: 'app-user-selected',
@@ -33,9 +34,9 @@ export class UserSelectedComponent implements OnInit {
   
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _usersService = inject(UsersService);
-  private readonly _userFormRawValueService = inject(UserFormRawValueService);
-  private readonly _matDialog = inject(MatDialog);
   private readonly _confirmMatDialogService = inject(ConfirmMatDialogService);
+  private readonly _userBeforeAfterMatDialogService = inject(UserBeforeAfterMatDialogService);
+  private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
   ngOnInit() {
     this.getUser();
@@ -67,21 +68,22 @@ export class UserSelectedComponent implements OnInit {
   }
 
   onSaveButton() {
-    this.userSelected = structuredClone(convertUserUpdateFormRawValueToUser(this._userFormRawValueService.userFormRawValue));
-
-    this.onUserBeforeAfterDialog({
+    this._userBeforeAfterMatDialogService.open({
       before: this.userBefore,
       after: this.userSelected
     }, (value) => {
-
+      
       if (!value) return;
 
+        this.userSelected = structuredClone(convertUserUpdateFormRawValueToUser(this._userFormRawValueService.userFormRawValue));
         this.userBefore = structuredClone(this.userSelected);
 
         this.onUserUpdate();
 
         this.userFormFirstValueChange = false;
         this.isInEditMode = false;
+
+        console.log("SALVOU !!!");
     });
   }
 
@@ -112,14 +114,5 @@ export class UserSelectedComponent implements OnInit {
       next: () => console.log("Atualizado com sucesso!"),
       error: (err) => console.log(err)
     });
-  }
-
-  private onUserBeforeAfterDialog(data: IUserBeforeAfterMatDialog, callback: (value: boolean) => void) {
-    const confirmDialog = this._matDialog.open(UserBeforeAfterMatDialogComponent, {
-      data,
-      width: "70%"
-    });
-
-    confirmDialog.afterClosed().subscribe(callback);
   }
 }
