@@ -69,15 +69,17 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   onSaveButton() {
+    const newUser = convertUserUpdateFormRawValueToUser(this._userFormRawValueService.userFormRawValue);
+
     this._userBeforeAfterMatDialogService.open({
       before: this.userBefore,
-      after: this.userSelected
+      after: newUser
     }, (value) => {
       
       if (!value) return;
 
-        this.userSelected = structuredClone(convertUserUpdateFormRawValueToUser(this._userFormRawValueService.userFormRawValue));
-        this.userBefore = structuredClone(this.userSelected);
+        this.userSelected = structuredClone(newUser);
+        this.userBefore = structuredClone(newUser);
 
         this.onUserUpdate();
 
