@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { UserSelectedComponent } from './components/user-selected/user-selected.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
+import { confirmExitGuard } from './guards/confirm-exit.guard';
 
 export const routes: Routes = [
     {
@@ -14,6 +15,7 @@ export const routes: Routes = [
     },
     {
         path: "user/:id",
-        component: UserSelectedComponent
+        component: UserSelectedComponent,
+        canDeactivate: [ confirmExitGuard() ]
     }
 ];

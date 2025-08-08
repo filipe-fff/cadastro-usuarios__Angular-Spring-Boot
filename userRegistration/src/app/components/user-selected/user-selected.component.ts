@@ -12,6 +12,7 @@ import { UserInformationsContainerComponent } from '../user-informations-contain
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
 import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
 import { UserBeforeAfterMatDialogService } from '../../services/user-before-after-mat-dialog.service';
+import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
 
 @Component({
   selector: 'app-user-selected',
@@ -23,7 +24,7 @@ import { UserBeforeAfterMatDialogService } from '../../services/user-before-afte
   templateUrl: './user-selected.component.html',
   styleUrl: './user-selected.component.scss'
 })
-export class UserSelectedComponent implements OnInit {
+export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   userSelected: IUser = {} as IUser;
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
