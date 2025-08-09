@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { passwordStrengthProgressBar } from '../../utils/password-strength-progress-bar';
-import { CountriesList } from '../../types/countries-list';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { StatesList } from '../../types/states-list';
-import { MaritalStatusObjList } from '../../types/marital-status-obj-list';
-import { maritalStatusObjArray } from '../../utils/marital-status-description-map';
 import { NgxMaskDirective } from 'ngx-mask';
+import { AngularMaterialModule } from '../../angular-material/angular-material.module';
+import { CountriesList } from '../../types/countries-list';
+import { MaritalStatusObjList } from '../../types/marital-status-obj-list';
+import { StatesList } from '../../types/states-list';
+import { maritalStatusObjArray } from '../../utils/marital-status-description-map';
+import { passwordStrengthProgressBar } from '../../utils/password-strength-progress-bar';
 
 @Component({
   selector: 'app-general-informations-edit',
@@ -22,7 +22,7 @@ import { NgxMaskDirective } from 'ngx-mask';
   templateUrl: './general-informations-edit.component.html',
   styleUrl: './general-informations-edit.component.scss'
 })
-export class GeneralInformationsEditComponent implements OnInit, OnChanges {
+export class GeneralInformationsEditComponent implements OnInit {
   passwordStrength: number = 0;
 
   countriesListFiltered: CountriesList = [];
@@ -38,14 +38,13 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
   @Output("onCountrySelected") onCountrySelectedEmitt = new EventEmitter<string>();
 
   ngOnInit() {
+    this.watchPasswordValueChanges();
     this.watchCountryValueChange();
     this.watchStateValueChange();
 
     this.getMinDate();
     this.getMaxDate();
   }
-
-  ngOnChanges(changes: SimpleChanges): void { }
 
   get nameControl(): FormControl {
     return this.userForm.get("generalInformations.name") as FormControl;
@@ -79,9 +78,8 @@ export class GeneralInformationsEditComponent implements OnInit, OnChanges {
     return this.userForm.get("generalInformations.monthlyIncome") as FormControl;
   }
 
-  onPasswordInputAndChangesEvent(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.passwordStrength = passwordStrengthProgressBar(value);
+  watchPasswordValueChanges() {
+    this.passwordControl.valueChanges.subscribe(password => this.passwordStrength = passwordStrengthProgressBar(password));
   }
 
   onCountryFocusEvent() {

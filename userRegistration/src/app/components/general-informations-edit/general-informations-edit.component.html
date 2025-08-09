@@ -34,10 +34,8 @@
                             matInput
                             placeholder="abc123"
                             formControlName="password"
-                            #passwordRef
-                            (input)="onPasswordInputAndChangesEvent($event)">
+                            #passwordRef>
                         <mat-progress-bar
-                            *ngIf="passwordControl.dirty"
                             [ngClass]="{
                                 'strong-password': passwordStrength === 100,
                                 'medium-password': passwordStrength === 50,

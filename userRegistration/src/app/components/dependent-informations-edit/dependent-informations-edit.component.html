@@ -37,6 +37,9 @@
                             <mat-error *ngIf="dependentInformations.controls[i].get('document')?.hasError('mask')">
                                 O <strong>Documento</strong> é inválido.
                             </mat-error>
+                            <mat-error *ngIf="dependentInformations.controls[i].get('document')?.hasError('existsDocumentError')">
+                                O <strong>Documento</strong> já existe.
+                            </mat-error>
                         </mat-form-field>
                         <div class="pt-3 flex justify-center">
                             <div>

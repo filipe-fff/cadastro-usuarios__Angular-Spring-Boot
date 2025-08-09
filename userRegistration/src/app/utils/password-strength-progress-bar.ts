@@ -1,6 +1,8 @@
 import zxcvbn from "zxcvbn";
 
 export const passwordStrengthProgressBar = (password: string): number => {
+    if (!password) return 0;
+
     const strength = zxcvbn(password);
 
     switch(strength.score) {

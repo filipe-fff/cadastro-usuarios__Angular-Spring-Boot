@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { IUser } from "../interfaces/user/user.interface";
 import { UsersListReponse } from "../types/users-list-response";
 import { IUserUpdate } from "../interfaces/user-update/user-update.interface";
+import { IPhone } from "../interfaces/user/phone.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,22 @@ export class UsersService {
     }
 
     existsByIdNotAndPassword(id: string, password: string): Observable<boolean> {
-        return this._httpClient.put<boolean>('http://localhost:8081/user-registration/exists-password/' + id, password);
+        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password/" + id, password);
+    }
+
+    existsByIdNotAndPhone(userId: string, phone: IPhone): Observable<boolean> {
+        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone/" + userId, phone);
+    }
+
+    existsByIdNotAndDocument(id: string | null, document: number | null): Observable<boolean> {
+        const headers = { "Content-Type": "application/json" };
+        const body = document;
+
+        if (id) {
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document/" + id, body, { headers });
+        } else {
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document", body, { headers });
+        }
     }
 
     // UPDATE

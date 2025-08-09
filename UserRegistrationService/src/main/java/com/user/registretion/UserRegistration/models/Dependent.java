@@ -38,7 +38,7 @@ public class Dependent {
     private Byte age;
 
     @NonNull
-    @Column(name = "document", nullable = false)
+    @Column(name = "document", nullable = false, unique = true)
     private Long document;
 
     @ManyToOne(fetch = FetchType.LAZY)

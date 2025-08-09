@@ -5,7 +5,7 @@
             formArrayName="phoneList">
             <ng-container [formGroupName]="i">
                 <mat-form-field>
-                    <mat-label>Residencial:</mat-label>
+                    <mat-label>{{ phone.value.typeDescription }}:</mat-label>
                     <input
                         matInput
                         placeholder="+55 11 1111-2222"
@@ -18,6 +18,9 @@
                     </mat-error>
                     <mat-error *ngIf="phoneList.controls[i].get('number')?.hasError('mask')">
                         O <strong>Telefone</strong> é inválido.
+                    </mat-error>
+                    <mat-error *ngIf="phoneList.controls[i].get('number')?.hasError('existsPhoneError')">
+                        O <strong>Telefone</strong> já existe.
                     </mat-error>
                 </mat-form-field>
             </ng-container>

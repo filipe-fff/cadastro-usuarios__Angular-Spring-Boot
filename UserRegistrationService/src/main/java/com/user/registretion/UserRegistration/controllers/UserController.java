@@ -1,14 +1,14 @@
 package com.user.registretion.UserRegistration.controllers;
 
+import com.user.registretion.UserRegistration.DTOs.PhoneDTO;
 import com.user.registretion.UserRegistration.DTOs.UserSaveDTO;
 import com.user.registretion.UserRegistration.DTOs.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
+import com.user.registretion.UserRegistration.services.DependentService;
+import com.user.registretion.UserRegistration.services.PhoneService;
 import com.user.registretion.UserRegistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +18,12 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    PhoneService phoneService;
+
+    @Autowired
+    DependentService dependentService;
 
     // CREATE
     @PostMapping(value = "/save")
@@ -49,6 +55,21 @@ public class UserController {
     @PutMapping("/exists-password/{id}")
     public boolean existsByIdNotAndPassword(@PathVariable("id") UUID id, @RequestBody String password) {
         return userService.existsByIdNotAndPassword(id, password);
+    }
+
+    @PutMapping("/exists-phone/{userId}")
+    public boolean existsByIdNotAndPhone(@PathVariable("userId") UUID userId, @RequestBody PhoneDTO phoneDTO) {
+        return phoneService.existsIdNotAndPhone(userId, phoneDTO);
+    }
+
+    @PutMapping("/exists-document/{id}")
+    public boolean existsByIdNotAndDocument(@PathVariable("id") UUID id, @RequestBody Long document) {
+        return dependentService.existsByIdNotAndDocument(id, document);
+    }
+
+    @PutMapping("/exists-document")
+    public boolean existsByIdNotAndDocument(@RequestBody Long document) {
+        return dependentService.existsByIdNotAndDocument(null, document);
     }
 
     // UPDATE

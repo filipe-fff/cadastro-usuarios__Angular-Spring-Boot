@@ -1,24 +1,24 @@
 import { inject } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { IDependent } from "../../interfaces/user/dependent.interface";
 import { IUser } from "../../interfaces/user/user.interface";
+import { UserFormRawValueService } from "../../services/user-form-raw-value.service";
+import { UsersService } from "../../services/users.service";
 import { AddressList } from "../../types/address-list";
-import { PhoneList } from "../../types/phone-list";
 import { DependentsList } from "../../types/dependents-list";
 import { MusicsList } from "../../types/musics-list";
-import { preparePhoneListToDisplay } from "../../utils/prepare-phone-list-to-display";
-import { prepareAddressListToDisplay } from "../../utils/prepare-address-list-to-display";
-import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
-import { UsersService } from "../../services/users.service";
-import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
-import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
-import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
-import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
+import { PhoneList } from "../../types/phone-list";
 import { convertEnDateToDateObj } from "../../utils/convert-en-date-to-date-obj";
-import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
-import { IDependent } from "../../interfaces/user/dependent.interface";
+import { prepareAddressListToDisplay } from "../../utils/prepare-address-list-to-display";
 import { prepareMusicsListToDisplay } from "../../utils/prepare-musics-list-to-display";
+import { preparePhoneListToDisplay } from "../../utils/prepare-phone-list-to-display";
+import { addressRequiredValidator } from "../../utils/validators/address-required-validator";
+import { existsByIdNotAndEmailValidator } from "../../utils/validators/exists-by-id-not-and-email-validator";
+import { existsByIdNotAndPhoneValidator } from "../../utils/validators/exists-by-id-not-and-phone-validator";
 import { musicRequiredValidator } from "../../utils/validators/music-required-validator";
-import { UserFormRawValueService } from "../../services/user-form-raw-value.service";
+import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
+import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
+import { existsByIdAndDocumentValidator } from "../../utils/validators/exists-by-id-not-and-document-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -79,7 +79,7 @@ export class UserController {
         this.resetUserForm();
 
         this.fulfillGeneralInformations(user);
-        this.fulfillPhoneList(user.phoneList);
+        this.fulfillPhoneList(user.id ,user.phoneList);
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
@@ -114,7 +114,7 @@ export class UserController {
                     ]
                 }],
                 password: ["", {
-                    updateOn: "blur",
+                    // updateOn: "blur", // Ative o blur quando deixar a validação assincrona
                     validators: [ Validators.required, passwordStrengthValidator ]
                 }],
                 passwordConfirm: ["", [ Validators.required ]],
@@ -126,9 +126,9 @@ export class UserController {
             }, {
                 validators: [ passwordConfirmEqualValidator ],
                 asyncValidators: [
-                    existsByIdNotAndNameValidator(this._usersService),
+                    // existsByIdNotAndNameValidator(this._usersService),
                     existsByIdNotAndEmailValidator(this._usersService),
-                    existsByIdNotAndPasswordValidator(this._usersService)
+                    // existsByIdNotAndPasswordValidator(this._usersService)
                 ],
             }),
             contactInformations: this._fb.group({
@@ -167,14 +167,17 @@ export class UserController {
         });
     }
 
-    private fulfillPhoneList(phoneResponse: PhoneList) {
+    private fulfillPhoneList(userId: string, phoneResponse: PhoneList) {
         preparePhoneListToDisplay(false, phoneResponse, (phone) => {
             const phoneValidation = phone.type === 3 ? [] : [ Validators.required ];
             this.phoneList.push(this._fb.group({
                 id: [phone.id],
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
-                number: [phone.number, phoneValidation]
+                number: [phone.number, Validators.required]
+            }, {
+                updateOn: "blur",
+                asyncValidators: [ existsByIdNotAndPhoneValidator(userId, this._usersService) ]
             }));
         });
     }
@@ -199,20 +202,16 @@ export class UserController {
     }
 
     private createDependentGroup(dependent: IDependent | null = null) {
-        if (dependent) {
-            this.dependentsList.push(this._fb.group({
-                id: [dependent.id],
-                name: [dependent.name, Validators.required],
-                age: [dependent.age, Validators.required],
-                document: [dependent.document, Validators.required]
+
+        this.dependentsList.push(this._fb.group({
+            id: [dependent?.id ?? ""],
+            name: [dependent?.name ?? "", Validators.required],
+            age: [dependent?.age ?? null, Validators.required],
+            document: [dependent?.document ?? null, Validators.required]
+            }, {
+                updateOn: "blur",
+                asyncValidators: [existsByIdAndDocumentValidator(this._usersService)]
             }));
-        } else {
-            this.dependentsList.push(this._fb.group({
-                name: ["", Validators.required],
-                age: [null, Validators.required],
-                document: [null, Validators.required]
-            }));
-        }
     }
 
     private fulfillMusics(musicsResponse: MusicsList) {
