@@ -23,7 +23,7 @@ import { existsByIdAndDocumentValidator } from "../../utils/validators/exists-by
 export class UserController {
     userForm!: FormGroup;
 
-    private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+    private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     private readonly _fb = inject(FormBuilder);
     private readonly _usersService = inject(UsersService);
