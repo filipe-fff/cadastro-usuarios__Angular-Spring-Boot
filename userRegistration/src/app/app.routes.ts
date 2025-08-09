@@ -17,5 +17,9 @@ export const routes: Routes = [
         path: "user/:id",
         component: UserSelectedComponent,
         canDeactivate: [ confirmExitGuard() ]
+    },
+    {
+        path: "**",
+        loadComponent: () => import("./components/not-found/not-found.component").then(m => m.NotFoundComponent)
     }
 ];

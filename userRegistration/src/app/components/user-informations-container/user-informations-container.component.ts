@@ -61,11 +61,11 @@ export class UserInformationsContainerComponent extends UserController implement
 
   ngOnChanges(changes: SimpleChanges): void {
     const HAS_USER_SELECTED = changes["userSelected"] && Object.keys(changes["userSelected"].currentValue).length > 0;
-    this.currentTabIndex = 0;
-
+    
     if (HAS_USER_SELECTED) {
       if (this.userFormValueChangesSubs) this.userFormValueChangesSubs.unsubscribe();
-
+      
+      this.currentTabIndex = 0;
       this.fulfillUserForm(this.userSelected);
       this.getStates(this.userSelected.country);
       this.watchUserFormFirstValueChange();

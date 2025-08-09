@@ -29,7 +29,7 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
 
-  isInEditMode: boolean = true;
+  isInEditMode: boolean = false;
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
   
