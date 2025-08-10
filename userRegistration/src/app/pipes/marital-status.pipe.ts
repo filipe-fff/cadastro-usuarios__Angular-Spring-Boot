@@ -7,7 +7,9 @@ import { MaritaStatusEnum } from "../enums/marital-status.enum";
     standalone: true
 })
 export class MaritalStatusPipe implements PipeTransform {
-    transform(maritalStatusType: number): string {
+    transform(maritalStatusType: number | null): string {
+        if (maritalStatusType === null) return "";
+
         return maritalStatusDescriptionMap[maritalStatusType as MaritaStatusEnum];
     }
 }

@@ -11,8 +11,8 @@ export interface IUser {
     email: string;
     country: string;
     state: string;
-    maritalStatus: number;
-    monthlyIncome: number;
+    maritalStatus: number | null;
+    monthlyIncome: number | null;
     birthDate: string;
     phoneList: PhoneList;
     addressList: AddressList;

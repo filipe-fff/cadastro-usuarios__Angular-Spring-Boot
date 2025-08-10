@@ -15,7 +15,7 @@ export const existsByIdNotAndPhoneValidator = (userId: string, usersService: Use
         const typeDescriptionControl = control.get("typeDescription") as FormControl;
         const numberControl = control.get("number") as FormControl;
 
-        if (!idControl || !typeControl || !typeDescriptionControl || !numberControl) return of(null);
+        if (!idControl.value || !typeControl.value || !typeDescriptionControl.value || !numberControl.value) return of(null);
 
         const phone = convertPhoneToDisplayToPhone({
             id: idControl.value,

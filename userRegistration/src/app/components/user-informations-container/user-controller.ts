@@ -59,20 +59,20 @@ export class UserController {
         return this.userForm.get("contactInformations.addressList") as FormArray;
     }
 
-    get generalInformationsInvalidAndTouched(): boolean {
-        return this.generalInformations.invalid && this.generalInformations.touched;
+    get generalInformationsValid(): boolean {
+        return this.generalInformations.valid;
     }
 
-    get contactInformationsInvalidAndTouched(): boolean {
-        return this.contactInformations.invalid && this.generalInformations.touched;
+    get contactInformationsValid(): boolean {
+        return this.contactInformations.valid;
     }
 
-    get dependentInformationsInvalidAndTouched(): boolean {
-        return this.dependentsList.invalid && this.generalInformations.touched;
+    get dependentInformationsValid(): boolean {
+        return this.dependentsList.valid;
     }
 
-    get musicInformationsInvalidAndTouched(): boolean {
-        return this.musicsList.invalid && this.generalInformations.touched;
+    get musicInformationsValid(): boolean {
+        return this.musicsList.valid;
     }
 
     fulfillUserForm(user: IUser) {

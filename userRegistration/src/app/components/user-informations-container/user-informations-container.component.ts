@@ -56,13 +56,11 @@ export class UserInformationsContainerComponent extends UserController implement
 
   ngOnInit() {
     this.getCountries();
-    this.onUserFormTouchedAndValidity();
     this.watchUserFormStatusChanges();
   }
-
+  
   ngOnChanges(changes: SimpleChanges): void {
     const HAS_USER_SELECTED = changes["userSelected"];
-    this.onUserFormTouchedAndValidity();
     
     if (HAS_USER_SELECTED) {
       if (this.userFormValueChangesSubs) this.userFormValueChangesSubs.unsubscribe();
@@ -71,6 +69,7 @@ export class UserInformationsContainerComponent extends UserController implement
       this.fulfillUserForm(this.userSelected);
       this.getStates(this.userSelected.country);
       this.watchUserFormFirstValueChange();
+      this.onUserFormTouchedAndValidity();
     }
   }
 
@@ -83,9 +82,6 @@ export class UserInformationsContainerComponent extends UserController implement
     if (this.shouldMarkUserFormTouchedAndValidity) {
       this.userForm.markAllAsTouched();
       this.userForm.updateValueAndValidity();
-    } else {
-      this.userForm.markAsUntouched();
-      this.userForm.markAsPristine();
     }
   }
 

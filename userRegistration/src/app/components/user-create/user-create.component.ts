@@ -17,5 +17,26 @@ export class UserCreateComponent implements OnInit, ICanDeactivateWithDialog {
   isInEditMode: boolean = true;
   shouldMarkUserFormTouchedAndValidity: boolean = false;
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getNewUser();
+  }
+
+  getNewUser() {
+    this.newUser = ({
+      id: "",
+      name: "",
+      photoUrl: "",
+      email: "",
+      password: "",
+      country: "",
+      state: "",
+      maritalStatus: null,
+      monthlyIncome: null,
+      birthDate: "",
+      phoneList: [],
+      addressList: [],
+      dependents: [],
+      musics: []
+    }) as IUser;
+  }
 }
