@@ -17,7 +17,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     Geral
-                    <mat-icon *ngIf="isInEditMode && !generalInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                    <mat-icon *ngIf="isInEditMode && generalInformationsInvalidAndTouched" color="warn" class="text-[12px]">circle</mat-icon>
                 </ng-template>
                 
                 <app-general-informations *ngIf="!isInEditMode" [userSelected]="userSelected"></app-general-informations>
@@ -31,7 +31,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     Contato
-                    <mat-icon *ngIf="isInEditMode && !contactInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                    <mat-icon *ngIf="isInEditMode && contactInformationsInvalidAndTouched" color="warn" class="text-[12px]">circle</mat-icon>
                 </ng-template>
                 <app-contact-informations *ngIf="!isInEditMode" [userSelected]="userSelected"></app-contact-informations>
                 <app-contact-informations-edit *ngIf="isInEditMode" [userForm]="userForm"></app-contact-informations-edit>
@@ -39,7 +39,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     Dependente
-                    <mat-icon *ngIf="isInEditMode && !dependentInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                    <mat-icon *ngIf="isInEditMode && dependentInformationsInvalidAndTouched" color="warn" class="text-[12px]">circle</mat-icon>
                 </ng-template>
                 <app-dependent-informations *ngIf="!isInEditMode" [dependentsList]="userSelected.dependents"></app-dependent-informations>
                 <app-dependent-informations-edit
@@ -51,7 +51,7 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     Música
-                    <mat-icon *ngIf="isInEditMode && !musicInformationsValid" color="warn" class="text-[12px]">circle</mat-icon>
+                    <mat-icon *ngIf="isInEditMode && musicInformationsInvalidAndTouched" color="warn" class="text-[12px]">circle</mat-icon>
                 </ng-template>
                 <app-music-informations *ngIf="!isInEditMode" [musicsList]="userSelected.musics"></app-music-informations>
                 <app-music-informations-edit *ngIf="isInEditMode" [userForm]="userForm"></app-music-informations-edit>

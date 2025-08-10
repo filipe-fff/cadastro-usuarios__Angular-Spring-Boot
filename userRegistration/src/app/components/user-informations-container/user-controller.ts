@@ -59,20 +59,20 @@ export class UserController {
         return this.userForm.get("contactInformations.addressList") as FormArray;
     }
 
-    get generalInformationsValid(): boolean {
-        return this.generalInformations.valid;
+    get generalInformationsInvalidAndTouched(): boolean {
+        return this.generalInformations.invalid && this.generalInformations.touched;
     }
 
-    get contactInformationsValid(): boolean {
-        return this.contactInformations.valid;
+    get contactInformationsInvalidAndTouched(): boolean {
+        return this.contactInformations.invalid && this.generalInformations.touched;
     }
 
-    get dependentInformationsValid(): boolean {
-        return this.dependentsList.valid;
+    get dependentInformationsInvalidAndTouched(): boolean {
+        return this.dependentsList.invalid && this.generalInformations.touched;
     }
 
-    get musicInformationsValid(): boolean {
-        return this.musicsList.valid;
+    get musicInformationsInvalidAndTouched(): boolean {
+        return this.musicsList.invalid && this.generalInformations.touched;
     }
 
     fulfillUserForm(user: IUser) {
@@ -83,9 +83,6 @@ export class UserController {
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
-
-        this.userForm.markAllAsTouched();
-        this.userForm.updateValueAndValidity();
     }
 
     addDependent() {
@@ -174,7 +171,7 @@ export class UserController {
                 id: [phone.id],
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
-                number: [phone.number, Validators.required]
+                number: [phone.number, phoneValidation]
             }, {
                 updateOn: "blur",
                 asyncValidators: [ existsByIdNotAndPhoneValidator(userId, this._usersService) ]
@@ -198,7 +195,7 @@ export class UserController {
     }
 
     private fulfillDependents(dependentsResponse: DependentsList) {
-        dependentsResponse.forEach(this.createDependentGroup.bind(this));
+        (dependentsResponse ?? []).forEach(this.createDependentGroup.bind(this));
     }
 
     private createDependentGroup(dependent: IDependent | null = null) {

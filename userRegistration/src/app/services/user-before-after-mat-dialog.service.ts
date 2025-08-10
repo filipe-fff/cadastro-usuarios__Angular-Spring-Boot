@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { IUserBeforeAfterMatDialog } from "../interfaces/user-before-afrter-mat-dialog.interface";
+import { IUserBeforeAfterMatDialog } from "../interfaces/user-before-after-mat-dialog.interface";
 import { UserBeforeAfterMatDialogComponent } from "../components/user-before-after-mat-dialog/user-before-after-mat-dialog.component";
 
 @Injectable({

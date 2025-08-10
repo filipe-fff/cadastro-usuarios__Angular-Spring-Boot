@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-afrter-mat-dialog.interface';
+import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-mat-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
 import { UsersService } from '../../services/users.service';
@@ -30,6 +30,7 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   userSelectedIndex!: string;
 
   isInEditMode: boolean = false;
+  shouldMarkUserFormTouchedAndValidity: boolean = true;
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
   

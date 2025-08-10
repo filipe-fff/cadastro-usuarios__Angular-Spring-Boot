@@ -1,12 +1,23 @@
-<main class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    @for (user of $usersList | async; track user) {
-        <mat-card class="card-hover" (click)="onUserSelected(user.id)">
-            <mat-card-header>
-                <div mat-card-avatar class="header-avatar bg-gray-500"></div>
-                <mat-card-title>{{ user.name }}</mat-card-title>
-                <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content></mat-card-content>
-        </mat-card>
-    }
+<main class="flex flex-col gap-4">
+    <nav class="flex justify-end">
+        <div>
+            <button mat-raised-button (click)="onUserCreate()">
+                <div class="text-center text-green-800">
+                    <mat-icon>add</mat-icon>
+                </div>
+            </button>
+        </div>
+    </nav>
+    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (user of $usersList | async; track user) {
+            <mat-card class="card-hover" (click)="onUserSelected(user.id)">
+                <mat-card-header>
+                    <div mat-card-avatar class="header-avatar bg-gray-500"></div>
+                    <mat-card-title>{{ user.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content></mat-card-content>
+            </mat-card>
+        }
+    </section>
 </main>

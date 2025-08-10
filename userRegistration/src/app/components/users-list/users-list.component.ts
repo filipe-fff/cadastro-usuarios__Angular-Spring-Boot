@@ -1,12 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { Observable, of } from 'rxjs';
-import { UsersListReponse } from '../../types/users-list-response';
-import { UsersService } from '../../services/users.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IUser } from '../../interfaces/user/user.interface';
-import { buttonStylePipe } from '../../pipes/button-style.pipe';
+import { Observable, of } from 'rxjs';
+import { AngularMaterialModule } from '../../angular-material/angular-material.module';
+import { UsersService } from '../../services/users.service';
+import { UsersListReponse } from '../../types/users-list-response';
 
 @Component({
   selector: 'app-users-list',
@@ -14,8 +12,7 @@ import { buttonStylePipe } from '../../pipes/button-style.pipe';
   imports: [
     CommonModule,
     AsyncPipe,
-    AngularMaterialModule,
-    buttonStylePipe
+    AngularMaterialModule
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
@@ -33,5 +30,9 @@ export class UsersListComponent implements OnInit {
 
   onUserSelected(userId: string) {
     this._router.navigate(["user", userId]);
+  }
+
+  onUserCreate() {
+    this._router.navigate(["/user-create"]);
   }
 }

@@ -1,5 +1,7 @@
 export const convertEnDateToDateObj = (date: string): Date => {
 
+    if (!date) return new Date();
+
     const [year, month, day] = date.split("-").map(Number);
 
     if (isValidDate(day, month, year)) {

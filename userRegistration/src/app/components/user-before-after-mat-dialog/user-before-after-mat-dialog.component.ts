@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-afrter-mat-dialog.interface';
+import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-mat-dialog.interface';
 import { MaritalStatusPipe } from '../../pipes/marital-status.pipe';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { CommonModule } from '@angular/common';

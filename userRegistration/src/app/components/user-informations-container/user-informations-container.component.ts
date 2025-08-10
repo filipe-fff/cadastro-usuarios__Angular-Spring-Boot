@@ -43,9 +43,10 @@ export class UserInformationsContainerComponent extends UserController implement
   userFormValueChangesSubs = new Subscription();
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
-  @Input({ required: true }) userSelectedIndex: string | undefined;
+  @Input() userSelectedIndex: string | undefined;
 
   @Input({ required: true }) isInEditMode: boolean = false;
+  @Input({ required: true }) shouldMarkUserFormTouchedAndValidity: boolean = false;
 
   @Output("onEnableSaveButton") onEnableSaveButtonEmitt = new EventEmitter<boolean>();
   @Output("onUserFormFirstChange") onUserFormFirstChangeEmitt = new EventEmitter<void>();
@@ -55,12 +56,13 @@ export class UserInformationsContainerComponent extends UserController implement
 
   ngOnInit() {
     this.getCountries();
-    
+    this.onUserFormTouchedAndValidity();
     this.watchUserFormStatusChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const HAS_USER_SELECTED = changes["userSelected"] && Object.keys(changes["userSelected"].currentValue).length > 0;
+    const HAS_USER_SELECTED = changes["userSelected"];
+    this.onUserFormTouchedAndValidity();
     
     if (HAS_USER_SELECTED) {
       if (this.userFormValueChangesSubs) this.userFormValueChangesSubs.unsubscribe();
@@ -76,6 +78,17 @@ export class UserInformationsContainerComponent extends UserController implement
     this.getStates(countryName);
   }
 
+  private onUserFormTouchedAndValidity() {
+    console.log("onUserFormTouchedAndValidity");
+    if (this.shouldMarkUserFormTouchedAndValidity) {
+      this.userForm.markAllAsTouched();
+      this.userForm.updateValueAndValidity();
+    } else {
+      this.userForm.markAsUntouched();
+      this.userForm.markAsPristine();
+    }
+  }
+
   private getCountries() {
     this._countriesService
       .getCountries()
@@ -83,6 +96,8 @@ export class UserInformationsContainerComponent extends UserController implement
   }
 
   private getStates(stateName: string) {
+    if (!stateName) return;
+
     this.statesList = [];
     this._statesService
       .getStates(stateName)
