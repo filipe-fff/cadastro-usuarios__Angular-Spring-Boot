@@ -32,7 +32,8 @@ export class MusicInformationsEditComponent implements OnInit {
 
   ngOnInit() {
     this.updateDataSource();
-    this.musicInformationsValueChanges();
+    this.watchMusicInformationsValueChanges();
+    this.watchMusicInformationsStatusChanges();
 
     this.getGenres();
   }
@@ -41,11 +42,15 @@ export class MusicInformationsEditComponent implements OnInit {
     return this.userForm.get("musicInformations") as FormArray;
   }
 
-  private musicInformationsValueChanges() {
+  private watchMusicInformationsValueChanges() {
     this.musicInformations.valueChanges.subscribe(() => {
       this.updateDataSource();
       isFavoriteDisabled(this.musicInformations);
     });
+  }
+
+  private watchMusicInformationsStatusChanges() {
+    this.musicInformations.statusChanges.subscribe(() => this.musicInformations.markAllAsTouched());
   }
 
   private updateDataSource() {
