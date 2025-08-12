@@ -42,9 +42,19 @@ public class UserController {
         return this.userService.userById(id);
     }
 
+    @PutMapping("/exists-name")
+    public boolean existsByIdNotAndName(@RequestBody String name) {
+        return this.userService.existsByIdNotAndName(null, name);
+    }
+
     @PutMapping("/exists-name/{id}")
     public boolean existsByIdNotAndName(@PathVariable("id") UUID id, @RequestBody String name) {
         return this.userService.existsByIdNotAndName(id, name);
+    }
+
+    @PutMapping("/exists-email")
+    public boolean existsByIdNotAndEmail(@RequestBody String email) {
+        return this.userService.existsByIdNotAndEmail(null, email);
     }
 
     @PutMapping("/exists-email/{id}")
@@ -52,9 +62,19 @@ public class UserController {
         return this.userService.existsByIdNotAndEmail(id, email);
     }
 
+    @PutMapping("/exists-password")
+    public boolean existsByIdNotAndPassword(@RequestBody String password) {
+        return userService.existsByIdNotAndPassword(null, password);
+    }
+
     @PutMapping("/exists-password/{id}")
     public boolean existsByIdNotAndPassword(@PathVariable("id") UUID id, @RequestBody String password) {
         return userService.existsByIdNotAndPassword(id, password);
+    }
+
+    @PutMapping("/exists-phone")
+    public boolean existsByIdNotAndPhone(@RequestBody PhoneDTO phoneDTO) {
+        return phoneService.existsIdNotAndPhone(null, phoneDTO);
     }
 
     @PutMapping("/exists-phone/{userId}")
@@ -62,14 +82,14 @@ public class UserController {
         return phoneService.existsIdNotAndPhone(userId, phoneDTO);
     }
 
-    @PutMapping("/exists-document/{id}")
-    public boolean existsByIdNotAndDocument(@PathVariable("id") UUID id, @RequestBody Long document) {
-        return dependentService.existsByIdNotAndDocument(id, document);
-    }
-
     @PutMapping("/exists-document")
     public boolean existsByIdNotAndDocument(@RequestBody Long document) {
         return dependentService.existsByIdNotAndDocument(null, document);
+    }
+
+    @PutMapping("/exists-document/{id}")
+    public boolean existsByIdNotAndDocument(@PathVariable("id") UUID id, @RequestBody Long document) {
+        return dependentService.existsByIdNotAndDocument(id, document);
     }
 
     // UPDATE

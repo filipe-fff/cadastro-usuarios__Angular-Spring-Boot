@@ -9,6 +9,7 @@
         <app-user-update-buttons-container
             [enableSaveButton]="enableSaveButton"
             [isInEditMode]="isInEditMode"
+            (onUsersListRouterButton)="onUsersListRouterButton($event)"
             (onEditButton)="onEditButton()"
             (onCancelButton)="onCancelButton()"
             (onSaveButton)="onSaveButton()"

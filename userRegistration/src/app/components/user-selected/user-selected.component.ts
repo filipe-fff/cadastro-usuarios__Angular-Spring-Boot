@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-mat-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
@@ -13,6 +13,7 @@ import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-cont
 import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
 import { UserBeforeAfterMatDialogService } from '../../services/user-before-after-mat-dialog.service';
 import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
+import { ConfirmExistService } from '../../services/confirm-exit.service';
 
 @Component({
   selector: 'app-user-selected',
@@ -34,14 +35,21 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
   
+  private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _usersService = inject(UsersService);
   private readonly _confirmMatDialogService = inject(ConfirmMatDialogService);
   private readonly _userBeforeAfterMatDialogService = inject(UserBeforeAfterMatDialogService);
   private readonly _userFormRawValueService = inject(UserFormRawValueService);
+  private readonly _confirmExistService = inject(ConfirmExistService);
 
   ngOnInit() {
     this.getUser();
+  }
+
+  onUsersListRouterButton(dialogEnabled: boolean) {
+    this._confirmExistService.dialogEnabled = dialogEnabled;
+    this._router.navigate(["/"]);
   }
 
   onEditButton() {

@@ -1,6 +1,12 @@
+<button (click)="showUserForm()">Mostrar Usuário</button>
 <app-user-informations-container
     [userSelected]="newUser"
     [isInEditMode]="isInEditMode"
-    [shouldMarkUserFormTouchedAndValidity]="shouldMarkUserFormTouchedAndValidity">
-        <app-user-save-buttons-container></app-user-save-buttons-container>
+    [shouldMarkUserFormTouchedAndValidity]="shouldMarkUserFormTouchedAndValidity"
+    (onEnableSaveButton)="onEnableSaveButton($event)">
+        <app-user-create-buttons-container
+            [isInEditMode]="isInEditMode"
+            [enableSaveButton]="enableSaveButton"
+            (onUsersListRouterButton)="onUsersListRouterButton($event)"
+            (onCreateButton)="onCreateButton()"></app-user-create-buttons-container>
 </app-user-informations-container>

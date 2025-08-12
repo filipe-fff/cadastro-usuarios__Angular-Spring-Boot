@@ -1,1 +1,3 @@
-export interface ICanDeactivateWithDialog {};
+export interface ICanDeactivateWithDialog {
+    onUsersListRouterButton(dialogEnabled: boolean): void;
+};

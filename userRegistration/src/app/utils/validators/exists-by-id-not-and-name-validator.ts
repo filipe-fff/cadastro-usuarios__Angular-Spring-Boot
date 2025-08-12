@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors } from "@angular/forms";
 import { map, Observable, of } from "rxjs";
 import { UsersService } from "../../services/users.service";
 
@@ -7,32 +7,20 @@ export const existsByIdNotAndNameValidator = (usersService: UsersService): Async
 
         if (!control) return of(null);
 
-        const idControl = control.get("id") as FormControl;
-        const nameControl = control.get("name") as FormControl;
+        const parentControl = control.parent as FormGroup;
 
-        if(!idControl || !nameControl) return of(null);
+        const idControl = parentControl?.get("id") as FormControl;
+
+        if(!idControl) return of(null);
 
         const id = idControl.value;
-        const name = nameControl.value;
+        const name = control.value;
 
-        if (!id || !name) return of(null);
+        if (!name) return of(null);
 
         return usersService.
             existsByIdNotAndName(id, name)
             .pipe(
-                map((existsResponse) => {
-                    if (existsResponse) {
-                        const otherErrors = nameControl.errors || null;
-                        nameControl.setErrors({ ...otherErrors, existsNameError: true });
-                    } else {
-                        if (nameControl.hasError("existsNameError")) {
-                            const { existsNameError, ...otherErrors } = nameControl.errors || {};
-                            const hasOtherErrors = Object.keys(otherErrors).length > 0;
-                            nameControl.setErrors(hasOtherErrors ? otherErrors : null);
-                        }
-                    }
-
-                    return null
-                }));
+                map((existsResponse) => existsResponse ? { existsNameError: true } : null));
     };
 };

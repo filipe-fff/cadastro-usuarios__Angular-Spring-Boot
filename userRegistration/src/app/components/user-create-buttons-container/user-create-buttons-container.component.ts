@@ -5,43 +5,31 @@ import { AngularMaterialModule } from '../../angular-material/angular-material.m
 import { buttonStylePipe } from '../../pipes/button-style.pipe';
 
 @Component({
-  selector: 'app-user-update-buttons-container',
+  selector: 'app-user-create-buttons-container',
   standalone: true,
   imports: [
     CommonModule,
     AngularMaterialModule,
     buttonStylePipe
   ],
-  templateUrl: './user-update-buttons-container.component.html',
-  styleUrl: './user-update-buttons-container.component.scss'
+  templateUrl: './user-create-buttons-container.component.html',
+  styleUrl: './user-create-buttons-container.component.scss'
 })
-export class UserUpdateButtonsContainerComponent {
+export class UserCreateButtonsContainerComponent {
 
   @Input({ required: true }) isInEditMode: boolean = false;
   @Input({ required: true }) enableSaveButton: boolean = false;
 
   @Output("onUsersListRouterButton") onUsersListRouterButtonEmitt = new EventEmitter<boolean>();
-  @Output("onEditButton") onEditButtonEmitt = new EventEmitter<void>();
-  @Output("onCancelButton") onCancelButtonEmitt = new EventEmitter<void>();
-  @Output("onSaveButton") onSaveButtonEmitt = new EventEmitter<void>();
+  @Output("onCreateButton") onCreateButtonEmitt = new EventEmitter<void>();
 
-  private readonly _router = inject(Router);
-
-  onUsersListRouterButton(dialogEnabled: boolean) {
+  onUsersListButton(dialogEnabled: boolean) {
     this.onUsersListRouterButtonEmitt.emit(dialogEnabled);
   }
 
-  onEditButton() {
-    this.onEditButtonEmitt.emit();
-  }
-
-  onCancelButton() {
-    this.onCancelButtonEmitt.emit();
-  }
-
-  onSaveButton() {
+  onCreateButton() {
     if (!this.enableSaveButton) return;
 
-    this.onSaveButtonEmitt.emit();
+    this.onCreateButtonEmitt.emit();
   }
 }

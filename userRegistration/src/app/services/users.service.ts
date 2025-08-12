@@ -26,31 +26,55 @@ export class UsersService {
         return this._httpClient.get<IUser>("http://localhost:8081/user-registration/user/" + id);
     }
 
-    existsByIdNotAndName(id: string, name: string): Observable<boolean> {
-        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name/" + id, name);
+    existsByIdNotAndName(id: string | null, name: string): Observable<boolean> {
+        const headers = { "Content-Type": "application/json" };
+        const body = name;
+
+        if (id)
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name/" + id, body, { headers });
+        else
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name", body, { headers });
     }
 
-    existsByIdNotAndEmail(id: string, email: string): Observable<boolean> {
-        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email/" + id, email);
+    existsByIdNotAndEmail(id: string | null, email: string): Observable<boolean> {
+        const headers = { "Content-Type": "application/json" };
+        const body = email;
+        
+        if (id)
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email/" + id, body, { headers });
+        else
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email", body, { headers });
     }
 
-    existsByIdNotAndPassword(id: string, password: string): Observable<boolean> {
-        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password/" + id, password);
+    existsByIdNotAndPassword(id: string | null, password: string): Observable<boolean> {
+        const headers = { "Content-Type": "application/json" };
+        const body = password;
+
+        if (id)
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password/" + id, body, { headers });
+        else
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password", body, { headers });
     }
 
-    existsByIdNotAndPhone(userId: string, phone: IPhone): Observable<boolean> {
-        return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone/" + userId, phone);
+    existsByIdNotAndPhone(userId: string | null, phone: IPhone): Observable<boolean> {
+        const headers = { "Content-Type": "application/json" };
+        const body = phone;
+
+        if (userId)
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone/" + userId, body, { headers });
+        else
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone", body, { headers });
+
     }
 
     existsByIdNotAndDocument(id: string | null, document: number | null): Observable<boolean> {
         const headers = { "Content-Type": "application/json" };
         const body = document;
 
-        if (id) {
+        if (id)
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document/" + id, body, { headers });
-        } else {
+        else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document", body, { headers });
-        }
     }
 
     // UPDATE

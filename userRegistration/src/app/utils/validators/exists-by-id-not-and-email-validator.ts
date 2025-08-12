@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors } from "@angular/forms";
 import { UsersService } from "../../services/users.service";
 import { map, Observable, of } from "rxjs";
 
@@ -7,32 +7,18 @@ export const existsByIdNotAndEmailValidator = (usersService: UsersService): Asyn
 
         if (!control) return of(null);
 
-        const idControl = control.get("id") as FormControl;
-        const emailControl = control.get("email") as FormControl;
+        const parentControl = control.parent as FormGroup;
 
-        if (!idControl || !emailControl) return of(null);
+        const idControl = parentControl?.get("id") as FormControl;
+
+        if (!idControl) return of(null);
 
         const id = idControl.value;
-        const email = emailControl.value;
-
-        if (!id || !email) return of(null);
+        const email = control.value;
 
         return usersService
             .existsByIdNotAndEmail(id, email)
             .pipe(
-                map(existsResponse => {
-                    if (existsResponse) {
-                        const otherErrors = emailControl.errors || null;
-                        emailControl.setErrors({ ...otherErrors, existsEmailError: true });
-                    } else {
-                        if (emailControl.hasError("existsEmailError")) {
-                            const { existsEmailError, ...otherErrors } = emailControl.errors || {};
-                            const hasOtherErrors = Object.keys(otherErrors).length > 0;
-                            emailControl.setErrors(hasOtherErrors ? otherErrors : null);
-                        }
-                    }
-
-                    return null;
-            }));
+                map(existsResponse => existsResponse ? { existsEmailError: true } : null));
     };
 };

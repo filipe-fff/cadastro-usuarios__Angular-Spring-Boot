@@ -19,6 +19,8 @@ import { musicRequiredValidator } from "../../utils/validators/music-required-va
 import { passwordConfirmEqualValidator } from "../../utils/validators/password-confirm-equal-validator";
 import { passwordStrengthValidator } from "../../utils/validators/password-strength-validator";
 import { existsByIdAndDocumentValidator } from "../../utils/validators/exists-by-id-not-and-document-validator";
+import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
+import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 
 export class UserController {
     userForm!: FormGroup;
@@ -100,19 +102,31 @@ export class UserController {
     private createUserForm() {
         this.userForm = this._fb.group({
             generalInformations: this._fb.group({
-                id: [""],
-                name: ["", { validators: [ Validators.required ], updateOn: "blur" }],
+                id: [null],
+                name: ["", {
+                    // updateOn: "blur", // Ative o blur quando deixar a validação assincrona
+                    validators: [ Validators.required ],
+                    asyncValidators: [
+                        // existsByIdNotAndNameValidator(this._usersService)
+                    ]
+                }],
                 photo: [""],
                 email: ["", {
                     updateOn: "blur",
                     validators: [
                         Validators.required,
                         Validators.pattern(this.emailPattern)
+                    ],
+                    asyncValidators: [
+                        existsByIdNotAndEmailValidator(this._usersService)
                     ]
                 }],
                 password: ["", {
                     // updateOn: "blur", // Ative o blur quando deixar a validação assincrona
-                    validators: [ Validators.required, passwordStrengthValidator ]
+                    validators: [ Validators.required, passwordStrengthValidator ],
+                    asyncValidators: [
+                        // existsByIdNotAndPasswordValidator(this._usersService)
+                    ]
                 }],
                 passwordConfirm: ["", [ Validators.required ]],
                 country: ["", Validators.required],
@@ -121,12 +135,7 @@ export class UserController {
                 monthlyIncome: [null, Validators.required],
                 birthDate: [new Date(), Validators.required]
             }, {
-                validators: [ passwordConfirmEqualValidator ],
-                asyncValidators: [
-                    // existsByIdNotAndNameValidator(this._usersService),
-                    existsByIdNotAndEmailValidator(this._usersService),
-                    // existsByIdNotAndPasswordValidator(this._usersService)
-                ],
+                validators: [ passwordConfirmEqualValidator ]
             }),
             contactInformations: this._fb.group({
                 phoneList: this._fb.array([]),
@@ -171,10 +180,14 @@ export class UserController {
                 id: [phone.id],
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
-                number: [phone.number, phoneValidation]
-            }, {
-                updateOn: "blur",
-                asyncValidators: [ existsByIdNotAndPhoneValidator(userId, this._usersService) ]
+                number: [phone.number,
+                    {
+                        updateOn: "blur",
+                        validators: phoneValidation,
+                        asyncValidators: [
+                            existsByIdNotAndPhoneValidator(userId, this._usersService)
+                        ]
+                    }],
             }));
         });
     }
@@ -201,13 +214,16 @@ export class UserController {
     private createDependentGroup(dependent: IDependent | null = null) {
 
         this.dependentsList.push(this._fb.group({
-            id: [dependent?.id ?? ""],
+            id: [dependent?.id ?? null],
             name: [dependent?.name ?? "", Validators.required],
             age: [dependent?.age ?? null, Validators.required],
-            document: [dependent?.document ?? null, Validators.required]
-            }, {
+            document: [dependent?.document ?? null, {
                 updateOn: "blur",
-                asyncValidators: [existsByIdAndDocumentValidator(this._usersService)]
+                validators: [ Validators.required ],
+                asyncValidators: [
+                    existsByIdAndDocumentValidator(this._usersService)
+                ]
+            }]
             }));
     }
 
