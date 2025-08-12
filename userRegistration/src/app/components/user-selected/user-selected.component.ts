@@ -5,8 +5,8 @@ import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-ma
 import { IUser } from '../../interfaces/user/user.interface';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
 import { UsersService } from '../../services/users.service';
-import { convertUserUpdateFormRawValueToUser } from '../../utils/convert-user-update-form-raw-value-to-user';
-import { convertUserUpdateFormRawValueToUserUpdate } from '../../utils/convert-user-update-form-raw-value-to-user-update';
+import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw-value-to-user';
+import { convertUserFormRawValueToUserUpdate } from '../../utils/convert-user-form-raw-value-to-user-update';
 import { UserBeforeAfterMatDialogComponent } from '../user-before-after-mat-dialog/user-before-after-mat-dialog.component';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
@@ -78,7 +78,7 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   onSaveButton() {
-    const newUser = convertUserUpdateFormRawValueToUser(this._userFormRawValueService.userFormRawValue);
+    const newUser = convertUserFormRawValueToUser(this._userFormRawValueService.userFormRawValue);
 
     this._userBeforeAfterMatDialogService.open({
       before: this.userBefore,
@@ -121,7 +121,7 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   private onUserUpdate() {
-    const newUser = convertUserUpdateFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
+    const newUser = convertUserFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
     this._usersService.update(newUser).subscribe({
       next: () => console.log("Atualizado com sucesso!"),
       error: (err) => console.log(err)

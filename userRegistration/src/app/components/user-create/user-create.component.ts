@@ -6,6 +6,7 @@ import { UserFormRawValueService } from '../../services/user-form-raw-value.serv
 import { UserCreateButtonsContainerComponent } from '../user-create-buttons-container/user-create-buttons-container.component';
 import { Router } from '@angular/router';
 import { ConfirmExistService } from '../../services/confirm-exit.service';
+import { convertUserFormRawValueToUserCreate } from '../../utils/convert-user-form-raw-value-to-user-create';
 
 @Component({
   selector: 'app-user-create',
@@ -38,8 +39,9 @@ export class UserCreateComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   onCreateButton() {
-    this.isInEditMode = false;
-    console.log("CRIOU !!!");
+    // this.isInEditMode = false;
+    // console.log("CRIOU !!!");
+    console.log(convertUserFormRawValueToUserCreate(this._userFormRawValue.userFormRawValue));
   }
 
   onEnableSaveButton(enable: boolean) {

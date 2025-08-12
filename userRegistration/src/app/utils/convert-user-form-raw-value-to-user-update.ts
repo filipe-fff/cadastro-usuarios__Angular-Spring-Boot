@@ -1,31 +1,31 @@
 import { IGeneralInformationsUserForm } from "../interfaces/user-form/general-informations-user-form.interface";
 import { IUserForm } from "../interfaces/user-form/user-form.interface";
-import { IUser } from "../interfaces/user/user.interface";
-import { AddressList } from "../types/address-list";
+import { IUserUpdate } from "../interfaces/user-update/user-update.interface";
 import { AddressListUserForm } from "../types/address-list-user-form";
-import { DependentsList } from "../types/dependents-list";
+import { AddressListUserUpdate } from "../types/address-list-user-update";
 import { DependentsListUserForm } from "../types/dependents-list-user-form";
-import { MusicsList } from "../types/musics-list";
+import { DependentsListUserUpdate } from "../types/dependents-list-user-update";
 import { MusicsListUserForm } from "../types/musics-list-user-form";
-import { PhoneList } from "../types/phone-list";
+import { MusicsListUSerUpdate } from "../types/musics-list-user-update";
 import { PhoneListUserForm } from "../types/phone-list-user-form";
+import { PhoneListUserUpdate } from "../types/phone-list-user-update";
 import { convertDateObjToEnDate } from "./convert-date-obj-to-en-date";
 
-export const convertUserUpdateFormRawValueToUser = (userForm: IUserForm): IUser => {
-    let user: Partial<IUser> = {} as Partial<IUser>;
+export const convertUserFormRawValueToUserUpdate = (userForm: IUserForm): IUserUpdate => {
+    let user: Partial<IUserUpdate> = {} as Partial<IUserUpdate>;
 
     user = { ...convertToGeneralInformations(userForm.generalInformations) };
-    user.phoneList = [ ...convertToPhoneList(userForm.contactInformations.phoneList) ];
-    user.addressList = [ ...convertToAddressList(userForm.contactInformations.addressList) ];
-    user.dependents = [ ...convertToDependentsList(userForm.dependentInformations) ];
-    user.musics = [ ...convertToMusicsList(userForm.musicInformations) ];
+    user.phoneList = [ ...convertToPhoneListUserUpdate(userForm.contactInformations.phoneList) ];
+    user.addressList = [ ...convertToAddressListUserUpdate(userForm.contactInformations.addressList) ];
+    user.dependents = [ ...convertToDependentsListUserUpdate(userForm.dependentInformations) ];
+    user.musics = [ ...convertToMusicsListUserUpdate(userForm.musicInformations) ];
 
-    return user as IUser;
+    return user as IUserUpdate;
 };
 
-const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Partial<IUser> => {
-    
-    return ({
+const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Partial<IUserUpdate> => {
+
+    return({
         id: general.id,
         name: general.name,
         photoUrl: general.photoUrl,
@@ -35,11 +35,11 @@ const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Pa
         state: general.state,
         maritalStatus: general.maritalStatus,
         monthlyIncome: general.monthlyIncome,
-        birthDate: convertDateObjToEnDate( general.birthDate)
+        birthDate: convertDateObjToEnDate(general.birthDate)
     });
 };
 
-const convertToPhoneList = (phoneList: PhoneListUserForm): PhoneList => {
+const convertToPhoneListUserUpdate = (phoneList: PhoneListUserForm): PhoneListUserUpdate => {
     
     return phoneList
         .map(phone => ({
@@ -48,10 +48,10 @@ const convertToPhoneList = (phoneList: PhoneListUserForm): PhoneList => {
             internationalCode: "+" + phone.number.substring(0, 2),
             areaCode: phone.number.substring(2, 4),
             number: phone.number.slice(4, -4) + "-" + phone.number.slice(-4)
-        })).filter(phone => phone.areaCode !== "") as PhoneList;
+        })).filter(phone => phone.areaCode !== "") as PhoneListUserUpdate;
 };
 
-const convertToAddressList = (addressList: AddressListUserForm): AddressList => {
+const convertToAddressListUserUpdate = (addressList: AddressListUserForm): AddressListUserUpdate => {
     
     return addressList
         .map(address => ({
@@ -62,21 +62,20 @@ const convertToAddressList = (addressList: AddressListUserForm): AddressList => 
             country: address.country,
             state: address.state,
             city: address.city
-        })).filter(address => address.street !== "") as AddressList;
+        })).filter(address => address.street !== "") as AddressListUserUpdate;
 };
 
-const convertToDependentsList = (dependentsList: DependentsListUserForm): DependentsList => {
-    
+const convertToDependentsListUserUpdate = (dependentsList: DependentsListUserForm): DependentsListUserUpdate => {
     return dependentsList
         .map(dependent => ({
             id: dependent.id,
             name: dependent.name,
             age: Number(dependent.age),
             document: Number(dependent.document)
-        })) as DependentsList;
+        })) as DependentsListUserUpdate;
 };
 
-const convertToMusicsList = (musicsList: MusicsListUserForm): MusicsList => {
+const convertToMusicsListUserUpdate = (musicsList: MusicsListUserForm): MusicsListUSerUpdate => {
     return musicsList
         .map(music => ({
             id: music.id,
@@ -84,5 +83,5 @@ const convertToMusicsList = (musicsList: MusicsListUserForm): MusicsList => {
             band: music.band,
             genre: music.genre,
             isFavorite: music.isFavorite
-        })).filter(music => music.title !== "") as MusicsList;
+        })).filter(music => music.title !== "") as MusicsListUSerUpdate;
 };
