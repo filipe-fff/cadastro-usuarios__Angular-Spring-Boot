@@ -70,15 +70,16 @@ export class GeneralInformationsEditComponent implements OnInit {
     return this.userForm.get("generalInformations.state") as FormControl;
   }
 
-  get maritalStatusObjList(): MaritalStatusObjList {
-    return maritalStatusObjArray;
-  }
-
   get monthlyIncome(): FormControl {
     return this.userForm.get("generalInformations.monthlyIncome") as FormControl;
   }
 
+  get maritalStatusObjList(): MaritalStatusObjList {
+    return maritalStatusObjArray;
+  }
+
   watchPasswordValueChanges() {
+    this.passwordStrength = passwordStrengthProgressBar(this.passwordControl.getRawValue());
     this.passwordControl.valueChanges.subscribe(password => this.passwordStrength = passwordStrengthProgressBar(password));
   }
 

@@ -131,7 +131,7 @@ export class UserController {
                 passwordConfirm: ["", [ Validators.required ]],
                 country: ["", Validators.required],
                 state: ["", Validators.required],
-                maritalStatus: [1],
+                maritalStatus: [null, Validators.required],
                 monthlyIncome: [null, Validators.required],
                 birthDate: [new Date(), Validators.required]
             }, {
