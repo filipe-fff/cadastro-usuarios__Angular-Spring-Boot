@@ -21,9 +21,12 @@ import { passwordStrengthValidator } from "../../utils/validators/password-stren
 import { existsByIdAndDocumentValidator } from "../../utils/validators/exists-by-id-not-and-document-validator";
 import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
+import { Subject, takeUntil } from "rxjs";
 
 export class UserController {
     userForm!: FormGroup;
+
+    protected readonly _destroy$ = new Subject<void>();
 
     private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -169,7 +172,6 @@ export class UserController {
             ...user,
             passwordConfirm: user.password,
             birthDate: convertEnDateToDateObj(user.birthDate)
-            // birthDate: null
         });
     }
 
@@ -239,7 +241,7 @@ export class UserController {
     }
 
     private watchUserFormValueChanges() {
-        this.userForm.valueChanges.subscribe(() =>
+        this.userForm.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() =>
             this._userFormRawValueService.userFormRawValue = this.userForm.getRawValue()
         );
     }

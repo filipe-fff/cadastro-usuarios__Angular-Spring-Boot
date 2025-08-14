@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-mat-dialog.interface';
@@ -18,6 +18,7 @@ import { GenresListResponse } from '../../types/genres-list-response';
 import { GenresService } from '../../services/genres.service';
 import { CpfPipe } from '../../pipes/cpf.pipe';
 import { zipArraysPipe } from '../../pipes/zip-arrays.pipe';
+import { pipe, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-before-after-mat-dialog',
@@ -35,7 +36,7 @@ import { zipArraysPipe } from '../../pipes/zip-arrays.pipe';
   templateUrl: './user-before-after-mat-dialog.component.html',
   styleUrl: './user-before-after-mat-dialog.component.scss'
 })
-export class UserBeforeAfterMatDialogComponent implements OnInit {
+export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
   genresList: GenresListResponse = [];
 
   beforePhoneListToDisplay: PhoneListToDisplay = [];
@@ -48,6 +49,7 @@ export class UserBeforeAfterMatDialogComponent implements OnInit {
 
   data: IUserBeforeAfterMatDialog = inject(MAT_DIALOG_DATA);
 
+  private readonly _destroy$ =  new Subject<void>();
   private readonly _genresService = inject(GenresService);
 
   ngOnInit() {
@@ -58,12 +60,17 @@ export class UserBeforeAfterMatDialogComponent implements OnInit {
     this.getBeforeMusicsListToDisplay();
 
     this.getAfterPhoneListToDisplay();
-    this.getAfterAddressListToDiplay();
+    this.getAfterAddressListToDisplay();
     this.getAfterMusicsListToDisplay();
   }
 
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
   getGenresList() {
-    this._genresService.getGenres().subscribe(genresResponse => this.genresList = genresResponse);
+    this._genresService.getGenres().pipe(takeUntil(this._destroy$)).subscribe(genresResponse => this.genresList = genresResponse);
   }
 
   getBeforePhoneListToDisplay() {
@@ -90,7 +97,7 @@ export class UserBeforeAfterMatDialogComponent implements OnInit {
     });
   }
 
-  getAfterAddressListToDiplay() {
+  getAfterAddressListToDisplay() {
     prepareAddressListToDisplay(true, this.data.after.addressList, (address) => {
       this.afterAddressListToDisplay.push(address);
     });

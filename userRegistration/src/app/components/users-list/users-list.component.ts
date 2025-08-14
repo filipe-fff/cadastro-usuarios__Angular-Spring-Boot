@@ -21,7 +21,6 @@ export class UsersListComponent implements OnInit {
   $usersList: Observable<UsersListReponse> = of([]);
 
   private readonly _usersService = inject(UsersService);
-
   private readonly _router = inject(Router);
 
   ngOnInit() {

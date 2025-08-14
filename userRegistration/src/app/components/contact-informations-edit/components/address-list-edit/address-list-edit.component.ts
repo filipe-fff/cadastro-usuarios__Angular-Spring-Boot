@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../../../../angular-material/angular-material.module';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-address-list-edit',
@@ -14,11 +15,18 @@ import { AngularMaterialModule } from '../../../../angular-material/angular-mate
   templateUrl: './address-list-edit.component.html',
   styleUrl: './address-list-edit.component.scss'
 })
-export class AddressListEditComponent implements OnInit {
+export class AddressListEditComponent implements OnInit, OnDestroy {
+  private readonly _destroy$ = new Subject<void>();
+
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
 
   ngOnInit() {
     this.watchAddressListStatusChanges();
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   get addressList(): FormArray {
@@ -26,6 +34,6 @@ export class AddressListEditComponent implements OnInit {
   }
 
   private watchAddressListStatusChanges() {
-    this.addressList.statusChanges.subscribe(() => this.addressList.markAllAsTouched());
+    this.addressList.statusChanges.pipe(takeUntil(this._destroy$)).subscribe(() => this.addressList.markAllAsTouched());
   }
 }

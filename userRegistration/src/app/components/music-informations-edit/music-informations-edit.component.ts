@@ -1,11 +1,12 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { GenresService } from '../../services/genres.service';
 import { GenresListResponse } from '../../types/genres-list-response';
 import { isFavoriteDisabled } from '../../utils/is-favorite-disabled';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-music-informations-edit',
@@ -19,7 +20,7 @@ import { isFavoriteDisabled } from '../../utils/is-favorite-disabled';
   templateUrl: './music-informations-edit.component.html',
   styleUrl: './music-informations-edit.component.scss'
 })
-export class MusicInformationsEditComponent implements OnInit {
+export class MusicInformationsEditComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["title", "band", "genre", "isFavorite"];
   
   dataSource = new MatTableDataSource<FormGroup>();
@@ -28,6 +29,7 @@ export class MusicInformationsEditComponent implements OnInit {
 
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
 
+  private readonly _destroy$ = new Subject<void>();
   private readonly _genresService = inject(GenresService);
 
   ngOnInit() {
@@ -38,19 +40,24 @@ export class MusicInformationsEditComponent implements OnInit {
     this.getGenres();
   }
 
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
   get musicInformations(): FormArray {
     return this.userForm.get("musicInformations") as FormArray;
   }
 
   private watchMusicInformationsValueChanges() {
-    this.musicInformations.valueChanges.subscribe(() => {
+    this.musicInformations.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
       this.updateDataSource();
       isFavoriteDisabled(this.musicInformations);
     });
   }
 
   private watchMusicInformationsStatusChanges() {
-    this.musicInformations.statusChanges.subscribe(() => this.musicInformations.markAllAsTouched());
+    this.musicInformations.statusChanges.pipe(takeUntil(this._destroy$)).subscribe(() => this.musicInformations.markAllAsTouched());
   }
 
   private updateDataSource() {
@@ -63,6 +70,6 @@ export class MusicInformationsEditComponent implements OnInit {
   }
 
   private getGenres() {
-    this._genresService.getGenres().subscribe(genresResponse => this.genresList = genresResponse);
+    this._genresService.getGenres().pipe(takeUntil(this._destroy$)).subscribe(genresResponse => this.genresList = genresResponse);
   }
 }

@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
   styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent {
-
   private readonly _router = inject(Router);
 
   onUsersList() {

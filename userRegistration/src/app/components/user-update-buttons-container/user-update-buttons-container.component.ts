@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { buttonStylePipe } from '../../pipes/button-style.pipe';
 
@@ -24,8 +23,6 @@ export class UserUpdateButtonsContainerComponent {
   @Output("onEditButton") onEditButtonEmitt = new EventEmitter<void>();
   @Output("onCancelButton") onCancelButtonEmitt = new EventEmitter<void>();
   @Output("onSaveButton") onSaveButtonEmitt = new EventEmitter<void>();
-
-  private readonly _router = inject(Router);
 
   onUsersListRouterButton(dialogEnabled: boolean) {
     this.onUsersListRouterButtonEmitt.emit(dialogEnabled);

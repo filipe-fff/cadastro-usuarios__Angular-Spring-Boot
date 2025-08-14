@@ -16,7 +16,6 @@ import { buttonStylePipe } from '../../pipes/button-style.pipe';
   styleUrl: './user-create-buttons-container.component.scss'
 })
 export class UserCreateButtonsContainerComponent {
-
   @Input({ required: true }) isInEditMode: boolean = false;
   @Input({ required: true }) enableSaveButton: boolean = false;
 

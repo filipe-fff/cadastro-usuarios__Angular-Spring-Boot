@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -9,6 +9,7 @@ import { MaritalStatusObjList } from '../../types/marital-status-obj-list';
 import { StatesList } from '../../types/states-list';
 import { maritalStatusObjArray } from '../../utils/marital-status-description-map';
 import { passwordStrengthProgressBar } from '../../utils/password-strength-progress-bar';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-general-informations-edit',
@@ -22,7 +23,7 @@ import { passwordStrengthProgressBar } from '../../utils/password-strength-progr
   templateUrl: './general-informations-edit.component.html',
   styleUrl: './general-informations-edit.component.scss'
 })
-export class GeneralInformationsEditComponent implements OnInit {
+export class GeneralInformationsEditComponent implements OnInit, OnDestroy {
   passwordStrength: number = 0;
 
   countriesListFiltered: CountriesList = [];
@@ -30,6 +31,8 @@ export class GeneralInformationsEditComponent implements OnInit {
 
   maxDate!: Date;
   minDate!: Date;
+
+  private readonly _destroy$ = new Subject<void>();
 
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
   @Input({ required: true }) countriesList: CountriesList = [];
@@ -44,6 +47,11 @@ export class GeneralInformationsEditComponent implements OnInit {
 
     this.getMinDate();
     this.getMaxDate();
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   get nameControl(): FormControl {
@@ -82,11 +90,6 @@ export class GeneralInformationsEditComponent implements OnInit {
     return maritalStatusObjArray;
   }
 
-  watchPasswordValueChanges() {
-    this.passwordStrength = passwordStrengthProgressBar(this.passwordControl.getRawValue());
-    this.passwordControl.valueChanges.subscribe(password => this.passwordStrength = passwordStrengthProgressBar(password));
-  }
-
   onCountryFocusEvent() {
     this.countriesListFiltered = this.countriesList;
   }
@@ -103,12 +106,17 @@ export class GeneralInformationsEditComponent implements OnInit {
     this.statesListFiltered = this.statesList;
   }
 
+  private watchPasswordValueChanges() {
+    this.passwordStrength = passwordStrengthProgressBar(this.passwordControl.getRawValue());
+    this.passwordControl.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(password => this.passwordStrength = passwordStrengthProgressBar(password));
+  }
+
   private watchCountryValueChange() {
-    this.countryControl.valueChanges.subscribe(this.onFilterCountriesList.bind(this));
+    this.countryControl.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(this.onFilterCountriesList.bind(this));
   }
 
   private watchStateValueChange() {
-    this.stateControl.valueChanges.subscribe(this.onFilterStatesList.bind(this));
+    this.stateControl.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(this.onFilterStatesList.bind(this));
   }
 
   private onFilterCountriesList(searchTerm: string) {

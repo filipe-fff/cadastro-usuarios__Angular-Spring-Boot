@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { distinctUntilChanged, Subject, Subscription, take } from 'rxjs';
+import { distinctUntilChanged, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
 import { CountriesService } from '../../services/countries.service';
@@ -83,6 +83,8 @@ export class UserInformationsContainerComponent extends UserController implement
   }
 
   ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
     this.userFormValueChangesSubs?.unsubscribe();
     this.focusFirstInvalidControlSubs?.unsubscribe();
   }
@@ -106,6 +108,7 @@ export class UserInformationsContainerComponent extends UserController implement
   private getCountries() {
     this._countriesService
       .getCountries()
+      .pipe(takeUntil(this._destroy$))
       .subscribe(countriesResponse => this.countriesList = countriesResponse);
   }
 
@@ -115,25 +118,31 @@ export class UserInformationsContainerComponent extends UserController implement
     this.statesList = [];
     this._statesService
       .getStates(stateName)
+      .pipe(takeUntil(this._destroy$))
       .subscribe(statesResponse => this.statesList = statesResponse);
   }
 
   private watchUserFormStatusChanges() {
     this.userForm
       .statusChanges
-      .pipe(distinctUntilChanged())
+      .pipe(
+        takeUntil(this._destroy$),
+        distinctUntilChanged())
       .subscribe(() => this.onEnableSaveButtonEmitt.emit(this.userForm.valid || this.userForm.pending));
   }
 
   private watchUserFormFirstValueChange() {
     this.userFormValueChangesSubs = this.userForm.
     valueChanges
-    .pipe(take(1))
+    .pipe(
+      takeUntil(this._destroy$),
+      take(1)
+    )
     .subscribe(() => this.onUserFormFirstChangeEmitt.emit());
   }
 
   private watchFocusFirstInvalidControl() {
-    this.focusFirstInvalidControlSubs = this.focusFirstInvalidControl$.subscribe(() => this.onFocusFirstInvalidControl());
+    this.focusFirstInvalidControlSubs = this.focusFirstInvalidControl$.pipe(takeUntil(this._destroy$)).subscribe(() => this.onFocusFirstInvalidControl());
   }
 
   private onFocusFirstInvalidControl() {
@@ -147,7 +156,13 @@ export class UserInformationsContainerComponent extends UserController implement
     else this.currentTabIndex = 3;
 
     if (previousTabIndex === this.currentTabIndex) {
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => this.onFocusFirstInvalidElement());
+      this._ngZone
+        .onStable
+        .pipe(
+          takeUntil(this._destroy$),
+          take(1)
+        )
+        .subscribe(() => this.onFocusFirstInvalidElement());
     }
   }
 

@@ -34,8 +34,8 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   userFormFirstValueChange: boolean = false;
 
   focusFirstInvalidControl$ = new Subject<void>();
-  destroy$ = new Subject<void>();
   
+  private readonly _destroy$ = new Subject<void>();
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _usersService = inject(UsersService);
@@ -49,9 +49,9 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   }
 
   ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
     this.focusFirstInvalidControl$.complete();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onUsersListRouterButton(dialogEnabled: boolean) {
@@ -122,21 +122,12 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   }
 
   private getUser() {
-    // this._activatedRoute.params.subscribe(params => this.userSelectedIndex = params["id"]);
-
-    // this._usersService
-    //   .getUserById(this.userSelectedIndex as string)
-    //   .subscribe(userResponse => {
-    //     this.userSelected = userResponse;
-    //     this.userBefore = userResponse;
-    //   });
-  
     this._activatedRoute
         .params
         .pipe(
           tap(params => this.userSelectedIndex = params["id"] as string),
           switchMap(() => this._usersService.getUserById(this.userSelectedIndex)),
-          takeUntil(this.destroy$)
+          takeUntil(this._destroy$)
         ).subscribe(userResponse => {
           this.userSelected = userResponse;
           this.userBefore = userResponse;
@@ -148,7 +139,7 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
     this._usersService
       .update(newUser)
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       )
       .subscribe({
         next: () => console.log("Atualizado com sucesso!"),
