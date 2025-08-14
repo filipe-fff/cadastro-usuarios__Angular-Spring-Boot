@@ -40,8 +40,6 @@ export class UserUpdateButtonsContainerComponent {
   }
 
   onSaveButton() {
-    if (!this.enableSaveButton) return;
-
     this.onSaveButtonEmitt.emit();
   }
 }

@@ -70,6 +70,10 @@ export class GeneralInformationsEditComponent implements OnInit {
     return this.userForm.get("generalInformations.state") as FormControl;
   }
 
+  get maritalStatus(): FormControl {
+    return this.userForm.get("generalInformations.maritalStatus") as FormControl;
+  }
+
   get monthlyIncome(): FormControl {
     return this.userForm.get("generalInformations.monthlyIncome") as FormControl;
   }

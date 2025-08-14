@@ -13,7 +13,7 @@
         </div>
     </mat-card-actions>
     <mat-card-content>
-        <mat-tab-group [(selectedIndex)]="currentTabIndex">
+        <mat-tab-group (animationDone)="onUserInfosTabAnimationDone()" [(selectedIndex)]="currentTabIndex">
             <mat-tab>
                 <ng-template mat-tab-label>
                     Geral

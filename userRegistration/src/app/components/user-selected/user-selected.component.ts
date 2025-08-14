@@ -1,19 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IUserBeforeAfterMatDialog } from '../../interfaces/user-before-after-mat-dialog.interface';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
+import { ConfirmExistService } from '../../services/confirm-exit.service';
+import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
+import { UserBeforeAfterMatDialogService } from '../../services/user-before-after-mat-dialog.service';
 import { UserFormRawValueService } from '../../services/user-form-raw-value.service';
 import { UsersService } from '../../services/users.service';
 import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw-value-to-user';
 import { convertUserFormRawValueToUserUpdate } from '../../utils/convert-user-form-raw-value-to-user-update';
-import { UserBeforeAfterMatDialogComponent } from '../user-before-after-mat-dialog/user-before-after-mat-dialog.component';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
-import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
-import { UserBeforeAfterMatDialogService } from '../../services/user-before-after-mat-dialog.service';
-import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
-import { ConfirmExistService } from '../../services/confirm-exit.service';
 
 @Component({
   selector: 'app-user-selected',
@@ -25,7 +23,7 @@ import { ConfirmExistService } from '../../services/confirm-exit.service';
   templateUrl: './user-selected.component.html',
   styleUrl: './user-selected.component.scss'
 })
-export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
+export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateWithDialog {
   userSelected: IUser = {} as IUser;
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
@@ -34,6 +32,9 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   shouldMarkUserFormTouchedAndValidity: boolean = true;
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
+
+  focusFirstInvalidControl$ = new Subject<void>();
+  destroy$ = new Subject<void>();
   
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
@@ -45,6 +46,12 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
 
   ngOnInit() {
     this.getUser();
+  }
+
+  ngOnDestroy() {
+    this.focusFirstInvalidControl$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onUsersListRouterButton(dialogEnabled: boolean) {
@@ -78,6 +85,11 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   onSaveButton() {
+    if (!this.enableSaveButton) {
+      this.focusFirstInvalidControl$.next();
+      return;
+    };
+
     const newUser = convertUserFormRawValueToUser(this._userFormRawValueService.userFormRawValue);
 
     this._userBeforeAfterMatDialogService.open({
@@ -110,21 +122,37 @@ export class UserSelectedComponent implements OnInit, ICanDeactivateWithDialog {
   }
 
   private getUser() {
-    this._activatedRoute.params.subscribe(params => this.userSelectedIndex = params["id"]);
+    // this._activatedRoute.params.subscribe(params => this.userSelectedIndex = params["id"]);
 
-    this._usersService
-      .getUserById(this.userSelectedIndex as string)
-      .subscribe(userResponse => {
-        this.userSelected = userResponse;
-        this.userBefore = userResponse;
-      });
+    // this._usersService
+    //   .getUserById(this.userSelectedIndex as string)
+    //   .subscribe(userResponse => {
+    //     this.userSelected = userResponse;
+    //     this.userBefore = userResponse;
+    //   });
+  
+    this._activatedRoute
+        .params
+        .pipe(
+          tap(params => this.userSelectedIndex = params["id"] as string),
+          switchMap(() => this._usersService.getUserById(this.userSelectedIndex)),
+          takeUntil(this.destroy$)
+        ).subscribe(userResponse => {
+          this.userSelected = userResponse;
+          this.userBefore = userResponse;
+        });
   }
 
   private onUserUpdate() {
     const newUser = convertUserFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
-    this._usersService.update(newUser).subscribe({
-      next: () => console.log("Atualizado com sucesso!"),
-      error: (err) => console.log(err)
-    });
+    this._usersService
+      .update(newUser)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: () => console.log("Atualizado com sucesso!"),
+        error: (err) => console.log(err)
+      });
   }
 }

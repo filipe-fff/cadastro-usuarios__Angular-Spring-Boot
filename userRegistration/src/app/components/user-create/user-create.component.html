@@ -3,6 +3,7 @@
     [userSelected]="newUser"
     [isInEditMode]="isInEditMode"
     [shouldMarkUserFormTouchedAndValidity]="shouldMarkUserFormTouchedAndValidity"
+    [focusFirstInvalidControl$]="focusFirstInvalidControl$"
     (onEnableSaveButton)="onEnableSaveButton($event)">
         <app-user-create-buttons-container
             [isInEditMode]="isInEditMode"

@@ -28,8 +28,6 @@ export class UserCreateButtonsContainerComponent {
   }
 
   onCreateButton() {
-    if (!this.enableSaveButton) return;
-
     this.onCreateButtonEmitt.emit();
   }
 }

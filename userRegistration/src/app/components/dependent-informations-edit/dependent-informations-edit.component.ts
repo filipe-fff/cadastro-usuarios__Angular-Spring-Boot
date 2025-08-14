@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { buttonStylePipe } from '../../pipes/button-style.pipe';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
+import { AngularMaterialModule } from '../../angular-material/angular-material.module';
+import { buttonStylePipe } from '../../pipes/button-style.pipe';
 
 @Component({
   selector: 'app-dependent-informations-edit',

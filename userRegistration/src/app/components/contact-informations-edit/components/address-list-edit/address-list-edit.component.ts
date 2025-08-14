@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AngularMaterialModule } from '../../../../angular-material/angular-material.module';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AngularMaterialModule } from '../../../../angular-material/angular-material.module';
 
 @Component({
   selector: 'app-address-list-edit',

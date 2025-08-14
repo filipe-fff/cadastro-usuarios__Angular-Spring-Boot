@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { distinctUntilChanged, Subscription, take } from 'rxjs';
+import { Component, ElementRef, EventEmitter, inject, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { distinctUntilChanged, Subject, Subscription, take } from 'rxjs';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
 import { CountriesService } from '../../services/countries.service';
@@ -35,12 +35,16 @@ import { UserController } from './user-controller';
   templateUrl: './user-informations-container.component.html',
   styleUrl: './user-informations-container.component.scss'
 })
-export class UserInformationsContainerComponent extends UserController implements OnInit, OnChanges {
+export class UserInformationsContainerComponent extends UserController implements OnInit, OnChanges, OnDestroy {
   currentTabIndex = 0;
   countriesList: CountriesList = [];
   statesList: StatesList = [];
 
-  userFormValueChangesSubs = new Subscription();
+  shouldFocusInvalid: boolean = false;
+
+  userFormValueChangesSubs?: Subscription;
+  focusFirstInvalidControlSubs?: Subscription;
+  ngZoneSubs?: Subscription;
 
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input() userSelectedIndex: string | undefined;
@@ -48,15 +52,20 @@ export class UserInformationsContainerComponent extends UserController implement
   @Input({ required: true }) isInEditMode: boolean = false;
   @Input({ required: true }) shouldMarkUserFormTouchedAndValidity: boolean = false;
 
+  @Input({ required: true }) focusFirstInvalidControl$!: Subject<void>;
+
   @Output("onEnableSaveButton") onEnableSaveButtonEmitt = new EventEmitter<boolean>();
   @Output("onUserFormFirstChange") onUserFormFirstChangeEmitt = new EventEmitter<void>();
 
+  private readonly _elementRef = inject(ElementRef);
+  private readonly _ngZone = inject(NgZone);
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
 
   ngOnInit() {
     this.getCountries();
     this.watchUserFormStatusChanges();
+    this.watchFocusFirstInvalidControl();
   }
   
   ngOnChanges(changes: SimpleChanges): void {
@@ -73,8 +82,17 @@ export class UserInformationsContainerComponent extends UserController implement
     }
   }
 
+  ngOnDestroy() {
+    this.userFormValueChangesSubs?.unsubscribe();
+    this.focusFirstInvalidControlSubs?.unsubscribe();
+  }
+
   onCountrySelected(countryName: string) {
     this.getStates(countryName);
+  }
+
+  onUserInfosTabAnimationDone() {
+    this.onFocusFirstInvalidElement();
   }
 
   private onUserFormTouchedAndValidity() {
@@ -112,5 +130,38 @@ export class UserInformationsContainerComponent extends UserController implement
     valueChanges
     .pipe(take(1))
     .subscribe(() => this.onUserFormFirstChangeEmitt.emit());
+  }
+
+  private watchFocusFirstInvalidControl() {
+    this.focusFirstInvalidControlSubs = this.focusFirstInvalidControl$.subscribe(() => this.onFocusFirstInvalidControl());
+  }
+
+  private onFocusFirstInvalidControl() {
+    const previousTabIndex = this.currentTabIndex;
+    this.shouldFocusInvalid = true;
+    this.userForm.markAllAsTouched();
+
+    if (!this.generalInformationsValid) this.currentTabIndex = 0;
+    else if (!this.contactInformationsValid) this.currentTabIndex = 1;
+    else if (!this.dependentInformationsValid) this.currentTabIndex = 2;
+    else this.currentTabIndex = 3;
+
+    if (previousTabIndex === this.currentTabIndex) {
+      this._ngZone.onStable.pipe(take(1)).subscribe(() => this.onFocusFirstInvalidElement());
+    }
+  }
+
+  private onFocusFirstInvalidElement() {
+    if (!this.shouldFocusInvalid) return;
+    this.shouldFocusInvalid = false;
+
+    const invalidInput = this._elementRef.nativeElement.querySelector("input.ng-invalid");
+      if (invalidInput) {
+        (invalidInput as HTMLElement).focus();
+        return;
+      };
+
+      const invalidMatSelect = this._elementRef.nativeElement.querySelector("mat-select.ng-invalid");
+      if (invalidMatSelect) (invalidMatSelect as HTMLElement).click();
   }
 }
