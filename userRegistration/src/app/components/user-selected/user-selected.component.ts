@@ -24,6 +24,8 @@ import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-cont
   styleUrl: './user-selected.component.scss'
 })
 export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateWithDialog {
+  title: string = "Área de Usuário";
+  
   userSelected: IUser = {} as IUser;
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
@@ -126,8 +128,6 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
 
         this.userFormFirstValueChange = false;
         this.isInEditMode = false;
-
-        console.log("SALVOU !!!");
     });
   }
 
@@ -136,8 +136,6 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   }
 
   onUserFormFirstChange() {
-    console.log("onUserFormFirstValueChange");
-
     this.userFormFirstValueChange = true;
   }
 

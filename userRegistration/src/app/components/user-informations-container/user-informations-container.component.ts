@@ -46,6 +46,7 @@ export class UserInformationsContainerComponent extends UserController implement
   focusFirstInvalidControlSubs?: Subscription;
   ngZoneSubs?: Subscription;
 
+  @Input({ required: true }) title: string = "";
   @Input({ required: true }) userSelected: IUser = {} as IUser;
   @Input() userSelectedIndex: string | undefined;
 
@@ -136,7 +137,6 @@ export class UserInformationsContainerComponent extends UserController implement
   }
 
   private watchUserFormFirstValueChange() {
-    console.log("watchUserFormFirstValueChange =>", this.userForm.value);
     this.userFormValueChangesSubs = this.userForm.
     valueChanges
     .pipe(

@@ -1,5 +1,6 @@
 <button (click)="showUserForm()">Mostrar Usuário</button>
 <app-user-informations-container
+    [title]="title"
     [userSelected]="userSelected"
     [isInEditMode]="isInEditMode"
     [shouldMarkUserFormTouchedAndValidity]="shouldMarkUserFormTouchedAndValidity"

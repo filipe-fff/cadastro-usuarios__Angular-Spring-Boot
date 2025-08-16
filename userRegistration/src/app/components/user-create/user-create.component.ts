@@ -24,6 +24,8 @@ import { IUserCreate } from '../../interfaces/user-create/user-create.interface'
   styleUrl: './user-create.component.scss'
 })
 export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWithDialog {
+  title: string = "Criar Usuário";
+  
   userSelected: IUser = {} as IUser;
 
   isInEditMode: boolean = true;
@@ -70,8 +72,6 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
       this.userSelected = structuredClone(convertUserFormRawValueToUser(this._userFormRawValue.userFormRawValue));
       const newUser = convertUserFormRawValueToUserCreate(this._userFormRawValue.userFormRawValue);
       this.onUserCreate(newUser);
-      console.log("newUser =>", newUser);
-      console.log("CRIOU !!!");
     });
   }
 
@@ -79,10 +79,6 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
     setTimeout(() => {
       this.enableSaveButton = enable;
     });
-  }
-
-  showUserForm() {
-    console.log("userForm =>", this._userFormRawValue.userFormRawValue);
   }
 
   private getNewUser() {
