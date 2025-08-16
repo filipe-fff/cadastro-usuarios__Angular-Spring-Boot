@@ -88,6 +88,8 @@ export class UserController {
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
+
+        this.userForm.updateValueAndValidity();
     }
 
     addDependent() {

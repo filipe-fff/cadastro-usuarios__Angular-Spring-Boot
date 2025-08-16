@@ -105,8 +105,6 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
   }
 
   private onUserCreate(newUser: IUserCreate) {
-    console.log("============================");
-    console.log("newUser =>", newUser);
     this._usersService
       .save(newUser)
       .pipe(takeUntil(this._destroy$))

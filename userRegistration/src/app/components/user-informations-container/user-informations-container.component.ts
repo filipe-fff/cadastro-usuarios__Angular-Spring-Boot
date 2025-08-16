@@ -98,10 +98,8 @@ export class UserInformationsContainerComponent extends UserController implement
   }
 
   private onUserFormTouchedAndValidity() {
-    console.log("onUserFormTouchedAndValidity");
     if (this.shouldMarkUserFormTouchedAndValidity) {
       this.userForm.markAllAsTouched();
-      this.userForm.updateValueAndValidity();
     }
   }
 
@@ -138,6 +136,7 @@ export class UserInformationsContainerComponent extends UserController implement
   }
 
   private watchUserFormFirstValueChange() {
+    console.log("watchUserFormFirstValueChange =>", this.userForm.value);
     this.userFormValueChangesSubs = this.userForm.
     valueChanges
     .pipe(

@@ -1,24 +1,25 @@
 <nav class="w-full flex flex-col sm:flex-row justify-between gap-4">
-    <div>
+    <div *ngIf="isInEditMode">
         <button
-            *ngIf="isInEditMode"
             [ngClass]="'slate' | buttonStyle"
             (click)="onUsersListButton(true)">
             <mat-icon>reply</mat-icon>
         </button>
     </div>
-    <div class="flex gap-4">
-        <button
-            *ngIf="!isInEditMode"
-            [ngClass]="'green' | buttonStyle"
-            (click)="onUsersListButton(false)">Ok</button>
-        <button
-            *ngIf="isInEditMode"
-            class="rounded-md px-3 py-2 text-white text-lg font-medium leading-5"
-            [ngClass]="{
-                'bg-green-600 hover:bg-green-500': enableSaveButton,
-                'bg-green-200': !enableSaveButton
-            }"
-            (click)="onCreateButton()">Criar</button>
+    <div class="w-full flex justify-end gap-4">
+        <div *ngIf="!isInEditMode">
+            <button
+                [ngClass]="'green' | buttonStyle"
+                (click)="onUsersListButton(false)">Ok</button>
+        </div>
+        <div *ngIf="isInEditMode">
+            <button
+                class="rounded-md px-3 py-2 text-white text-lg font-medium leading-5"
+                [ngClass]="{
+                    'bg-green-600 hover:bg-green-500': enableSaveButton,
+                    'bg-green-200': !enableSaveButton
+                }"
+                (click)="onCreateButton()">Criar</button>
+        </div>
     </div>
 </nav>

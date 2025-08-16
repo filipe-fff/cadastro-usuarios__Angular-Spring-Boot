@@ -5,33 +5,36 @@
         </button>
     </div>
     <div class="flex gap-4">
-        <div>
+        <div *ngIf="!isInEditMode">
             <button
-                *ngIf="!isInEditMode"
-                (click)="onEditButton()"
+                (click)="onDeleteButton()"
+                [ngClass]="'red' | buttonStyle"
+                >Remover</button>
+        </div>
+        <div *ngIf="!isInEditMode">
+            <button
                 [ngClass]="'indigo' | buttonStyle"
+                (click)="onEditButton()"
                 >
                 Editar
             </button>
         </div>
-        <div>
+        <div *ngIf="isInEditMode">
             <button
-                *ngIf="isInEditMode"
-                (click)="onCancelButton()"
                 [ngClass]="'red' | buttonStyle"
+                (click)="onCancelButton()"
                 >
                 Cancelar
             </button>
         </div>
-        <div>
+        <div *ngIf="isInEditMode">
             <button
-                *ngIf="isInEditMode"
-                (click)="onSaveButton()"
                 class="rounded-md px-3 py-2 text-lg font-medium leading-5 text-white "
                 [ngClass]="{
                     'bg-green-600 hover:bg-green-500': enableSaveButton,
                     'bg-green-200': !enableSaveButton
                 }"
+                (click)="onSaveButton()"
                 >
                 Salvar
             </button>

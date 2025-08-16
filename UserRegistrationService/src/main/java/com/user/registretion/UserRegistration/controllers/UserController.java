@@ -101,6 +101,7 @@ public class UserController {
     // DELETE
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable("id") UUID id) {
+        System.out.println("0000000000000000 => " + id);
         this.userService.delete(id);
     }
 }

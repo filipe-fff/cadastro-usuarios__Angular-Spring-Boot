@@ -59,6 +59,26 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
     this._router.navigate(["/"]);
   }
 
+  onDeleteButton() {
+    this._confirmMatDialogService.open({
+      title: "Confirmar exclusão de usuário.",
+      description: "Tem certeza de que deseja excluir este usuário? Essa ação é permanente e não poderá ser desfeita."
+    }, (value) => {
+      if (!value) return;
+      this._usersService
+        .delete(this.userSelected.id)
+        .pipe(takeUntil(this._destroy$))
+        .subscribe({
+          next: () => {
+            console.log("Deletado com sucesso!")
+            this._confirmExistService.dialogEnabled = false;
+            this._router.navigate(["/"]);
+          },
+          error: (err) => console.error(err)
+        });
+    });
+  }
+
   onEditButton() {
     this.isInEditMode = true;
   }

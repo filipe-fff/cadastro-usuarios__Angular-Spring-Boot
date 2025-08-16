@@ -20,12 +20,18 @@ export class UserUpdateButtonsContainerComponent {
   @Input({ required: true }) enableSaveButton: boolean = false;
 
   @Output("onUsersListRouterButton") onUsersListRouterButtonEmitt = new EventEmitter<boolean>();
+  
+  @Output("onDeleteButton") onDeleteButtonEmitt = new EventEmitter<void>();
   @Output("onEditButton") onEditButtonEmitt = new EventEmitter<void>();
   @Output("onCancelButton") onCancelButtonEmitt = new EventEmitter<void>();
   @Output("onSaveButton") onSaveButtonEmitt = new EventEmitter<void>();
 
   onUsersListRouterButton(dialogEnabled: boolean) {
     this.onUsersListRouterButtonEmitt.emit(dialogEnabled);
+  }
+
+  onDeleteButton() {
+    this.onDeleteButtonEmitt.emit();
   }
 
   onEditButton() {
