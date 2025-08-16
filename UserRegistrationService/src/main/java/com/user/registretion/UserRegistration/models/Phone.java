@@ -1,8 +1,7 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.user.registretion.UserRegistration.DTOs.PhoneDTO;
+import com.user.registretion.UserRegistration.DTOs.response.PhoneDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,16 +14,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @ToString(exclude = "user")
 public class Phone {
-
-    public Phone(User user, PhoneDTO phoneDTO) {
-        this.preparePhone(user, phoneDTO);
-    }
-
-    public Phone(UUID id, User user, PhoneDTO phoneDTO) {
-        this.preparePhone(user, phoneDTO);
-        this.setId(id);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
@@ -50,12 +39,4 @@ public class Phone {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-    private void preparePhone(User user, PhoneDTO phoneDTO) {
-        this.setType(phoneDTO.type());
-        this.setInternationalCode(phoneDTO.internationalCode());
-        this.setAreaCode(phoneDTO.areaCode());
-        this.setNumber(phoneDTO.number());
-        this.setUser(user);
-    }
 }

@@ -5,6 +5,7 @@ import { IUser } from "../interfaces/user/user.interface";
 import { UsersListReponse } from "../types/users-list-response";
 import { IUserUpdate } from "../interfaces/user-update/user-update.interface";
 import { IPhone } from "../interfaces/user/phone.interface";
+import { IUserCreate } from "../interfaces/user-create/user-create.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -13,8 +14,8 @@ export class UsersService {
     private readonly _httpClient = inject(HttpClient);
 
     // CREATE
-    save(user: IUser): Observable<IUser> {
-        return this._httpClient.post<IUser>("http://localhost:8081/user-registration/save", { ...user });
+    save(user: IUserCreate): Observable<IUserCreate> {
+        return this._httpClient.post<IUserCreate>("http://localhost:8081/user-registration/save", user);
     }
     
     // READ

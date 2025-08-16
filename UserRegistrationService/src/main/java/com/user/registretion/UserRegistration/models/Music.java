@@ -1,8 +1,7 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.user.registretion.UserRegistration.DTOs.MusicDTO;
+import com.user.registretion.UserRegistration.DTOs.response.MusicDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,16 +14,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @ToString(exclude = "user")
 public class Music {
-
-    public Music(User user, MusicDTO musicDTO) {
-        this.prepareMusic(user, musicDTO);
-    }
-
-    public Music(UUID id, User user, MusicDTO musicDTO) {
-        this.prepareMusic(user, musicDTO);
-        this.setId(id);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
@@ -50,12 +39,4 @@ public class Music {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-    private void prepareMusic(User user, MusicDTO musicDTO) {
-        this.setTitle(musicDTO.title());
-        this.setBand(musicDTO.band());
-        this.setGenre(musicDTO.genre());
-        this.setIsFavorite(musicDTO.isFavorite());
-        this.setUser(user);
-    }
 }

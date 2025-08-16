@@ -1,8 +1,8 @@
 package com.user.registretion.UserRegistration.controllers;
 
-import com.user.registretion.UserRegistration.DTOs.PhoneDTO;
-import com.user.registretion.UserRegistration.DTOs.UserSaveDTO;
-import com.user.registretion.UserRegistration.DTOs.UserUpdateDTO;
+import com.user.registretion.UserRegistration.DTOs.response.PhoneDTO;
+import com.user.registretion.UserRegistration.DTOs.save.UserSaveDTO;
+import com.user.registretion.UserRegistration.DTOs.update.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
 import com.user.registretion.UserRegistration.services.DependentService;
 import com.user.registretion.UserRegistration.services.PhoneService;
@@ -95,7 +95,6 @@ public class UserController {
     // UPDATE
     @PostMapping("/update")
     public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
-        System.out.println("ok");
         return this.userService.update(userUpdateDTO);
     }
 

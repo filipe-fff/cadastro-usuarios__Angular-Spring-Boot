@@ -1,13 +1,13 @@
 package com.user.registretion.UserRegistration.services;
 
-import com.user.registretion.UserRegistration.DTOs.*;
+import com.user.registretion.UserRegistration.DTOs.save.*;
+import com.user.registretion.UserRegistration.DTOs.update.*;
 import com.user.registretion.UserRegistration.components.StorageComponent;
 import com.user.registretion.UserRegistration.models.*;
 import com.user.registretion.UserRegistration.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +36,15 @@ public class UserService {
         user.setMaritalStatus(userSaveDTO.maritalStatus());
         user.setMonthlyIncome(userSaveDTO.monthlyIncome());
         user.setBirthDate(userSaveDTO.birthDate());
+
+        System.out.println("user_ =>" + user);
+
+        savePhoneList(user, userSaveDTO.phoneList());
+        saveAddressList(user, userSaveDTO.addressList());
+        saveDependentsList(user, userSaveDTO.dependents());
+        saveMusicsList(user, userSaveDTO.musics());
+
+        System.out.println("user= =>" + user);
 
         return userRepository.save(user);
     }
@@ -73,8 +82,6 @@ public class UserService {
                 .findById((userUpdateDTO.id()))
                 .orElseThrow(() -> new RuntimeException("User not found with id " + userUpdateDTO.id()));
 
-        System.out.println("user before => " + user);
-
         user.setId(userUpdateDTO.id());
         user.setName(userUpdateDTO.name());
         user.setPassword(userUpdateDTO.password());
@@ -91,8 +98,6 @@ public class UserService {
         updateDependentsList(user, userUpdateDTO.dependents());
         updateMusicsList(user, userUpdateDTO.musics());
 
-        System.out.println("user after => " + user);
-
         return userRepository.save(user);
     }
 
@@ -103,7 +108,66 @@ public class UserService {
     }
 
     @Transactional
-    private void updatePhoneList(User user, List<PhoneDTO> phoneListDTO) {
+    private void savePhoneList(User user, List<PhoneSaveDTO> phoneListDTO) {
+        user.setPhoneList(
+                phoneListDTO.stream().map(
+                        p -> {
+                            Phone phone = new Phone(
+                                p.type(),
+                                p.internationalCode(),
+                                p.areaCode(),
+                                p.number());
+                            phone.setUser(user);
+                            return phone;
+                        }).toList());
+    };
+
+    @Transactional
+    private void saveAddressList(User user, List<AddressSaveDTO> addressListDTO) {
+        user.setAddressList(
+                addressListDTO.stream().map(
+                        a -> {
+                            Address address = new Address(
+                                a.type(),
+                                a.street(),
+                                a.complement(),
+                                a.country(),
+                                a.state(),
+                                a.city());
+                            address.setUser(user);
+                            return address;
+                        }).toList());
+    }
+
+    @Transactional
+    private void saveDependentsList(User user, List<DependentSaveDTO> dependentsListDTO) {
+        user.setDependents(dependentsListDTO.stream().map(
+                d -> {
+                    Dependent dependent = new Dependent(
+                        d.name(),
+                        d.age(),
+                        d.document());
+                    dependent.setUser(user);
+                    return dependent;
+                }).toList());
+    }
+
+    @Transactional
+    private void saveMusicsList(User user, List<MusicSaveDTO> musicsListDTO) {
+        user.setMusics(musicsListDTO.stream().map(
+                m -> {
+                    Music music = new Music(
+                        m.title(),
+                        m.band(),
+                        m.genre(),
+                        m.isFavorite());
+                    music.setUser(user);
+                    return  music;
+                }).toList());
+    }
+
+    @Transactional
+    private void updatePhoneList(User user, List<PhoneUpdateDTO> phoneListDTO) {
         Map<UUID, Phone> existsPhoneMap = user
                 .getPhoneList()
                 .stream()
@@ -117,7 +181,7 @@ public class UserService {
 
         user.getPhoneList().clear();
 
-        for (PhoneDTO phone : phoneListDTO) {
+        for (PhoneUpdateDTO phone : phoneListDTO) {
             Phone updatePhone;
 
             if (phone.id() != null && existsPhoneMap.containsKey(phone.id()))
@@ -136,7 +200,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateAddressList(User user, List<AddressDTO> addressListDTO) {
+    private void updateAddressList(User user, List<AddressUpdateDTO> addressListDTO) {
         Map<UUID, Address> existsAddressMap = user
                 .getAddressList()
                 .stream()
@@ -149,7 +213,7 @@ public class UserService {
 
         user.getAddressList().clear();
 
-        for (AddressDTO address : addressListDTO) {
+        for (AddressUpdateDTO address : addressListDTO) {
             Address updateAddress;
 
             if (address.id() != null && existsAddressMap.containsKey(address.id()))
@@ -169,7 +233,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateDependentsList(User user, List<DependentDTO> dependentsListDTO) {
+    private void updateDependentsList(User user, List<DependentUpdateDTO> dependentsListDTO) {
         Map<UUID, Dependent> existsDependentMap = user
                 .getDependents()
                 .stream()
@@ -183,7 +247,7 @@ public class UserService {
 
         user.getDependents().clear();
 
-        for (DependentDTO dependent : dependentsListDTO) {
+        for (DependentUpdateDTO dependent : dependentsListDTO) {
             Dependent updateDependent;
 
             if (dependent.id() != null && existsDependentMap.containsKey(dependent.id()))
@@ -200,7 +264,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateMusicsList(User user, List<MusicDTO> musicsListDTO) {
+    private void updateMusicsList(User user, List<MusicUpdateDTO> musicsListDTO) {
         Map<UUID, Music> existsMusicMap = user
                 .getMusics()
                 .stream()
@@ -213,7 +277,7 @@ public class UserService {
 
         user.getMusics().clear();
 
-        for (MusicDTO music : musicsListDTO) {
+        for (MusicUpdateDTO music : musicsListDTO) {
             Music updateMusic;
 
             if (music.id() != null && existsMusicMap.containsKey(music.id()))

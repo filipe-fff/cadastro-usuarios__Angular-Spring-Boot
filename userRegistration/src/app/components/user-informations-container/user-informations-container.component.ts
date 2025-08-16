@@ -108,7 +108,10 @@ export class UserInformationsContainerComponent extends UserController implement
   private getCountries() {
     this._countriesService
       .getCountries()
-      .pipe(takeUntil(this._destroy$))
+      .pipe(
+        take(1),
+        takeUntil(this._destroy$)
+      )
       .subscribe(countriesResponse => this.countriesList = countriesResponse);
   }
 
@@ -118,7 +121,10 @@ export class UserInformationsContainerComponent extends UserController implement
     this.statesList = [];
     this._statesService
       .getStates(stateName)
-      .pipe(takeUntil(this._destroy$))
+      .pipe(
+        take(1),
+        takeUntil(this._destroy$
+      ))
       .subscribe(statesResponse => this.statesList = statesResponse);
   }
 

@@ -1,12 +1,14 @@
-package com.user.registretion.UserRegistration.DTOs;
+package com.user.registretion.UserRegistration.DTOs.update;
 
 import com.user.registretion.UserRegistration.DTOs.abstracts.UserDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
-public record UserSaveDTO(
+public record UserUpdateDTO(
+        UUID id,
         String name,
         String photoUrl,
         String email,
@@ -16,9 +18,9 @@ public record UserSaveDTO(
         byte maritalStatus,
         BigDecimal monthlyIncome,
         LocalDate birthDate,
-        List<PhoneDTO> phoneList,
-        List<AddressDTO> addressList,
-        List<DependentDTO> dependents,
-        List<MusicDTO> musics
+        List<PhoneUpdateDTO> phoneList,
+        List<AddressUpdateDTO> addressList,
+        List<DependentUpdateDTO> dependents,
+        List<MusicUpdateDTO> musics
         ) implements UserDTO {
 }

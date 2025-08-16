@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -23,7 +23,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './general-informations-edit.component.html',
   styleUrl: './general-informations-edit.component.scss'
 })
-export class GeneralInformationsEditComponent implements OnInit, OnDestroy {
+export class GeneralInformationsEditComponent implements OnInit, OnChanges, OnDestroy {
   passwordStrength: number = 0;
 
   countriesListFiltered: CountriesList = [];
@@ -47,6 +47,11 @@ export class GeneralInformationsEditComponent implements OnInit, OnDestroy {
 
     this.getMinDate();
     this.getMaxDate();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const hasStatesList = changes["statesList"] && changes["statesList"].currentValue;
+    if (hasStatesList) this.statesListFiltered = this.statesList;
   }
 
   ngOnDestroy() {
@@ -94,16 +99,16 @@ export class GeneralInformationsEditComponent implements OnInit, OnDestroy {
     this.countriesListFiltered = this.countriesList;
   }
 
+  onStateFocusEvent() {
+    this.statesListFiltered = this.statesList;
+  }
+
   onCountrySelected(event: MatAutocompleteSelectedEvent) {
     const searchTerm = event.option.value;
 
     if (!searchTerm) return;
 
     this.onCountrySelectedEmitt.emit(searchTerm);
-  }
-
-  onStateFocusEvent() {
-    this.statesListFiltered = this.statesList;
   }
 
   private watchPasswordValueChanges() {

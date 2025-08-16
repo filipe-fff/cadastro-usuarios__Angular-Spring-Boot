@@ -1,14 +1,11 @@
-package com.user.registretion.UserRegistration.DTOs;
+package com.user.registretion.UserRegistration.DTOs.save;
 
-import java.util.UUID;
-
-public record AddressDTO(
-        UUID id,
+public record AddressSaveDTO(
         Byte type,
         String street,
         String complement,
         String country,
         String state,
         String city
-        ) {
+    ) {
 }

@@ -179,7 +179,7 @@ export class UserController {
         preparePhoneListToDisplay(false, phoneResponse, (phone) => {
             const phoneValidation = phone.type === 3 ? [] : [ Validators.required ];
             this.phoneList.push(this._fb.group({
-                id: [phone.id],
+                id: [phone.id ?? null],
                 type: [phone.type],
                 typeDescription: [phone.typeDescription],
                 number: [phone.number,
@@ -232,10 +232,11 @@ export class UserController {
     private fulfillMusics(musicsResponse: MusicsList) {
         prepareMusicsListToDisplay(false, musicsResponse, (music) => {
             this.musicsList.push(this._fb.group({
+                id: [music.id],
                 title: [music.title],
                 band: [music.band],
                 genre: [music.genre],
-                isFavorite: [music.isFavorite]
+                isFavorite: [music.isFavorite || false]
             }, { validators: [ musicRequiredValidator ] }));
         });
     }

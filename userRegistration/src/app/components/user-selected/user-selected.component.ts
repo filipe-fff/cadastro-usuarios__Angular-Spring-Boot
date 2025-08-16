@@ -143,7 +143,7 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
       )
       .subscribe({
         next: () => console.log("Atualizado com sucesso!"),
-        error: (err) => console.log(err)
+        error: (err) => console.error(err)
       });
   }
 }

@@ -1,6 +1,6 @@
 package com.user.registretion.UserRegistration.services;
 
-import com.user.registretion.UserRegistration.DTOs.PhoneDTO;
+import com.user.registretion.UserRegistration.DTOs.response.PhoneDTO;
 import com.user.registretion.UserRegistration.repositories.PhoneRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

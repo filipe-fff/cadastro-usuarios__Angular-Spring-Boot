@@ -1,6 +1,6 @@
 export interface IPhoneUserCreate {
     type: number;
-    internationalCode: string;
     areaCode: string;
+    internationalCode: string;
     number: string;
 };

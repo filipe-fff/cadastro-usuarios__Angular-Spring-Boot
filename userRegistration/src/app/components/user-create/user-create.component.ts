@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
 import { ConfirmExistService } from '../../services/confirm-exit.service';
@@ -8,6 +8,10 @@ import { UserFormRawValueService } from '../../services/user-form-raw-value.serv
 import { convertUserFormRawValueToUserCreate } from '../../utils/convert-user-form-raw-value-to-user-create';
 import { UserCreateButtonsContainerComponent } from '../user-create-buttons-container/user-create-buttons-container.component';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
+import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
+import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw-value-to-user';
+import { UsersService } from '../../services/users.service';
+import { IUserCreate } from '../../interfaces/user-create/user-create.interface';
 
 @Component({
   selector: 'app-user-create',
@@ -20,7 +24,7 @@ import { UserInformationsContainerComponent } from '../user-informations-contain
   styleUrl: './user-create.component.scss'
 })
 export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWithDialog {
-  newUser: IUser = {} as IUser;
+  userSelected: IUser = {} as IUser;
 
   isInEditMode: boolean = true;
   enableSaveButton: boolean = false;
@@ -28,15 +32,20 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
 
   focusFirstInvalidControl$ = new Subject<void>();
 
+  private readonly _destroy$ = new Subject<void>();
   private readonly _router = inject(Router);
+  private readonly _usersService = inject(UsersService);
   private readonly _userFormRawValue = inject(UserFormRawValueService);
   private readonly _confirmExitService = inject(ConfirmExistService);
+  private readonly _confirmMatDialogService = inject(ConfirmMatDialogService);
 
   ngOnInit() {
     this.getNewUser();
   }
 
   ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
     this.focusFirstInvalidControl$.complete();
   }
 
@@ -51,9 +60,19 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
       return;
     }
 
-    // this.isInEditMode = false;
-    console.log("CRIOU !!!");
-    console.log(convertUserFormRawValueToUserCreate(this._userFormRawValue.userFormRawValue));
+    this._confirmMatDialogService.open({
+      title: "Criar um Novo Usuário",
+      description: "Um novo Usuário registrado, você quer realmente criar um novo usuário?"
+    }, (value) => {
+      if (!value) return;
+
+      this.isInEditMode = false;
+      this.userSelected = structuredClone(convertUserFormRawValueToUser(this._userFormRawValue.userFormRawValue));
+      const newUser = convertUserFormRawValueToUserCreate(this._userFormRawValue.userFormRawValue);
+      this.onUserCreate(newUser);
+      console.log("newUser =>", newUser);
+      console.log("CRIOU !!!");
+    });
   }
 
   onEnableSaveButton(enable: boolean) {
@@ -67,7 +86,7 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
   }
 
   private getNewUser() {
-    this.newUser = ({
+    this.userSelected = ({
       id: "",
       name: "",
       photoUrl: "",
@@ -83,5 +102,17 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
       dependents: [],
       musics: []
     }) as IUser;
+  }
+
+  private onUserCreate(newUser: IUserCreate) {
+    console.log("============================");
+    console.log("newUser =>", newUser);
+    this._usersService
+      .save(newUser)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe({
+        next: () => console.log("Criado com sucesso!"),
+        error: (err) => console.error(err)
+      })
   }
 }

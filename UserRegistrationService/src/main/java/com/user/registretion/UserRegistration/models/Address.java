@@ -1,7 +1,7 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.user.registretion.UserRegistration.DTOs.AddressDTO;
+import com.user.registretion.UserRegistration.DTOs.response.AddressDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,16 +14,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @ToString(exclude = "user")
 public class Address {
-
-    public Address(User user, AddressDTO addressDTO) {
-        this.prepareAddress(user, addressDTO);
-    }
-
-    public Address(UUID id, User user, AddressDTO addressDTO) {
-        this.prepareAddress(user, addressDTO);
-        this.setId(id);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
@@ -57,14 +47,4 @@ public class Address {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-    private void prepareAddress(User user, AddressDTO addressDTO) {
-        this.setType(addressDTO.type());
-        this.setStreet(addressDTO.street());
-        this.setComplement(addressDTO.complement());
-        this.setCountry(addressDTO.country());
-        this.setState(addressDTO.state());
-        this.setCity(addressDTO.city());
-        this.setUser(user);
-    }
 }

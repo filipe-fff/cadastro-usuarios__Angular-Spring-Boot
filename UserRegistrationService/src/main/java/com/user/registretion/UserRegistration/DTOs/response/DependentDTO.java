@@ -1,4 +1,4 @@
-package com.user.registretion.UserRegistration.DTOs;
+package com.user.registretion.UserRegistration.DTOs.response;
 
 import java.util.UUID;
 
@@ -7,5 +7,5 @@ public record DependentDTO(
         String name,
         Byte age,
         Long document
-        ) {
+    ) {
 }

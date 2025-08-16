@@ -8,7 +8,6 @@
                     <mat-label>{{ phone.value.typeDescription }}:</mat-label>
                     <input
                         matInput
-                        placeholder="+55 11 1111-2222"
                         [mask]="phone.value.type | phoneMask"
                         [placeholder]="phone.value.type | phonePlaceholder"
                         [validation]="true"
