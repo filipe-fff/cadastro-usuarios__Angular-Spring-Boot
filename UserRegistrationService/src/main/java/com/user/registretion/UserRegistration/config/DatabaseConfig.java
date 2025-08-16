@@ -22,22 +22,22 @@ public class DatabaseConfig {
     @Value("${spring.datasource.driver-class-name}")
     String driverClassName;
 
-    @Bean
-    public DataSource hikariDataSource() {
-        HikariConfig hikariConfig = new HikariConfig();
-
-        hikariConfig.setJdbcUrl(this.url);
-        hikariConfig.setUsername(this.username);
-        hikariConfig.setPassword(this.password);
-        hikariConfig.setDriverClassName(this.driverClassName);
-
-        hikariConfig.setPoolName("user-registration-db-pool");
-        hikariConfig.setMaximumPoolSize(20);
-        hikariConfig.setMinimumIdle(1);
-        hikariConfig.setConnectionTimeout(100000);
-        hikariConfig.setMaxLifetime(600000L);
-        hikariConfig.setConnectionTestQuery("SELECT 1");
-
-        return new HikariDataSource(hikariConfig);
-    }
+//    @Bean
+//    public DataSource hikariDataSource() {
+//        HikariConfig hikariConfig = new HikariConfig();
+//
+//        hikariConfig.setJdbcUrl(this.url);
+//        hikariConfig.setUsername(this.username);
+//        hikariConfig.setPassword(this.password);
+//        hikariConfig.setDriverClassName(this.driverClassName);
+//
+//        hikariConfig.setPoolName("user-registration-db-pool");
+//        hikariConfig.setMaximumPoolSize(20);
+//        hikariConfig.setMinimumIdle(1);
+//        hikariConfig.setConnectionTimeout(100000);
+//        hikariConfig.setMaxLifetime(600000L);
+//        hikariConfig.setConnectionTestQuery("SELECT 1");
+//
+//        return new HikariDataSource(hikariConfig);
+//    }
 }
