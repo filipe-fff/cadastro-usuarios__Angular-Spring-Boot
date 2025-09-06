@@ -77,12 +77,12 @@ public class UserService {
 
     // UPDATE
     @Transactional
-    public User update(UserUpdateDTO userUpdateDTO) {
+    public User update(UUID id, UserUpdateDTO userUpdateDTO) {
         User user = userRepository
-                .findById((userUpdateDTO.id()))
-                .orElseThrow(() -> new RuntimeException("User not found with id " + userUpdateDTO.id()));
+                .findById((id))
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
 
-        user.setId(userUpdateDTO.id());
+        user.setId(id);
         user.setName(userUpdateDTO.name());
         user.setPassword(userUpdateDTO.password());
         user.setPhotoUrl("");

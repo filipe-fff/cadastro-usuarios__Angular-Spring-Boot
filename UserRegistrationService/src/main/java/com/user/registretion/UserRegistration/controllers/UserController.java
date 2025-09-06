@@ -26,7 +26,7 @@ public class UserController {
     DependentService dependentService;
 
     // CREATE
-    @PostMapping(value = "/save")
+    @PostMapping
     public User save(@RequestBody UserSaveDTO userSaveDTO) {
         return this.userService.save(userSaveDTO);
     }
@@ -37,7 +37,7 @@ public class UserController {
         return this.userService.findAll();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public User userById(@PathVariable("id") UUID id) {
         return this.userService.userById(id);
     }
@@ -47,7 +47,7 @@ public class UserController {
         return this.userService.existsByIdNotAndName(null, name);
     }
 
-    @PutMapping("/exists-name/{id}")
+    @PutMapping("/{id}/exists-name")
     public boolean existsByIdNotAndName(@PathVariable("id") UUID id, @RequestBody String name) {
         return this.userService.existsByIdNotAndName(id, name);
     }
@@ -57,7 +57,7 @@ public class UserController {
         return this.userService.existsByIdNotAndEmail(null, email);
     }
 
-    @PutMapping("/exists-email/{id}")
+    @PutMapping("/{id}/exists-email")
     public boolean existsByIdNotAndEmail(@PathVariable("id") UUID id, @RequestBody String email) {
         return this.userService.existsByIdNotAndEmail(id, email);
     }
@@ -67,7 +67,7 @@ public class UserController {
         return userService.existsByIdNotAndPassword(null, password);
     }
 
-    @PutMapping("/exists-password/{id}")
+    @PutMapping("/{id}/exists-password")
     public boolean existsByIdNotAndPassword(@PathVariable("id") UUID id, @RequestBody String password) {
         return userService.existsByIdNotAndPassword(id, password);
     }
@@ -77,8 +77,8 @@ public class UserController {
         return phoneService.existsIdNotAndPhone(null, phoneDTO);
     }
 
-    @PutMapping("/exists-phone/{userId}")
-    public boolean existsByIdNotAndPhone(@PathVariable("userId") UUID userId, @RequestBody PhoneDTO phoneDTO) {
+    @PutMapping("/{id}/exists-phone")
+    public boolean existsByIdNotAndPhone(@PathVariable("id") UUID userId, @RequestBody PhoneDTO phoneDTO) {
         return phoneService.existsIdNotAndPhone(userId, phoneDTO);
     }
 
@@ -87,19 +87,19 @@ public class UserController {
         return dependentService.existsByIdNotAndDocument(null, document);
     }
 
-    @PutMapping("/exists-document/{id}")
+    @PutMapping("/{id}/exists-document")
     public boolean existsByIdNotAndDocument(@PathVariable("id") UUID id, @RequestBody Long document) {
         return dependentService.existsByIdNotAndDocument(id, document);
     }
 
     // UPDATE
-    @PostMapping("/update")
-    public User update(@RequestBody UserUpdateDTO userUpdateDTO) {
-        return this.userService.update(userUpdateDTO);
+    @PutMapping("/{id}")
+    public User update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO userUpdateDTO) {
+        return this.userService.update(id, userUpdateDTO);
     }
 
     // DELETE
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") UUID id) {
         System.out.println("0000000000000000 => " + id);
         this.userService.delete(id);
