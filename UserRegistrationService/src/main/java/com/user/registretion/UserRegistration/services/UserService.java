@@ -1,12 +1,15 @@
 package com.user.registretion.UserRegistration.services;
 
-import com.user.registretion.UserRegistration.DTOs.save.*;
-import com.user.registretion.UserRegistration.DTOs.update.*;
+import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
+import com.user.registretion.UserRegistration.dtos.save.*;
+import com.user.registretion.UserRegistration.dtos.update.*;
 import com.user.registretion.UserRegistration.components.StorageComponent;
 import com.user.registretion.UserRegistration.models.*;
 import com.user.registretion.UserRegistration.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,7 +27,7 @@ public class UserService {
 
     // CREATE
     @Transactional
-    public User save(UserSaveDTO userSaveDTO) {
+    public ResponseEntity<User> save(UserSaveDTO userSaveDTO) {
         User user = new User();
 
         user.setName(userSaveDTO.name());
@@ -46,7 +49,9 @@ public class UserService {
 
         System.out.println("user= =>" + user);
 
-        return userRepository.save(user);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userRepository.save(user));
     }
 
     // READ
@@ -56,55 +61,116 @@ public class UserService {
     }
 
     @Transactional
-    public User userById(UUID id) {
-        return userRepository.findById(id).orElse(null);
+    public ResponseEntity<Object> userById(String id) {
+        try {
+            var userId = UUID.fromString(id);
+
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if (userOptional.isPresent()) {
+                return ResponseEntity.ok(userOptional.get());
+            }
+
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     @Transactional
-    public boolean existsByIdNotAndName(UUID id, String name) {
-        return userRepository.existsByIdNotAndName(id, name);
+    public ResponseEntity<Object> existsByIdNotAndName(String id, String name) {
+        try {
+            UUID userId = UUID.fromString(id);
+            boolean exists = userRepository.existsByIdNotAndName(userId, name);
+            return ResponseEntity.ok(exists);
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     @Transactional
-    public boolean existsByIdNotAndEmail(UUID id, String email) {
-        return userRepository.existsByIdNotAndEmail(id, email);
+    public ResponseEntity<Object> existsByIdNotAndEmail(String id, String email) {
+        try {
+            UUID userId = UUID.fromString(id);
+            boolean exists = userRepository.existsByIdNotAndEmail(userId, email);
+            return ResponseEntity.ok(exists);
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     @Transactional
-    public boolean existsByIdNotAndPassword(UUID id, String password) {
-        return userRepository.existsByIdNotAndPassword(id, password);
+    public ResponseEntity<Object> existsByIdNotAndPassword(String id, String password) {
+        try {
+            UUID userId = UUID.fromString(id);
+            boolean exists = userRepository.existsByIdNotAndPassword(userId, password);
+            return ResponseEntity.ok(exists);
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     // UPDATE
     @Transactional
-    public User update(UUID id, UserUpdateDTO userUpdateDTO) {
-        User user = userRepository
-                .findById((id))
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+    public ResponseEntity<Object> update(String id, UserUpdateDTO userUpdateDTO) {
+        try {
+            UUID userId = UUID.fromString(id);
 
-        user.setId(id);
-        user.setName(userUpdateDTO.name());
-        user.setPassword(userUpdateDTO.password());
-        user.setPhotoUrl("");
-        user.setEmail(userUpdateDTO.email());
-        user.setCountry(userUpdateDTO.country());
-        user.setState(userUpdateDTO.state());
-        user.setMaritalStatus(userUpdateDTO.maritalStatus());
-        user.setMonthlyIncome(userUpdateDTO.monthlyIncome());
-        user.setBirthDate(userUpdateDTO.birthDate());
+            Optional<User> userOptional = userRepository
+                    .findById((userId));
 
-        updatePhoneList(user, userUpdateDTO.phoneList());
-        updateAddressList(user, userUpdateDTO.addressList());
-        updateDependentsList(user, userUpdateDTO.dependents());
-        updateMusicsList(user, userUpdateDTO.musics());
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        return userRepository.save(user);
+            User user = userOptional.get();
+
+            user.setId(userId);
+            user.setName(userUpdateDTO.name());
+            user.setPassword(userUpdateDTO.password());
+            user.setPhotoUrl("");
+            user.setEmail(userUpdateDTO.email());
+            user.setCountry(userUpdateDTO.country());
+            user.setState(userUpdateDTO.state());
+            user.setMaritalStatus(userUpdateDTO.maritalStatus());
+            user.setMonthlyIncome(userUpdateDTO.monthlyIncome());
+            user.setBirthDate(userUpdateDTO.birthDate());
+
+            updatePhoneList(user, userUpdateDTO.phoneList());
+            updateAddressList(user, userUpdateDTO.addressList());
+            updateDependentsList(user, userUpdateDTO.dependents());
+            updateMusicsList(user, userUpdateDTO.musics());
+
+            return ResponseEntity.ok(userRepository.save(user));
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     // DELETE
     @Transactional
-    public void delete(UUID id) {
-        this.userRepository.deleteById(id);
+    public ResponseEntity<Object> delete(String id) {
+        try {
+            UUID userId = UUID.fromString(id);
+
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            this.userRepository.deleteById(userId);
+
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 
     @Transactional

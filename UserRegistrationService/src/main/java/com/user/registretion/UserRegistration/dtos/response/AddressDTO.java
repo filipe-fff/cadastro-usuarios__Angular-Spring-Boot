@@ -1,4 +1,4 @@
-package com.user.registretion.UserRegistration.DTOs.response;
+package com.user.registretion.UserRegistration.dtos.response;
 
 import java.util.UUID;
 

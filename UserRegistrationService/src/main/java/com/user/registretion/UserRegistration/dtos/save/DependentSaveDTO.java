@@ -1,4 +1,4 @@
-package com.user.registretion.UserRegistration.DTOs.save;
+package com.user.registretion.UserRegistration.dtos.save;
 
 public record DependentSaveDTO(
         String name,

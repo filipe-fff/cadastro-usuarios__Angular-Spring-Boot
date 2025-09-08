@@ -1,8 +1,8 @@
-package com.user.registretion.UserRegistration.DTOs.response;
+package com.user.registretion.UserRegistration.dtos.update;
 
 import java.util.UUID;
 
-public record MusicDTO(
+public record MusicUpdateDTO(
         UUID id,
         String title,
         String band,

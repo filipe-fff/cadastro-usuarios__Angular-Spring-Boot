@@ -1,7 +1,6 @@
 package com.user.registretion.UserRegistration.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.user.registretion.UserRegistration.DTOs.response.DependentDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

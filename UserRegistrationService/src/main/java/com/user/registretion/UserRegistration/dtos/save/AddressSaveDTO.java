@@ -1,9 +1,6 @@
-package com.user.registretion.UserRegistration.DTOs.update;
+package com.user.registretion.UserRegistration.dtos.save;
 
-import java.util.UUID;
-
-public record AddressUpdateDTO(
-        UUID id,
+public record AddressSaveDTO(
         Byte type,
         String street,
         String complement,

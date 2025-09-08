@@ -1,16 +1,20 @@
 package com.user.registretion.UserRegistration.controllers;
 
-import com.user.registretion.UserRegistration.DTOs.response.PhoneDTO;
-import com.user.registretion.UserRegistration.DTOs.save.UserSaveDTO;
-import com.user.registretion.UserRegistration.DTOs.update.UserUpdateDTO;
+import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
+import com.user.registretion.UserRegistration.dtos.response.PhoneDTO;
+import com.user.registretion.UserRegistration.dtos.save.UserSaveDTO;
+import com.user.registretion.UserRegistration.dtos.update.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
 import com.user.registretion.UserRegistration.services.DependentService;
 import com.user.registretion.UserRegistration.services.PhoneService;
 import com.user.registretion.UserRegistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -27,81 +31,80 @@ public class UserController {
 
     // CREATE
     @PostMapping
-    public User save(@RequestBody UserSaveDTO userSaveDTO) {
+    public ResponseEntity<User> save(@RequestBody UserSaveDTO userSaveDTO) {
         return this.userService.save(userSaveDTO);
     }
 
     // READ
     @GetMapping
-    public List<User> usersList() {
-        return this.userService.findAll();
+    public ResponseEntity<List<User>> usersList() {
+        return ResponseEntity.ok(this.userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public User userById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Object> userById(@PathVariable("id") String id) {
         return this.userService.userById(id);
     }
 
     @PutMapping("/exists-name")
-    public boolean existsByIdNotAndName(@RequestBody String name) {
+    public ResponseEntity<Object> existsByIdNotAndName(@RequestBody String name) {
         return this.userService.existsByIdNotAndName(null, name);
     }
 
     @PutMapping("/{id}/exists-name")
-    public boolean existsByIdNotAndName(@PathVariable("id") UUID id, @RequestBody String name) {
+    public ResponseEntity<Object> existsByIdNotAndName(@PathVariable("id") String id, @RequestBody String name) {
         return this.userService.existsByIdNotAndName(id, name);
     }
 
     @PutMapping("/exists-email")
-    public boolean existsByIdNotAndEmail(@RequestBody String email) {
+    public ResponseEntity<Object> existsByIdNotAndEmail(@RequestBody String email) {
         return this.userService.existsByIdNotAndEmail(null, email);
     }
 
     @PutMapping("/{id}/exists-email")
-    public boolean existsByIdNotAndEmail(@PathVariable("id") UUID id, @RequestBody String email) {
+    public ResponseEntity<Object> existsByIdNotAndEmail(@PathVariable("id") String id, @RequestBody String email) {
         return this.userService.existsByIdNotAndEmail(id, email);
     }
 
     @PutMapping("/exists-password")
-    public boolean existsByIdNotAndPassword(@RequestBody String password) {
+    public ResponseEntity<Object> existsByIdNotAndPassword(@RequestBody String password) {
         return userService.existsByIdNotAndPassword(null, password);
     }
 
     @PutMapping("/{id}/exists-password")
-    public boolean existsByIdNotAndPassword(@PathVariable("id") UUID id, @RequestBody String password) {
+    public ResponseEntity<Object> existsByIdNotAndPassword(@PathVariable("id") String id, @RequestBody String password) {
         return userService.existsByIdNotAndPassword(id, password);
     }
 
     @PutMapping("/exists-phone")
-    public boolean existsByIdNotAndPhone(@RequestBody PhoneDTO phoneDTO) {
+    public ResponseEntity<Object> existsByIdNotAndPhone(@RequestBody PhoneDTO phoneDTO) {
         return phoneService.existsIdNotAndPhone(null, phoneDTO);
     }
 
     @PutMapping("/{id}/exists-phone")
-    public boolean existsByIdNotAndPhone(@PathVariable("id") UUID userId, @RequestBody PhoneDTO phoneDTO) {
+    public ResponseEntity<Object> existsByIdNotAndPhone(@PathVariable("id") String userId, @RequestBody PhoneDTO phoneDTO) {
         return phoneService.existsIdNotAndPhone(userId, phoneDTO);
     }
 
     @PutMapping("/exists-document")
-    public boolean existsByIdNotAndDocument(@RequestBody Long document) {
+    public ResponseEntity<Object> existsByIdNotAndDocument(@RequestBody Long document) {
         return dependentService.existsByIdNotAndDocument(null, document);
     }
 
     @PutMapping("/{id}/exists-document")
-    public boolean existsByIdNotAndDocument(@PathVariable("id") UUID id, @RequestBody Long document) {
+    public ResponseEntity<Object> existsByIdNotAndDocument(@PathVariable("id") String id, @RequestBody Long document) {
         return dependentService.existsByIdNotAndDocument(id, document);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public User update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") String id, @RequestBody UserUpdateDTO userUpdateDTO) {
         return this.userService.update(id, userUpdateDTO);
     }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UUID id) {
-        System.out.println("0000000000000000 => " + id);
-        this.userService.delete(id);
+    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
+        return this.userService.delete(id);
     }
 }

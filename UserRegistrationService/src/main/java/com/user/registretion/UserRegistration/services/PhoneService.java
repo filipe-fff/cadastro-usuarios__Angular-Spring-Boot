@@ -1,9 +1,11 @@
 package com.user.registretion.UserRegistration.services;
 
-import com.user.registretion.UserRegistration.DTOs.response.PhoneDTO;
+import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
+import com.user.registretion.UserRegistration.dtos.response.PhoneDTO;
 import com.user.registretion.UserRegistration.repositories.PhoneRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,12 +17,20 @@ public class PhoneService {
     PhoneRepository phoneRepository;
 
     @Transactional
-    public boolean existsIdNotAndPhone(UUID userId, PhoneDTO phoneDTO) {
-        return phoneRepository.existsByUserIdNotAndInternationalCodeAndAreaCodeAndNumber(
-                userId,
-                phoneDTO.internationalCode(),
-                phoneDTO.areaCode(),
-                phoneDTO.number()
-        );
+    public ResponseEntity<Object> existsIdNotAndPhone(String id, PhoneDTO phoneDTO) {
+        try {
+            UUID userId = UUID.fromString(id);
+            boolean exists = phoneRepository.existsByUserIdNotAndInternationalCodeAndAreaCodeAndNumber(
+                    userId,
+                    phoneDTO.internationalCode(),
+                    phoneDTO.areaCode(),
+                    phoneDTO.number()
+            );
+
+            return ResponseEntity.ok(exists);
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
     }
 }

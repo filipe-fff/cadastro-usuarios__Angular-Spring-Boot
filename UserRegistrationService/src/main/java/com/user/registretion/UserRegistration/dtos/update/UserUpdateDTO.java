@@ -1,6 +1,6 @@
-package com.user.registretion.UserRegistration.DTOs.update;
+package com.user.registretion.UserRegistration.dtos.update;
 
-import com.user.registretion.UserRegistration.DTOs.abstracts.UserDTO;
+import com.user.registretion.UserRegistration.dtos.abstracts.UserDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

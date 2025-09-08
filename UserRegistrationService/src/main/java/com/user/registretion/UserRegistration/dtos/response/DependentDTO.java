@@ -1,8 +1,8 @@
-package com.user.registretion.UserRegistration.DTOs.update;
+package com.user.registretion.UserRegistration.dtos.response;
 
 import java.util.UUID;
 
-public record DependentUpdateDTO(
+public record DependentDTO(
         UUID id,
         String name,
         Byte age,

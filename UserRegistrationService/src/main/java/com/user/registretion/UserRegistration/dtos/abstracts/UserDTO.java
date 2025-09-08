@@ -1,4 +1,4 @@
-package com.user.registretion.UserRegistration.DTOs.abstracts;
+package com.user.registretion.UserRegistration.dtos.abstracts;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

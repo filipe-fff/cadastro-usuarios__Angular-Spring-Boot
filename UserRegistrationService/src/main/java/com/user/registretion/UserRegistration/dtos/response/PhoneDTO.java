@@ -1,8 +1,8 @@
-package com.user.registretion.UserRegistration.DTOs.update;
+package com.user.registretion.UserRegistration.dtos.response;
 
 import java.util.UUID;
 
-public record PhoneUpdateDTO(
+public record PhoneDTO(
         UUID id,
         Byte type,
         String areaCode,
