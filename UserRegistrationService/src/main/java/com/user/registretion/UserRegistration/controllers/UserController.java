@@ -44,6 +44,11 @@ public class UserController {
         return this.userService.userById(id);
     }
 
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<Object> userPhotoById(@PathVariable("id") String id) {
+        return userService.userPhotoById(id);
+    }
+
     @PutMapping("/exists-name")
     public ResponseEntity<Object> existsByIdNotAndName(@RequestBody String name) {
         return this.userService.existsByIdNotAndName(null, name);

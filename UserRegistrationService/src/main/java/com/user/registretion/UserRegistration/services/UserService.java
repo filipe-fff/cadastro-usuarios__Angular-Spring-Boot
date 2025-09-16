@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,45 +65,58 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> userById(String id) {
         try {
-            var userId = UUID.fromString(id);
-
+            UUID userId = UUID.fromString(id);
             Optional<User> userOptional = userRepository.findById(userId);
 
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-
-                String fileName = user.getPhotoUrl();
-                UrlResource resource = fileStoragePropertiesComponent.getFile(fileName);
-
-                UserDTO userDTO = UserDTO.toUserDTO(user);
-
-                MultipartBodyBuilder builder = new MultipartBodyBuilder();
-
-                builder.part("user", userDTO)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-                builder.part("file", resource)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                        .header(HttpHeaders.CONTENT_DISPOSITION,
-                                "form-data; name=\"file\"; filename=\"" + fileName + "\"");
-
-                MultiValueMap<String, HttpEntity<?>> multipartBoby = builder.build();
-
-                return ResponseEntity.ok()
-                        .contentType(MediaType.MULTIPART_MIXED)
-                        .body(multipartBoby);
+            if (userOptional.isEmpty()) {
+                ResponseError errorDTO = ResponseError.defaultAnswer("User not found");
+                return ResponseEntity.status(errorDTO.status()).body(errorDTO);
             }
 
-            return ResponseEntity.notFound().build();
+            User user = userOptional.get();
+
+            return ResponseEntity.ok(user);
+
         } catch (IllegalArgumentException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
+    }
 
+    @Transactional
+    public ResponseEntity<Object> userPhotoById(String id) {
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if (userOptional.isEmpty()) {
+                ResponseError errorDTO = ResponseError.defaultAnswer("User not found");
+                return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+            }
+
+            String fileName = userOptional.get().getPhotoUrl();
+            UrlResource resource = fileStoragePropertiesComponent.getFile(fileName);
+
+            Path filePath = resource.getFile().toPath();
+            String mimeType = Files.probeContentType(filePath);
+
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(mimeType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                    .body(resource);
+
+        } catch (IllegalArgumentException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         } catch (MalformedURLException e) {
-            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid URL format");
+            ResponseError errorDTO = ResponseError.notFound("Photo URL not found");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         } catch (IOException e) {
-            ResponseError errorDTO = ResponseError.defaultAnswer("Error reading user photo");
+            ResponseError errorDTO = ResponseError.notFound("File not found");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         }
     }
