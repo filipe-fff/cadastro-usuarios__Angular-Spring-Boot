@@ -1,4 +1,4 @@
-package com.user.registretion.UserRegistration.dtos.update;
+package com.user.registretion.UserRegistration.dtos.user.update.dto;
 
 import java.util.UUID;
 

@@ -23,15 +23,14 @@ public class User {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "password", nullable = false, unique = true)
-    private String password;
-
-    @Lob
     @Column(name = "photo")
     private String photoUrl;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "password", nullable = false, unique = true)
+    private String password;
 
     @Column(name = "country", nullable = false)
     private String country;

@@ -1,57 +1,57 @@
 package com.user.registretion.UserRegistration.services;
 
+import com.user.registretion.UserRegistration.components.FileStoragePropertiesComponent;
 import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
-import com.user.registretion.UserRegistration.dtos.save.*;
-import com.user.registretion.UserRegistration.dtos.update.*;
-import com.user.registretion.UserRegistration.components.StorageComponent;
+import com.user.registretion.UserRegistration.dtos.user.response.dto.UserDTO;
+import com.user.registretion.UserRegistration.dtos.user.save.dto.UserSaveDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.AddressUpdateDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.DependentUpdateDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.MusicUpdateDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.PhoneUpdateDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.*;
 import com.user.registretion.UserRegistration.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.*;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final String storageUrl = "/home/filipe/Documentos/GitHub/cadastro-usuarios__Angular-Spring-Boot/UserRegistrationService/src/main/java/com/user/registretion/UserRegistration/storage/";
+    @Autowired
+    FileStoragePropertiesComponent fileStoragePropertiesComponent;
 
     @Autowired
     public UserRepository userRepository;
 
-    @Autowired
-    public StorageComponent storageComponent;
-
     // CREATE
     @Transactional
-    public ResponseEntity<User> save(UserSaveDTO userSaveDTO) {
-        User user = new User();
+    public ResponseEntity<Object> save(UserSaveDTO userSaveDTO, MultipartFile file) {
+        User user = UserSaveDTO.toUser(userSaveDTO);
 
-        user.setName(userSaveDTO.name());
-        user.setPhotoUrl("");
-        user.setPassword(userSaveDTO.password());
-        user.setEmail(userSaveDTO.email());
-        user.setCountry(userSaveDTO.country());
-        user.setState(userSaveDTO.state());
-        user.setMaritalStatus(userSaveDTO.maritalStatus());
-        user.setMonthlyIncome(userSaveDTO.monthlyIncome());
-        user.setBirthDate(userSaveDTO.birthDate());
+        User saveUser = userRepository.save(user);
 
-        System.out.println("user_ =>" + user);
-
-        savePhoneList(user, userSaveDTO.phoneList());
-        saveAddressList(user, userSaveDTO.addressList());
-        saveDependentsList(user, userSaveDTO.dependents());
-        saveMusicsList(user, userSaveDTO.musics());
-
-        System.out.println("user= =>" + user);
+        try {
+            fileStoragePropertiesComponent
+                    .save(saveUser.getId(), file, photoName -> saveUser.setPhotoUrl(photoName));
+            userRepository.save(saveUser);
+        } catch (IOException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Photo is Invalid");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userRepository.save(user));
+                .body(saveUser);
     }
 
     // READ
@@ -68,12 +68,40 @@ public class UserService {
             Optional<User> userOptional = userRepository.findById(userId);
 
             if (userOptional.isPresent()) {
-                return ResponseEntity.ok(userOptional.get());
+                User user = userOptional.get();
+
+                String fileName = user.getPhotoUrl();
+                UrlResource resource = fileStoragePropertiesComponent.getFile(fileName);
+
+                UserDTO userDTO = UserDTO.toUserDTO(user);
+
+                MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
+                builder.part("user", userDTO)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+                builder.part("file", resource)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                        .header(HttpHeaders.CONTENT_DISPOSITION,
+                                "form-data; name=\"file\"; filename=\"" + fileName + "\"");
+
+                MultiValueMap<String, HttpEntity<?>> multipartBoby = builder.build();
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.MULTIPART_MIXED)
+                        .body(multipartBoby);
             }
 
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+
+        } catch (MalformedURLException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid URL format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        } catch (IOException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Error reading user photo");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         }
     }
@@ -116,7 +144,7 @@ public class UserService {
 
     // UPDATE
     @Transactional
-    public ResponseEntity<Object> update(String id, UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<Object> update(String id, UserUpdateDTO userUpdateDTO, MultipartFile file) {
         try {
             UUID userId = UUID.fromString(id);
 
@@ -145,9 +173,14 @@ public class UserService {
             updateDependentsList(user, userUpdateDTO.dependents());
             updateMusicsList(user, userUpdateDTO.musics());
 
+            fileStoragePropertiesComponent.save(userId, file, photoName -> user.setPhotoUrl(photoName));
+
             return ResponseEntity.ok(userRepository.save(user));
         } catch (IllegalArgumentException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        } catch (IOException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Photo is Invalid");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         }
     }
@@ -164,78 +197,24 @@ public class UserService {
                 return ResponseEntity.notFound().build();
             }
 
+            System.out.println("uri => " + userOptional.get().getPhotoUrl()  + "F");
+            fileStoragePropertiesComponent.delete(userOptional.get().getPhotoUrl());
             this.userRepository.deleteById(userId);
 
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        } catch (IOException e) {
+            ResponseError errorDTO = ResponseError.defaultAnswer("Invalid photo Uri");
+            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
         }
     }
 
     @Transactional
-    private void savePhoneList(User user, List<PhoneSaveDTO> phoneListDTO) {
-        user.setPhoneList(
-                phoneListDTO.stream().map(
-                        p -> {
-                            Phone phone = new Phone(
-                                p.type(),
-                                p.internationalCode(),
-                                p.areaCode(),
-                                p.number());
-                            phone.setUser(user);
-                            return phone;
-                        }).toList());
-    };
-
-    @Transactional
-    private void saveAddressList(User user, List<AddressSaveDTO> addressListDTO) {
-        user.setAddressList(
-                addressListDTO.stream().map(
-                        a -> {
-                            Address address = new Address(
-                                a.type(),
-                                a.street(),
-                                a.complement(),
-                                a.country(),
-                                a.state(),
-                                a.city());
-                            address.setUser(user);
-                            return address;
-                        }).toList());
-    }
-
-    @Transactional
-    private void saveDependentsList(User user, List<DependentSaveDTO> dependentsListDTO) {
-        user.setDependents(dependentsListDTO.stream().map(
-                d -> {
-                    Dependent dependent = new Dependent(
-                        d.name(),
-                        d.age(),
-                        d.document());
-                    dependent.setUser(user);
-                    return dependent;
-                }).toList());
-    }
-
-    @Transactional
-    private void saveMusicsList(User user, List<MusicSaveDTO> musicsListDTO) {
-        user.setMusics(musicsListDTO.stream().map(
-                m -> {
-                    Music music = new Music(
-                        m.title(),
-                        m.band(),
-                        m.genre(),
-                        m.isFavorite());
-                    music.setUser(user);
-                    return  music;
-                }).toList());
-    }
-
-    @Transactional
     private void updatePhoneList(User user, List<PhoneUpdateDTO> phoneListDTO) {
-        Map<UUID, Phone> existsPhoneMap = user
-                .getPhoneList()
+        ArrayList<Phone> mutableList = new ArrayList<>(user.getPhoneList());
+        Map<UUID, Phone> existsPhoneMap = mutableList
                 .stream()
                 .collect(Collectors
                                 .toMap(
@@ -267,8 +246,8 @@ public class UserService {
 
     @Transactional
     private void updateAddressList(User user, List<AddressUpdateDTO> addressListDTO) {
-        Map<UUID, Address> existsAddressMap = user
-                .getAddressList()
+        ArrayList<Address> mutableList = new ArrayList<>(user.getAddressList());
+        Map<UUID, Address> existsAddressMap = mutableList
                 .stream()
                 .collect(Collectors.toMap(
                         Address::getId,
@@ -300,8 +279,8 @@ public class UserService {
 
     @Transactional
     private void updateDependentsList(User user, List<DependentUpdateDTO> dependentsListDTO) {
-        Map<UUID, Dependent> existsDependentMap = user
-                .getDependents()
+        ArrayList<Dependent> mutableList = new ArrayList<>(user.getDependents());
+        Map<UUID, Dependent> existsDependentMap = mutableList
                 .stream()
                 .collect(Collectors
                         .toMap(
@@ -331,8 +310,8 @@ public class UserService {
 
     @Transactional
     private void updateMusicsList(User user, List<MusicUpdateDTO> musicsListDTO) {
-        Map<UUID, Music> existsMusicMap = user
-                .getMusics()
+        ArrayList<Music> mutableList = new ArrayList<>(user.getMusics());
+        Map<UUID, Music> existsMusicMap = mutableList
                 .stream()
                 .collect(Collectors
                         .toMap(Music::getId,

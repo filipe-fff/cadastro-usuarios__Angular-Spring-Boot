@@ -1,7 +1,7 @@
 package com.user.registretion.UserRegistration.services;
 
 import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
-import com.user.registretion.UserRegistration.dtos.response.PhoneDTO;
+import com.user.registretion.UserRegistration.dtos.user.response.dto.PhoneDTO;
 import com.user.registretion.UserRegistration.repositories.PhoneRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

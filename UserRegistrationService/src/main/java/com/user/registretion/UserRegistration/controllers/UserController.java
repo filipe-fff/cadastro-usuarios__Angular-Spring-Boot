@@ -1,21 +1,19 @@
 package com.user.registretion.UserRegistration.controllers;
 
-import com.user.registretion.UserRegistration.controllers.dtos.ResponseError;
-import com.user.registretion.UserRegistration.dtos.response.PhoneDTO;
-import com.user.registretion.UserRegistration.dtos.save.UserSaveDTO;
-import com.user.registretion.UserRegistration.dtos.update.UserUpdateDTO;
+import com.user.registretion.UserRegistration.dtos.user.response.dto.PhoneDTO;
+import com.user.registretion.UserRegistration.dtos.user.save.dto.UserSaveDTO;
+import com.user.registretion.UserRegistration.dtos.user.update.dto.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
 import com.user.registretion.UserRegistration.services.DependentService;
 import com.user.registretion.UserRegistration.services.PhoneService;
 import com.user.registretion.UserRegistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user-registration")
@@ -30,9 +28,9 @@ public class UserController {
     DependentService dependentService;
 
     // CREATE
-    @PostMapping
-    public ResponseEntity<User> save(@RequestBody UserSaveDTO userSaveDTO) {
-        return this.userService.save(userSaveDTO);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> save(@RequestPart("user") UserSaveDTO userSaveDTO, @RequestPart("file") MultipartFile file) {
+        return this.userService.save(userSaveDTO, file);
     }
 
     // READ
@@ -97,9 +95,13 @@ public class UserController {
     }
 
     // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") String id, @RequestBody UserUpdateDTO userUpdateDTO) {
-        return this.userService.update(id, userUpdateDTO);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> update(
+            @PathVariable("id") String id,
+            @RequestPart("user") UserUpdateDTO userUpdateDTO,
+            @RequestPart("file") MultipartFile file
+    ) {
+        return this.userService.update(id, userUpdateDTO, file);
     }
 
     // DELETE

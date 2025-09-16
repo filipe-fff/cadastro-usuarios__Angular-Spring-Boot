@@ -1,11 +1,10 @@
-package com.user.registretion.UserRegistration.dtos.abstracts;
+package com.user.registretion.UserRegistration.dtos.user.abstracts.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public interface UserDTO {
+public interface IUserDTO {
     String name();
-    String photoUrl();
     String email();
     String password();
     String country();

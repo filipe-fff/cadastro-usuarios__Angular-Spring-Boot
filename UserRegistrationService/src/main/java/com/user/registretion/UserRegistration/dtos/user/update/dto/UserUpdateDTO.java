@@ -1,6 +1,6 @@
-package com.user.registretion.UserRegistration.dtos.update;
+package com.user.registretion.UserRegistration.dtos.user.update.dto;
 
-import com.user.registretion.UserRegistration.dtos.abstracts.UserDTO;
+import com.user.registretion.UserRegistration.dtos.user.abstracts.dto.IUserDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,5 +20,5 @@ public record UserUpdateDTO(
         List<AddressUpdateDTO> addressList,
         List<DependentUpdateDTO> dependents,
         List<MusicUpdateDTO> musics
-        ) implements UserDTO {
+        ) implements IUserDTO {
 }
