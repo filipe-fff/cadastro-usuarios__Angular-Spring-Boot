@@ -173,20 +173,8 @@ public class UserService {
             User user = userOptional.get();
 
             user.setId(userId);
-            user.setName(userUpdateDTO.name());
-            user.setPassword(userUpdateDTO.password());
-            user.setPhotoUrl("");
-            user.setEmail(userUpdateDTO.email());
-            user.setCountry(userUpdateDTO.country());
-            user.setState(userUpdateDTO.state());
-            user.setMaritalStatus(userUpdateDTO.maritalStatus());
-            user.setMonthlyIncome(userUpdateDTO.monthlyIncome());
-            user.setBirthDate(userUpdateDTO.birthDate());
-
-            updatePhoneList(user, userUpdateDTO.phoneList());
-            updateAddressList(user, userUpdateDTO.addressList());
-            updateDependentsList(user, userUpdateDTO.dependents());
-            updateMusicsList(user, userUpdateDTO.musics());
+            UserUpdateDTO.toUser(user, userUpdateDTO);
+            System.out.println("user => " + user);
 
             fileStoragePropertiesComponent.save(userId, file, photoName -> user.setPhotoUrl(photoName));
 
@@ -223,134 +211,6 @@ public class UserService {
         } catch (IOException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid photo Uri");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
-        }
-    }
-
-    @Transactional
-    private void updatePhoneList(User user, List<PhoneUpdateDTO> phoneListDTO) {
-        ArrayList<Phone> mutableList = new ArrayList<>(user.getPhoneList());
-        Map<UUID, Phone> existsPhoneMap = mutableList
-                .stream()
-                .collect(Collectors
-                                .toMap(
-                                        Phone::getId,
-                                        phone -> phone,
-                                        (existing, replacement) -> existing,
-                                        LinkedHashMap::new
-                                ));
-
-        user.getPhoneList().clear();
-
-        for (PhoneUpdateDTO phone : phoneListDTO) {
-            Phone updatePhone;
-
-            if (phone.id() != null && existsPhoneMap.containsKey(phone.id()))
-                updatePhone = existsPhoneMap.get(phone.id());
-
-            else updatePhone = new Phone();
-
-            updatePhone.setType(phone.type());
-            updatePhone.setInternationalCode(phone.internationalCode());
-            updatePhone.setAreaCode(phone.areaCode());
-            updatePhone.setNumber(phone.number());
-            updatePhone.setUser(user);
-
-            user.getPhoneList().add(updatePhone);
-        }
-    }
-
-    @Transactional
-    private void updateAddressList(User user, List<AddressUpdateDTO> addressListDTO) {
-        ArrayList<Address> mutableList = new ArrayList<>(user.getAddressList());
-        Map<UUID, Address> existsAddressMap = mutableList
-                .stream()
-                .collect(Collectors.toMap(
-                        Address::getId,
-                        address -> address,
-                        (existing, replacement) -> existing,
-                        LinkedHashMap::new
-                ));
-
-        user.getAddressList().clear();
-
-        for (AddressUpdateDTO address : addressListDTO) {
-            Address updateAddress;
-
-            if (address.id() != null && existsAddressMap.containsKey(address.id()))
-                updateAddress = existsAddressMap.get(address.id());
-            else updateAddress = new Address();
-
-            updateAddress.setType(address.type());
-            updateAddress.setStreet(address.street());
-            updateAddress.setComplement(address.complement());
-            updateAddress.setCountry(address.country());
-            updateAddress.setState(address.state());
-            updateAddress.setCity(address.city());
-            updateAddress.setUser(user);
-
-            user.getAddressList().add(updateAddress);
-        }
-    }
-
-    @Transactional
-    private void updateDependentsList(User user, List<DependentUpdateDTO> dependentsListDTO) {
-        ArrayList<Dependent> mutableList = new ArrayList<>(user.getDependents());
-        Map<UUID, Dependent> existsDependentMap = mutableList
-                .stream()
-                .collect(Collectors
-                        .toMap(
-                                Dependent::getId,
-                                dependent -> dependent,
-                                (existing, replacement) -> existing,
-                                LinkedHashMap::new
-                        ));
-
-        user.getDependents().clear();
-
-        for (DependentUpdateDTO dependent : dependentsListDTO) {
-            Dependent updateDependent;
-
-            if (dependent.id() != null && existsDependentMap.containsKey(dependent.id()))
-                updateDependent = existsDependentMap.get(dependent.id());
-            else updateDependent = new Dependent();
-
-            updateDependent.setName(dependent.name());
-            updateDependent.setAge(dependent.age());
-            updateDependent.setDocument(dependent.document());
-            updateDependent.setUser(user);
-
-            user.getDependents().add(updateDependent);
-        }
-    }
-
-    @Transactional
-    private void updateMusicsList(User user, List<MusicUpdateDTO> musicsListDTO) {
-        ArrayList<Music> mutableList = new ArrayList<>(user.getMusics());
-        Map<UUID, Music> existsMusicMap = mutableList
-                .stream()
-                .collect(Collectors
-                        .toMap(Music::getId,
-                                music -> music,
-                                (existing, replacement) -> existing,
-                                LinkedHashMap::new
-                        ));
-
-        user.getMusics().clear();
-
-        for (MusicUpdateDTO music : musicsListDTO) {
-            Music updateMusic;
-
-            if (music.id() != null && existsMusicMap.containsKey(music.id()))
-                updateMusic = existsMusicMap.get(music.id());
-            else updateMusic = new Music();
-
-            updateMusic.setTitle(music.title());
-            updateMusic.setBand(music.band());
-            updateMusic.setGenre(music.genre());
-            updateMusic.setIsFavorite(music.isFavorite());
-            updateMusic.setUser(user);
-
-            user.getMusics().add(updateMusic);
         }
     }
 }
