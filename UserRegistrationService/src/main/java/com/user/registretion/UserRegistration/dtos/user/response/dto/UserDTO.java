@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public record UserDTO(
     UUID id,
     String name,
-    String photoUrl,
     String email,
     String password,
     String country,
@@ -31,7 +30,6 @@ public record UserDTO(
         return new UserDTO(
                 user.getId(),
                 user.getName(),
-                user.getPhotoUrl(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getCountry(),

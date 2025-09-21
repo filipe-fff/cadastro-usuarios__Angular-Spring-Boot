@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { buttonStylePipe } from '../../pipes/button-style.pipe';
+import { ButtonStylePipe } from '../../pipes/button-style.pipe';
 
 @Component({
   selector: 'app-dependent-informations-edit',
@@ -13,7 +13,7 @@ import { buttonStylePipe } from '../../pipes/button-style.pipe';
     AngularMaterialModule,
     ReactiveFormsModule,
     NgxMaskDirective,
-    buttonStylePipe
+    ButtonStylePipe
   ],
   templateUrl: './dependent-informations-edit.component.html',
   styleUrl: './dependent-informations-edit.component.scss'

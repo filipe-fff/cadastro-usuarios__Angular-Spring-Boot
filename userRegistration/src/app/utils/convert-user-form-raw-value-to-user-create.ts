@@ -26,7 +26,6 @@ export const convertUserFormRawValueToUserCreate = (userForm: IUserForm): IUserC
 const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Partial<IUserCreate> => {
     return ({
         name: general.name,
-        photoUrl: general.photoUrl,
         email: general.email,
         password: general.password,
         country: general.country,

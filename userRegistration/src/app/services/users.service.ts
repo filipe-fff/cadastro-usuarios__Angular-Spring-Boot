@@ -15,7 +15,7 @@ export class UsersService {
 
     // CREATE
     save(user: IUserCreate): Observable<IUserCreate> {
-        return this._httpClient.post<IUserCreate>("http://localhost:8081/user-registration/save", user);
+        return this._httpClient.post<IUserCreate>("http://localhost:8081/user-registration/", user);
     }
     
     // READ
@@ -24,7 +24,11 @@ export class UsersService {
     }
 
     getUserById(id: string): Observable<IUser> {
-        return this._httpClient.get<IUser>("http://localhost:8081/user-registration/user/" + id);
+        return this._httpClient.get<IUser>("http://localhost:8081/user-registration/" + id);
+    }
+
+    getUserPhotoById(id: string): Observable<Blob> {
+        return this._httpClient.get("http://localhost:8081/user-registration/" + id + "/photo", { responseType: "blob" });
     }
 
     existsByIdNotAndName(id: string | null, name: string): Observable<boolean> {
@@ -32,7 +36,7 @@ export class UsersService {
         const body = name;
 
         if (id)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name/" + id, body, { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + id + "/exists-name", body, { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-name", body, { headers });
     }
@@ -42,7 +46,7 @@ export class UsersService {
         const body = email;
         
         if (id)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email/" + id, body, { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + id + "/exists-email", body, { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-email", body, { headers });
     }
@@ -52,7 +56,7 @@ export class UsersService {
         const body = password;
 
         if (id)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password/" + id, body, { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + id + "/exists-password", body, { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-password", body, { headers });
     }
@@ -62,7 +66,7 @@ export class UsersService {
         const body = phone;
 
         if (userId)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone/" + userId, body, { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + userId, body + "/exists-phone", { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone", body, { headers });
 
@@ -73,14 +77,14 @@ export class UsersService {
         const body = document;
 
         if (id)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document/" + id, body, { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + id + "/exists-document", body, { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-document", body, { headers });
     }
 
     // UPDATE
     update(user: IUserUpdate): Observable<IUserUpdate> {
-        return this._httpClient.post<IUserUpdate>("http://localhost:8081/user-registration/update", user);
+        return this._httpClient.put<IUserUpdate>("http://localhost:8081/user-registration", user);
     }
 
     // DELETE

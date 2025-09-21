@@ -5,7 +5,6 @@ import { PhoneListUserCreate } from "../../types/phone-list-user-create";
 
 export interface IUserCreate {
     name: string;
-    photoUrl: string;
     email: string;
     password: string;
     country: string;

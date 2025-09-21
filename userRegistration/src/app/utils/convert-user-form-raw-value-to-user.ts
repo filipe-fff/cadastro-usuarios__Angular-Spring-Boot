@@ -28,7 +28,6 @@ const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Pa
     return ({
         id: general.id,
         name: general.name,
-        photoUrl: general.photoUrl,
         email: general.email,
         password: general.password,
         country: general.country,

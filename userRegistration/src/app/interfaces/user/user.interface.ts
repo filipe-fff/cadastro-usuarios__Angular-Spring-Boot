@@ -2,11 +2,12 @@ import { AddressList } from "../../types/address-list";
 import { DependentsList } from "../../types/dependents-list";
 import { MusicsList } from "../../types/musics-list";
 import { PhoneList } from "../../types/phone-list";
+import { UserPhoto } from "../../types/user-photo";
 
 export interface IUser {
     id: string;
+    photo?: UserPhoto;
     name: string;
-    photoUrl: string;
     password: string;
     email: string;
     country: string;

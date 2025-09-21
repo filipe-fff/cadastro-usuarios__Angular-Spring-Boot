@@ -1,5 +1,5 @@
 import { inject } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { IDependent } from "../../interfaces/user/dependent.interface";
 import { IUser } from "../../interfaces/user/user.interface";
 import { UserFormRawValueService } from "../../services/user-form-raw-value.service";
@@ -22,6 +22,7 @@ import { existsByIdAndDocumentValidator } from "../../utils/validators/exists-by
 import { existsByIdNotAndNameValidator } from "../../utils/validators/exists-by-id-not-and-name-validator";
 import { existsByIdNotAndPasswordValidator } from "../../utils/validators/exists-by-id-not-and-password-validator";
 import { Subject, takeUntil } from "rxjs";
+import { UserPhoto } from "../../types/user-photo";
 
 export class UserController {
     userForm!: FormGroup;
@@ -30,14 +31,19 @@ export class UserController {
 
     private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+    protected readonly usersService = inject(UsersService);
+    
     private readonly _fb = inject(FormBuilder);
-    private readonly _usersService = inject(UsersService);
     private readonly _userFormRawValueService = inject(UserFormRawValueService);
 
     constructor() {
         this.createUserForm();
 
         this.watchUserFormValueChanges();
+    }
+
+    get photoControl(): FormControl {
+        return this.userForm.get("photoInformation") as FormControl;
     }
 
     get generalInformations(): FormGroup {
@@ -82,9 +88,7 @@ export class UserController {
 
     fulfillUserForm(user: IUser) {
         this.resetUserForm();
-
         this.fulfillGeneralInformations(user);
-        this.fulfillPhoneList(user.id ,user.phoneList);
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
@@ -108,6 +112,7 @@ export class UserController {
         this.userForm = this._fb.group({
             generalInformations: this._fb.group({
                 id: [null],
+                photo: [null],
                 name: ["", {
                     // updateOn: "blur", // Ative o blur quando deixar a validação assincrona
                     validators: [ Validators.required ],
@@ -115,7 +120,6 @@ export class UserController {
                         // existsByIdNotAndNameValidator(this._usersService)
                     ]
                 }],
-                photo: [""],
                 email: ["", {
                     updateOn: "blur",
                     validators: [
@@ -123,7 +127,7 @@ export class UserController {
                         Validators.pattern(this.emailPattern)
                     ],
                     asyncValidators: [
-                        existsByIdNotAndEmailValidator(this._usersService)
+                        existsByIdNotAndEmailValidator(this.usersService)
                     ]
                 }],
                 password: ["", {
@@ -177,25 +181,6 @@ export class UserController {
         });
     }
 
-    private fulfillPhoneList(userId: string, phoneResponse: PhoneList) {
-        preparePhoneListToDisplay(false, phoneResponse, (phone) => {
-            const phoneValidation = phone.type === 3 ? [] : [ Validators.required ];
-            this.phoneList.push(this._fb.group({
-                id: [phone.id ?? null],
-                type: [phone.type],
-                typeDescription: [phone.typeDescription],
-                number: [phone.number,
-                    {
-                        updateOn: "blur",
-                        validators: phoneValidation,
-                        asyncValidators: [
-                            existsByIdNotAndPhoneValidator(userId, this._usersService)
-                        ]
-                    }],
-            }));
-        });
-    }
-
     private fulfillAddressList(addressResponse: AddressList) {
         prepareAddressListToDisplay(false, addressResponse, (address) => {
             this.addressList.push(this._fb.group({
@@ -225,7 +210,7 @@ export class UserController {
                 updateOn: "blur",
                 validators: [ Validators.required ],
                 asyncValidators: [
-                    existsByIdAndDocumentValidator(this._usersService)
+                    existsByIdAndDocumentValidator(this.usersService)
                 ]
             }]
             }));

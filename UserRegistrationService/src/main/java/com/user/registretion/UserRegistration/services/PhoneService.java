@@ -19,7 +19,7 @@ public class PhoneService {
     @Transactional
     public ResponseEntity<Object> existsIdNotAndPhone(String id, PhoneDTO phoneDTO) {
         try {
-            UUID userId = UUID.fromString(id);
+            UUID userId = id == null ? null : UUID.fromString(id);
             boolean exists = phoneRepository.existsByUserIdNotAndInternationalCodeAndAreaCodeAndNumber(
                     userId,
                     phoneDTO.internationalCode(),

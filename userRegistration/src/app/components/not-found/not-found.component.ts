@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { buttonStylePipe } from '../../pipes/button-style.pipe';
+import { ButtonStylePipe } from '../../pipes/button-style.pipe';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [
     CommonModule,
     AngularMaterialModule,
-    buttonStylePipe
+    ButtonStylePipe
   ],
   templateUrl: './not-found.component.html',
   styleUrl: './not-found.component.scss'

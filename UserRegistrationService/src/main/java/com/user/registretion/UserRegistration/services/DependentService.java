@@ -18,7 +18,7 @@ public class DependentService {
     @Transactional
     public ResponseEntity<Object> existsByIdNotAndDocument(String id, Long document) {
         try {
-            UUID documentID = UUID.fromString(id);
+            UUID documentID = id == null ? null : UUID.fromString(id);
             boolean exists = dependentRepository.existsByIdNotAndDocument(documentID, document);
             return ResponseEntity.ok(exists);
         } catch(IllegalArgumentException e) {

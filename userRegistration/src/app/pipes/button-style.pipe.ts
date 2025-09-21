@@ -6,7 +6,7 @@ import { ButtonColorTypeEnum } from "../enums/button-color-type.enum";
     name: 'buttonStyle',
     standalone: true
 })
-export class buttonStylePipe implements PipeTransform {
+export class ButtonStylePipe implements PipeTransform {
 
     transform(colorType: string): string {
         const color = buttonColorTypeDescriptionMap[colorType];

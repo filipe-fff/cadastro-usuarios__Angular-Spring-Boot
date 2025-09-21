@@ -1,0 +1,12 @@
+<form [formGroup]="userForm">
+    <div formGroupName="generalInformations" class="grid gap-4">
+        <div>
+            <img [src]="photoUrl" class="w-80 h-80 bg-black bg-cover rounded-full">
+        </div>
+        <input
+            type="file"
+            accept="/image"
+            [class]="'slate' | buttonStyle"
+            (change)="onPhotoValueChanges($event)">
+    </div>
+</form>

@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { ICanDeactivateWithDialog } from '../../interfaces/can-deactivate-with-dialog.interface';
 import { IUser } from '../../interfaces/user/user.interface';
 import { ConfirmExistService } from '../../services/confirm-exit.service';
@@ -12,6 +12,7 @@ import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw
 import { convertUserFormRawValueToUserUpdate } from '../../utils/convert-user-form-raw-value-to-user-update';
 import { UserInformationsContainerComponent } from '../user-informations-container/user-informations-container.component';
 import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-container/user-update-buttons-container.component';
+import { UserPhoto } from '../../types/user-photo';
 
 @Component({
   selector: 'app-user-selected',
@@ -25,12 +26,11 @@ import { UserUpdateButtonsContainerComponent } from '../user-update-buttons-cont
 })
 export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateWithDialog {
   title: string = "Área de Usuário";
-  
   userSelected: IUser = {} as IUser;
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
 
-  isInEditMode: boolean = false;
+  isInEditMode: boolean = true;
   shouldMarkUserFormTouchedAndValidity: boolean = true;
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
@@ -149,7 +149,17 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
         ).subscribe(userResponse => {
           this.userSelected = userResponse;
           this.userBefore = userResponse;
+          this.getPhoto(this.userSelected.id);
         });
+  }
+
+  private getPhoto(id: string) {
+    this._usersService
+      .getUserPhotoById(id)
+      .pipe(take(1), takeUntil(this._destroy$))
+      .subscribe((photo: Blob) => {
+        this.userSelected = { ...this.userSelected, photo };
+      });
   }
 
   private onUserUpdate() {

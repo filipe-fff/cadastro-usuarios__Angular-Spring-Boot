@@ -1,11 +1,12 @@
 <mat-card>
     <mat-card-header>
         <div>
-            <div mat-card-title>{{ title }}</div>
-            <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
-                <img
-                    src="https://picsum.photos/200">
-        </div>
+            <app-photo-information
+                *ngIf="!isInEditMode"
+                [userSelected]="userSelected"></app-photo-information>
+            <app-photo-information-edit
+                *ngIf="isInEditMode"
+                [userForm]="userForm"></app-photo-information-edit>
         </div>
     </mat-card-header>
     <mat-card-actions>

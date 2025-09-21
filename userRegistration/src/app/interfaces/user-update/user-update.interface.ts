@@ -6,7 +6,6 @@ import { PhoneListUserUpdate } from "../../types/phone-list-user-update";
 export interface IUserUpdate {
     id: string;
     name: string;
-    photoUrl: string;
     email: string;
     password: string;
     country: string;

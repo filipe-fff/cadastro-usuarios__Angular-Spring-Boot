@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
-import { buttonStylePipe } from '../../pipes/button-style.pipe';
+import { ButtonStylePipe } from '../../pipes/button-style.pipe';
 
 @Component({
   selector: 'app-user-update-buttons-container',
@@ -9,7 +9,7 @@ import { buttonStylePipe } from '../../pipes/button-style.pipe';
   imports: [
     CommonModule,
     AngularMaterialModule,
-    buttonStylePipe
+    ButtonStylePipe
   ],
   templateUrl: './user-update-buttons-container.component.html',
   styleUrl: './user-update-buttons-container.component.scss'

@@ -40,12 +40,12 @@ public class UserService {
     public ResponseEntity<Object> save(UserSaveDTO userSaveDTO, MultipartFile file) {
         User user = UserSaveDTO.toUser(userSaveDTO);
 
-        User saveUser = userRepository.save(user);
+        userRepository.save(user);
 
         try {
             fileStoragePropertiesComponent
-                    .save(saveUser.getId(), file, photoName -> saveUser.setPhotoUrl(photoName));
-            userRepository.save(saveUser);
+                    .save(user.getId(), file);
+            userRepository.save(user);
         } catch (IOException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Photo is Invalid");
             return ResponseEntity.status(errorDTO.status()).body(errorDTO);
@@ -53,13 +53,17 @@ public class UserService {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(saveUser);
+                .body(user);
     }
 
     // READ
     @Transactional
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(UserDTO::toUserDTO)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Transactional
@@ -73,9 +77,9 @@ public class UserService {
                 return ResponseEntity.status(errorDTO.status()).body(errorDTO);
             }
 
-            User user = userOptional.get();
+            UserDTO userDTO = UserDTO.toUserDTO(userOptional.get());
 
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(userDTO);
 
         } catch (IllegalArgumentException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Invalid UUID format");
@@ -124,7 +128,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> existsByIdNotAndName(String id, String name) {
         try {
-            UUID userId = UUID.fromString(id);
+            UUID userId = id == null ? null : UUID.fromString(id);
             boolean exists = userRepository.existsByIdNotAndName(userId, name);
             return ResponseEntity.ok(exists);
         } catch (IllegalArgumentException e) {
@@ -136,7 +140,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> existsByIdNotAndEmail(String id, String email) {
         try {
-            UUID userId = UUID.fromString(id);
+            UUID userId = id == null ? null : UUID.fromString(id);
             boolean exists = userRepository.existsByIdNotAndEmail(userId, email);
             return ResponseEntity.ok(exists);
         } catch (IllegalArgumentException e) {
@@ -148,7 +152,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> existsByIdNotAndPassword(String id, String password) {
         try {
-            UUID userId = UUID.fromString(id);
+            UUID userId = id == null ? null : UUID.fromString(id);
             boolean exists = userRepository.existsByIdNotAndPassword(userId, password);
             return ResponseEntity.ok(exists);
         } catch (IllegalArgumentException e) {
@@ -174,9 +178,8 @@ public class UserService {
 
             user.setId(userId);
             UserUpdateDTO.toUser(user, userUpdateDTO);
-            System.out.println("user => " + user);
 
-            fileStoragePropertiesComponent.save(userId, file, photoName -> user.setPhotoUrl(photoName));
+            fileStoragePropertiesComponent.save(userId, file);
 
             return ResponseEntity.ok(userRepository.save(user));
         } catch (IllegalArgumentException e) {

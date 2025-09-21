@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { distinctUntilChanged, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { IUser } from '../../interfaces/user/user.interface';
@@ -15,7 +16,11 @@ import { GeneralInformationsEditComponent } from '../general-informations-edit/g
 import { GeneralInformationsComponent } from '../general-informations/general-informations.component';
 import { MusicInformationsEditComponent } from '../music-informations-edit/music-informations-edit.component';
 import { MusicInformationsComponent } from '../music-informations/music-informations.component';
+import { PhotoInformationComponent } from '../photo-information/photo-information.component';
 import { UserController } from './user-controller';
+import { UserPhoto } from '../../types/user-photo';
+import { PhoneListEditComponent } from '../contact-informations-edit/components/phone-list-edit/phone-list-edit.component';
+import { PhotoInformationEditComponent } from '../photo-information-edit/photo-information-edit.component';
 
 @Component({
   selector: 'app-user-informations-container',
@@ -23,10 +28,12 @@ import { UserController } from './user-controller';
   imports: [
     CommonModule,
     AngularMaterialModule,
+    PhotoInformationComponent,
     GeneralInformationsComponent,
     ContactInformationsComponent,
     DependentInformationsComponent,
     MusicInformationsComponent,
+    PhotoInformationEditComponent,
     GeneralInformationsEditComponent,
     ContactInformationsEditComponent,
     DependentInformationsEditComponent,
@@ -37,6 +44,7 @@ import { UserController } from './user-controller';
 })
 export class UserInformationsContainerComponent extends UserController implements OnInit, OnChanges, OnDestroy {
   currentTabIndex = 0;
+
   countriesList: CountriesList = [];
   statesList: StatesList = [];
 
@@ -62,6 +70,7 @@ export class UserInformationsContainerComponent extends UserController implement
   private readonly _ngZone = inject(NgZone);
   private readonly _countriesService = inject(CountriesService);
   private readonly _statesService = inject(StatesService);
+  private readonly _domSanitizer = inject(DomSanitizer);
 
   ngOnInit() {
     this.getCountries();
@@ -80,6 +89,8 @@ export class UserInformationsContainerComponent extends UserController implement
       this.getStates(this.userSelected.country);
       this.watchUserFormFirstValueChange();
       this.onUserFormTouchedAndValidity();
+
+      console.log("userSelected =>", this.userSelected);
     }
   }
 

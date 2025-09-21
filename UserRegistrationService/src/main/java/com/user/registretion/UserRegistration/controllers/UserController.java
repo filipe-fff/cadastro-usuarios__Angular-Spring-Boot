@@ -1,6 +1,7 @@
 package com.user.registretion.UserRegistration.controllers;
 
 import com.user.registretion.UserRegistration.dtos.user.response.dto.PhoneDTO;
+import com.user.registretion.UserRegistration.dtos.user.response.dto.UserDTO;
 import com.user.registretion.UserRegistration.dtos.user.save.dto.UserSaveDTO;
 import com.user.registretion.UserRegistration.dtos.user.update.dto.UserUpdateDTO;
 import com.user.registretion.UserRegistration.models.User;
@@ -35,7 +36,7 @@ public class UserController {
 
     // READ
     @GetMapping
-    public ResponseEntity<List<User>> usersList() {
+    public ResponseEntity<List<UserDTO>> usersList() {
         return ResponseEntity.ok(this.userService.findAll());
     }
 
