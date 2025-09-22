@@ -28,7 +28,7 @@ public class FileStoragePropertiesComponent {
                 .toAbsolutePath().normalize();
     }
 
-    public void save(UUID userId, MultipartFile file) throws IOException {
+    public void save(UUID userId, MultipartFile file, Consumer<String> photoUri) throws IOException {
         if (!file.isEmpty()) {
             String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -42,6 +42,8 @@ public class FileStoragePropertiesComponent {
 
             Path filePath = fileStorageLocation.resolve(fileName);
             file.transferTo(filePath);
+
+            photoUri.accept( userId.toString() + extension);
         }
     }
 

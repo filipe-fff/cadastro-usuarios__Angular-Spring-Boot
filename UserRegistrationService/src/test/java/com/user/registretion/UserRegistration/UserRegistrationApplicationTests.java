@@ -1,6 +1,6 @@
 package com.user.registretion.UserRegistration;
 
-import com.user.registretion.UserRegistration.models.User;
+import com.user.registretion.UserRegistration.dtos.user.response.dto.UserDTO;
 import com.user.registretion.UserRegistration.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ class UserRegistrationApplicationTests {
 
     @Test
     void usersListTest() {
-        List<User> usersList = userService.findAll();
+        List<UserDTO> usersList = userService.findAll();
         usersList.forEach(System.out::println);
     }
 }

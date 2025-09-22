@@ -89,8 +89,6 @@ export class UserInformationsContainerComponent extends UserController implement
       this.getStates(this.userSelected.country);
       this.watchUserFormFirstValueChange();
       this.onUserFormTouchedAndValidity();
-
-      console.log("userSelected =>", this.userSelected);
     }
   }
 

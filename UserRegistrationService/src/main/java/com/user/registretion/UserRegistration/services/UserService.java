@@ -44,7 +44,7 @@ public class UserService {
 
         try {
             fileStoragePropertiesComponent
-                    .save(user.getId(), file);
+                    .save(user.getId(), file, user::setPhotoUrl);
             userRepository.save(user);
         } catch (IOException e) {
             ResponseError errorDTO = ResponseError.defaultAnswer("Photo is Invalid");
@@ -90,7 +90,8 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> userPhotoById(String id) {
         try {
-            UUID userId = UUID.fromString(id);
+            UUID userId = id == null ? null : UUID.fromString(id);
+            assert userId != null;
             Optional<User> userOptional = userRepository.findById(userId);
 
             if (userOptional.isEmpty()) {
@@ -165,8 +166,8 @@ public class UserService {
     @Transactional
     public ResponseEntity<Object> update(String id, UserUpdateDTO userUpdateDTO, MultipartFile file) {
         try {
-            UUID userId = UUID.fromString(id);
-
+            UUID userId = id == null ? null : UUID.fromString(id);
+            assert userId != null;
             Optional<User> userOptional = userRepository
                     .findById((userId));
 
@@ -179,7 +180,7 @@ public class UserService {
             user.setId(userId);
             UserUpdateDTO.toUser(user, userUpdateDTO);
 
-            fileStoragePropertiesComponent.save(userId, file);
+            fileStoragePropertiesComponent.save(userId, file, user::setPhotoUrl);
 
             return ResponseEntity.ok(userRepository.save(user));
         } catch (IllegalArgumentException e) {

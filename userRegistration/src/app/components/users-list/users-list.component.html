@@ -9,10 +9,10 @@
         </div>
     </nav>
     <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        @for (user of $usersList | async; track user) {
+        @for (user of usersList$ | async; track user) {
             <mat-card class="card-hover" (click)="onUserSelected(user.id)">
                 <mat-card-header>
-                    <div mat-card-avatar class="header-avatar bg-gray-500"></div>
+                    <img [src]="user.photo || 'assets/images/user-photo-default.png'" mat-card-avatar class="bg-gray-500">
                     <mat-card-title>{{ user.name }}</mat-card-title>
                     <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
                 </mat-card-header>

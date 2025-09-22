@@ -153,11 +153,14 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
         });
   }
 
-  private getPhoto(id: string) {
+  private getPhoto(id: string | null) {
+    console.log("id =>", id);
+    if (id === null) return;
+
     this._usersService
       .getUserPhotoById(id)
       .pipe(take(1), takeUntil(this._destroy$))
-      .subscribe((photo: Blob) => {
+      .subscribe((photo: Blob | null) => {
         this.userSelected = { ...this.userSelected, photo };
       });
   }
