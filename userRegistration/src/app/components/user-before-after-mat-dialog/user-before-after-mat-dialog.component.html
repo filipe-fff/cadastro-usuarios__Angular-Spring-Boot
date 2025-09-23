@@ -34,6 +34,24 @@
             <tr>
                 <td>
                     <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Foto:</div>
+                    </div>
+                    <div class="pl-4">
+                        <img [src]="photoBefore || 'assets/images/user-photo-default.png'" class="w-16 h-16 bg-gray">
+                    </div>
+                </td>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
+                        <div class="text-gray-600 font-semibold">Foto:</div>
+                    </div>
+                    <div class="pl-4">
+                        <img [src]="photoAfter || 'assets/images/user-photo-default.png'" class="w-16 h-16 bg-gray">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="px-4 py-2 flex gap-4">
                         <div class="text-gray-600 font-semibold">Email:</div>
                         <div>{{ data.before.email }}</div>
                     </div>

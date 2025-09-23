@@ -37,6 +37,9 @@ import { pipe, Subject, takeUntil } from 'rxjs';
   styleUrl: './user-before-after-mat-dialog.component.scss'
 })
 export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
+  photoBefore: string | null = null;
+  photoAfter: string | null = null;
+  
   genresList: GenresListResponse = [];
 
   beforePhoneListToDisplay: PhoneListToDisplay = [];
@@ -53,6 +56,12 @@ export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
   private readonly _genresService = inject(GenresService);
 
   ngOnInit() {
+    console.log("after =>", this.data.after.photo);
+    console.log("before =>", this.data.before.photo);
+
+    this.onPhotoBefore();
+    this.onPhotoAfter();
+
     this.getGenresList();
 
     this.getBeforePhoneListToDisplay();
@@ -67,10 +76,21 @@ export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
+    this.urlReset();
   }
 
   getGenresList() {
     this._genresService.getGenres().pipe(takeUntil(this._destroy$)).subscribe(genresResponse => this.genresList = genresResponse);
+  }
+
+  onPhotoBefore() {
+    const photo = this.data.before.photo;
+    this.photoBefore = photo === undefined || photo === null ? null : URL.createObjectURL(photo);
+  }
+
+  onPhotoAfter() {
+    const photo = this.data.after.photo;
+    this.photoAfter = photo === undefined || photo === null ? null : URL.createObjectURL(photo);
   }
 
   getBeforePhoneListToDisplay() {
@@ -107,5 +127,10 @@ export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
     prepareMusicsListToDisplay(true, this.data.after.musics, (music) => {
       this.afterMusicsListToDisplay.push(music);
     });
+  }
+
+  private urlReset() {
+    if (this.photoBefore !== null) URL.revokeObjectURL(this.photoBefore);
+    if (this.photoAfter !== null) URL.revokeObjectURL(this.photoAfter);
   }
 }

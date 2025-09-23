@@ -142,7 +142,7 @@ export class UserInformationsContainerComponent extends UserController implement
       .pipe(
         takeUntil(this._destroy$),
         distinctUntilChanged())
-      .subscribe(() => this.onEnableSaveButtonEmitt.emit(this.userForm.valid || this.userForm.pending));
+      .subscribe(() => this.onEnableSaveButtonEmitt.emit(this.userForm.valid));
   }
 
   private watchUserFormFirstValueChange() {

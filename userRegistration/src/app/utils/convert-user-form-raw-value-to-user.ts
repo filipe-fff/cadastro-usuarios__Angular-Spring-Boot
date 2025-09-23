@@ -13,7 +13,6 @@ import { convertDateObjToEnDate } from "./convert-date-obj-to-en-date";
 
 export const convertUserFormRawValueToUser = (userForm: IUserForm): IUser => {
     let user: Partial<IUser> = {} as Partial<IUser>;
-
     user = { ...convertToGeneralInformations(userForm.generalInformations) };
     user.phoneList = [ ...convertToPhoneList(userForm.contactInformations.phoneList) ];
     user.addressList = [ ...convertToAddressList(userForm.contactInformations.addressList) ];
@@ -28,6 +27,7 @@ const convertToGeneralInformations = (general: IGeneralInformationsUserForm): Pa
     return ({
         id: general.id,
         name: general.name,
+        photo: general.photo,
         email: general.email,
         password: general.password,
         country: general.country,

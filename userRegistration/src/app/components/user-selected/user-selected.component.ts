@@ -30,7 +30,7 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   userBefore: IUser = {} as IUser;
   userSelectedIndex!: string;
 
-  isInEditMode: boolean = true;
+  isInEditMode: boolean = false;
   shouldMarkUserFormTouchedAndValidity: boolean = true;
   enableSaveButton: boolean = false;
   userFormFirstValueChange: boolean = false;
@@ -148,13 +148,11 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
           takeUntil(this._destroy$)
         ).subscribe(userResponse => {
           this.userSelected = userResponse;
-          this.userBefore = userResponse;
           this.getPhoto(this.userSelected.id);
         });
   }
 
   private getPhoto(id: string | null) {
-    console.log("id =>", id);
     if (id === null) return;
 
     this._usersService
@@ -162,6 +160,7 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
       .pipe(take(1), takeUntil(this._destroy$))
       .subscribe((photo: Blob | null) => {
         this.userSelected = { ...this.userSelected, photo };
+        this.userBefore = structuredClone(this.userSelected);
       });
   }
 

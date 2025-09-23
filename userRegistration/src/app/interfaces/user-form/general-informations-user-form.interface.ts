@@ -1,6 +1,9 @@
+import { UserPhoto } from "../../types/user-photo";
+
 export interface IGeneralInformationsUserForm {
     id?: string;
     name: string;
+    photo?: UserPhoto;
     email: string;
     password: string;
     passwordConfirm: string;
