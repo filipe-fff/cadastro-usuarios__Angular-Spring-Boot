@@ -96,6 +96,6 @@ export class UsersService {
 
     // DELETE
     delete(id: string): Observable<void> {
-        return this._httpClient.delete<void>("http://localhost:8081/user-registration/delete/" + id);
+        return this._httpClient.delete<void>("http://localhost:8081/user-registration/" + id);
     }
 }

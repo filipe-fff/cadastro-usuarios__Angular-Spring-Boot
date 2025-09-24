@@ -39,7 +39,11 @@ public record DependentUpdateDTO(
                         LinkedHashMap::new
                 ));
 
-        user.getDependents().clear();
+        user.getDependents().removeIf(d ->
+                dependentsUpdateListDTOS
+                        .stream()
+                        .noneMatch(dto -> dto.id() != null && dto.id().equals(d.getId()))
+        );
 
         dependentsUpdateListDTOS
                 .forEach(d -> DependentUpdateDTO.toDependent(user, d, dependentsMap));

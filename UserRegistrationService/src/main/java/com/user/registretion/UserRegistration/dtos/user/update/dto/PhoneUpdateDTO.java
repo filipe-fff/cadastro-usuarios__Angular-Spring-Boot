@@ -41,7 +41,10 @@ public record PhoneUpdateDTO(
                         LinkedHashMap::new
                 ));
 
-        user.getPhoneList().clear();
+        user.getPhoneList().removeIf(p ->
+                phoneUpdateListDTO
+                        .stream()
+                        .noneMatch(dto -> dto.id() != null && dto.id().equals(p.getId())));
 
         phoneUpdateListDTO
             .forEach(p -> PhoneUpdateDTO.toPhone(user, p, phoneMap));

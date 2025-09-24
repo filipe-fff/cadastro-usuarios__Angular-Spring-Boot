@@ -41,7 +41,11 @@ public record MusicUpdateDTO(
                         LinkedHashMap::new
                 ));
 
-        user.getMusics().clear();
+        user.getMusics().removeIf(m ->
+                musicUpdateListDTO
+                        .stream()
+                        .noneMatch(dto -> dto.id() != null && dto.id().equals(m.getId()))
+        );
 
         musicUpdateListDTO
                 .forEach(m -> MusicUpdateDTO.toMusic(user, m, musicsMap));

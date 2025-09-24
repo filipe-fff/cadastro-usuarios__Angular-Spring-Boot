@@ -45,7 +45,10 @@ public record AddressUpdateDTO(
                         LinkedHashMap::new
                 ));
 
-        user.getAddressList().clear();
+        user.getAddressList().removeIf(a ->
+                addressUpdateListDTO
+                        .stream()
+                        .noneMatch(dto -> dto.id() != null && dto.id().equals(a.getId())));
 
         addressUpdateListDTO
                 .forEach(a -> AddressUpdateDTO.toAddress(user, a, addressMap));
