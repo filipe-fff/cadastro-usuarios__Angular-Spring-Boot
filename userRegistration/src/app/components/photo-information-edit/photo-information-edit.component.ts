@@ -1,16 +1,19 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { ButtonStylePipe } from '../../pipes/button-style.pipe';
-import { UserPhoto } from '../../types/user-photo';
-import { SafeUrl } from '@angular/platform-browser';
+import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-photo-information-edit',
   standalone: true,
   imports: [
-    ButtonStylePipe,
-    ReactiveFormsModule
-  ],
+    CommonModule,
+    ReactiveFormsModule,
+    AngularMaterialModule,
+    ButtonStylePipe
+],
   templateUrl: './photo-information-edit.component.html',
   styleUrl: './photo-information-edit.component.scss'
 })
@@ -20,6 +23,8 @@ export class PhotoInformationEditComponent implements OnInit, OnChanges, OnDestr
 
   @Input({ required: true }) userForm: FormGroup = {} as FormGroup;
 
+  private readonly _confirmMatDialogService = inject(ConfirmMatDialogService);
+
   get photoControl(): FormControl {
     return this.userForm.get("generalInformations.photo") as FormControl;
   }
@@ -28,12 +33,12 @@ export class PhotoInformationEditComponent implements OnInit, OnChanges, OnDestr
     this.watchPhotoValueChanges();
   }
 
-  ngOnDestroy() {
-    this.resetPhotoUrl();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     this.getPhotoUrl(this.photoControl.value);
+  }
+
+  ngOnDestroy() {
+    this.resetPhotoUrl();
   }
 
   onPhotoValueChanges(e: Event) {
@@ -43,6 +48,16 @@ export class PhotoInformationEditComponent implements OnInit, OnChanges, OnDestr
 
     const photo = input.files[0];
     this.photoControl.setValue(photo);
+  }
+
+  onPhotoRemove() {
+    this._confirmMatDialogService.open({
+      title: "Removendo Foto",
+      description: "Você deseja realmente remover esta foto?"
+    }, (value) => {
+      if (!value) return;
+      this.photoControl.setValue(null);
+    });
   }
 
   private watchPhotoValueChanges() {

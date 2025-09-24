@@ -56,9 +56,6 @@ export class UserBeforeAfterMatDialogComponent implements OnInit, OnDestroy {
   private readonly _genresService = inject(GenresService);
 
   ngOnInit() {
-    console.log("after =>", this.data.after.photo);
-    console.log("before =>", this.data.before.photo);
-
     this.onPhotoBefore();
     this.onPhotoAfter();
 

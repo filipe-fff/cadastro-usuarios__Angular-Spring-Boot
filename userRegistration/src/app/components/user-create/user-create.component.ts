@@ -12,6 +12,7 @@ import { ConfirmMatDialogService } from '../../services/confirm-mat-dialog.servi
 import { convertUserFormRawValueToUser } from '../../utils/convert-user-form-raw-value-to-user';
 import { UsersService } from '../../services/users.service';
 import { IUserCreate } from '../../interfaces/user-create/user-create.interface';
+import { UserPhoto } from '../../types/user-photo';
 
 @Component({
   selector: 'app-user-create',
@@ -71,7 +72,7 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
       this.isInEditMode = false;
       this.userSelected = structuredClone(convertUserFormRawValueToUser(this._userFormRawValue.userFormRawValue));
       const newUser = convertUserFormRawValueToUserCreate(this._userFormRawValue.userFormRawValue);
-      this.onUserCreate(newUser);
+      this.onUserCreate(newUser, this.userSelected.photo || null);
     });
   }
 
@@ -85,7 +86,7 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
     this.userSelected = ({
       id: "",
       name: "",
-      photoUrl: "",
+      photo: null,
       email: "",
       password: "",
       country: "",
@@ -100,9 +101,9 @@ export class UserCreateComponent implements OnInit, OnDestroy, ICanDeactivateWit
     }) as IUser;
   }
 
-  private onUserCreate(newUser: IUserCreate) {
+  private onUserCreate(newUser: IUserCreate, photo: UserPhoto) {
     this._usersService
-      .save(newUser)
+      .save(newUser, photo)
       .pipe(takeUntil(this._destroy$))
       .subscribe({
         next: () => console.log("Criado com sucesso!"),

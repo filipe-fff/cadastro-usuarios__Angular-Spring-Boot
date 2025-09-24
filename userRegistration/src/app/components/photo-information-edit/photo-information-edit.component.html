@@ -3,10 +3,19 @@
         <div>
             <img [src]="photoUrl || 'assets/images/user-photo-default.png'" class="w-80 h-80 bg-gray bg-cover rounded-full">
         </div>
-        <input
-            type="file"
-            accept="/image"
-            [class]="'slate' | buttonStyle"
-            (change)="onPhotoValueChanges($event)">
+        <div class="flex gap-4 items-center">
+            <input
+                type="file"
+                accept="/image"
+                class="cursor-pointer"
+                [ngClass]="'slate' | buttonStyle"
+                (change)="onPhotoValueChanges($event)">
+            <button
+                mat-raised-button
+                [disabled]="photoUrl === null"
+                (click)="onPhotoRemove()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
     </div>
 </form>

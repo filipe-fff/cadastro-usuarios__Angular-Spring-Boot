@@ -165,9 +165,10 @@ export class UserSelectedComponent implements OnInit, OnDestroy, ICanDeactivateW
   }
 
   private onUserUpdate() {
-    const newUser = convertUserFormRawValueToUserUpdate(this._userFormRawValueService.userFormRawValue);
+    const userFormRawValue = this._userFormRawValueService.userFormRawValue;
+    const newUser = convertUserFormRawValueToUserUpdate(userFormRawValue);
     this._usersService
-      .update(newUser)
+      .update(newUser.id, newUser, userFormRawValue.generalInformations.photo || null)
       .pipe(
         takeUntil(this._destroy$)
       )

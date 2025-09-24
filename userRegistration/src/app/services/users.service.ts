@@ -6,6 +6,7 @@ import { UsersListReponse } from "../types/users-list-response";
 import { IUserUpdate } from "../interfaces/user-update/user-update.interface";
 import { IPhone } from "../interfaces/user/phone.interface";
 import { IUserCreate } from "../interfaces/user-create/user-create.interface";
+import { UserPhoto } from "../types/user-photo";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,11 @@ export class UsersService {
     private readonly _httpClient = inject(HttpClient);
 
     // CREATE
-    save(user: IUserCreate): Observable<IUserCreate> {
-        return this._httpClient.post<IUserCreate>("http://localhost:8081/user-registration/", user);
+    save(user: IUserCreate, photo: Blob | null): Observable<IUserCreate> {
+        const userFormData = new FormData();
+        userFormData.append("user", new Blob([JSON.stringify(user)], { type: "application/json" }));
+        if (photo !== null) userFormData.append("file", photo);
+        return this._httpClient.post<IUserCreate>("http://localhost:8081/user-registration", userFormData);
     }
     
     // READ
@@ -66,10 +70,9 @@ export class UsersService {
         const body = phone;
 
         if (userId)
-            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + userId, body + "/exists-phone", { headers });
+            return this._httpClient.put<boolean>("http://localhost:8081/user-registration/" + userId + "/exists-phone", body, { headers });
         else
             return this._httpClient.put<boolean>("http://localhost:8081/user-registration/exists-phone", body, { headers });
-
     }
 
     existsByIdNotAndDocument(id: string | null, document: number | null): Observable<boolean> {
@@ -83,8 +86,12 @@ export class UsersService {
     }
 
     // UPDATE
-    update(user: IUserUpdate): Observable<IUserUpdate> {
-        return this._httpClient.put<IUserUpdate>("http://localhost:8081/user-registration", user);
+    update(id: string, user: IUserUpdate, photo: UserPhoto): Observable<IUserUpdate> {
+        const userFormData = new FormData();
+        userFormData.append("user", new Blob([JSON.stringify(user)], { type: "application/json" }));
+        if (photo !== null) userFormData.append("file", photo);
+
+        return this._httpClient.put<IUserUpdate>("http://localhost:8081/user-registration/" + id, userFormData);
     }
 
     // DELETE

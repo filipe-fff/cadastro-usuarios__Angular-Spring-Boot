@@ -89,6 +89,7 @@ export class UserController {
     fulfillUserForm(user: IUser) {
         this.resetUserForm();
         this.fulfillGeneralInformations(user);
+        this.fulfillPhoneList(user.id, user.phoneList);
         this.fulfillAddressList(user.addressList);
         this.fulfillDependents(user.dependents);
         this.fulfillMusics(user.musics);
@@ -178,6 +179,23 @@ export class UserController {
             ...user,
             passwordConfirm: user.password,
             birthDate: convertEnDateToDateObj(user.birthDate)
+        });
+    }
+
+    private fulfillPhoneList(userId: string, phoneResponse: PhoneList) {
+        preparePhoneListToDisplay(false, phoneResponse, (phone) => {
+            const validators = phone.type === 3 ? [] : [Validators.required];
+
+            this.phoneList.push(this._fb.group({
+                id: [phone.id],
+                type: [phone.type],
+                typeDescription: [phone.typeDescription],
+                number: [phone.number, {
+                    updateOn: "blur",
+                    validators,
+                    asyncValidators: [ existsByIdNotAndPhoneValidator(userId, this.usersService) ]
+                }]
+            }));
         });
     }
 
